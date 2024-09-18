@@ -1,10 +1,11 @@
-import { $, QwikKeyboardEvent, component$, useStore, useTask$ } from '@builder.io/qwik';
+import { $, QwikKeyboardEvent, component$, useContext, useStore, useTask$ } from '@builder.io/qwik';
 import { DocumentHead, routeLoader$, useLocation } from '@builder.io/qwik-city';
 import Breadcrumbs from '~/components/breadcrumbs/Breadcrumbs';
 import CollectionCard from '~/components/collection-card/CollectionCard';
 import Filters from '~/components/facet-filter-controls/Filters';
 import FiltersButton from '~/components/filters-button/FiltersButton';
 import ProductCard from '~/components/products/ProductCard';
+import { APP_STATE } from '~/constants';
 import { SearchResponse } from '~/generated/graphql';
 import { getCollectionBySlug } from '~/providers/shop/collections/collections';
 import {
@@ -39,6 +40,7 @@ export default component$(() => {
 
 	const collectionSignal = useCollectionLoader();
 	const searchSignal = useSearchLoader();
+	const appState = useContext(APP_STATE);
 
 	const state = useStore<{
 		showMenu: boolean;
@@ -54,6 +56,16 @@ export default component$(() => {
 
 	useTask$(async ({ track }) => {
 		track(() => collectionSignal.value.slug);
+		params.slug = cleanUpParams(p).slug;
+		state.facetValueIds = url.searchParams.get('f')?.split('-') || [];
+		state.search = state.facetValueIds.length
+			? await searchQueryWithTerm(params.slug, '', state.facetValueIds)
+			: await searchQueryWithCollectionSlug(params.slug);
+		state.facedValues = groupFacetValues(state.search as SearchResponse, state.facetValueIds);
+	});
+
+	useTask$(async ({ track }) => {
+		track(() => appState.customer);
 		params.slug = cleanUpParams(p).slug;
 		state.facetValueIds = url.searchParams.get('f')?.split('-') || [];
 		state.search = state.facetValueIds.length
