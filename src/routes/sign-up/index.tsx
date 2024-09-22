@@ -58,10 +58,7 @@ export default component$(() => {
 				<div class="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
 					<div class="mb-6 bg-yellow-50 border border-yellow-400 text-yellow-800 rounded p-4 text-center text-sm">
 						{successSignal.value ? (
-							<p>
-								Account registration successful! We sent email verification to {email.value}, you
-								must verify before logging in.
-							</p>
+							<p>Please wait for admin to verify your email before logging in.</p>
 						) : (
 							<p>
 								Account registration is not supported by the demo Vendure instance. In order to use

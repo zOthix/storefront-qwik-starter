@@ -28,7 +28,7 @@ export default component$<{ onForward$: QRL<() => void> }>(({ onForward$ }) => {
 								})}
 							>
 								<CreditCardIcon />
-								<span>{$localize`Pay with ${method.name}`}</span>
+								<span>{$localize`Complete Order`}</span>
 							</button>
 						</>
 					)}
