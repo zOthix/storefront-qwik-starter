@@ -15,7 +15,11 @@ export default component$(() => {
 		if (login.__typename === 'CurrentUser') {
 			navigate('/account');
 		} else {
-			error.value = login.message;
+			if (login.errorCode === 'NOT_VERIFIED_ERROR') {
+				error.value = 'Please wait for admin to verify your email.';
+			} else {
+				error.value = login.message;
+			}
 		}
 	});
 	return (
@@ -32,7 +36,7 @@ export default component$(() => {
 
 			<div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
 				<div class="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-					<div class="mb-6 bg-yellow-50 border border-yellow-400 text-yellow-800 rounded p-4 text-center text-sm">
+					{/* <div class="mb-6 bg-yellow-50 border border-yellow-400 text-yellow-800 rounded p-4 text-center text-sm">
 						<p>Demo credentials</p>
 						<p>
 							Email address: <span class="font-bold">test@vendure.io</span>
@@ -40,7 +44,7 @@ export default component$(() => {
 						<p>
 							Password: <span class="font-bold">test</span>
 						</p>
-					</div>
+					</div> */}
 					<div class="space-y-6">
 						<div>
 							<label class="block text-sm font-medium text-gray-700">Email address</label>

@@ -60,10 +60,7 @@ export default component$(() => {
 						{successSignal.value ? (
 							<p>Please wait for admin to verify your email before logging in.</p>
 						) : (
-							<p>
-								Account registration is not supported by the demo Vendure instance. In order to use
-								it, please connect to your own local / production instance.
-							</p>
+							<p>Please fill the form.</p>
 						)}
 					</div>
 					<div class="space-y-6">

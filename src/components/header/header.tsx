@@ -3,7 +3,6 @@ import { Link } from '@builder.io/qwik-city';
 import { APP_STATE, CUSTOMER_NOT_DEFINED_ID } from '~/constants';
 import { logoutMutation } from '~/providers/shop/account/account';
 import { getActiveCustomerQuery } from '~/providers/shop/customer/customer';
-import { GitHubLink } from '../GitHubLink/GitHubLink';
 import LogoutIcon from '../icons/LogoutIcon';
 import MenuIcon from '../icons/MenuIcon';
 import ShoppingBagIcon from '../icons/ShoppingBagIcon';
@@ -52,7 +51,7 @@ export default component$(() => {
 					<div class="max-w-6xl mx-2 h-5 min-h-full md:mx-auto flex items-center justify-between my-1">
 						<div class="flex justify-between items-center w-full">
 							<div>
-								<p class="hidden sm:block">
+								{/* <p class="hidden sm:block">
 									{$localize`Exclusive: Get your own`}{' '}
 									<a
 										href="https://github.com/vendure-ecommerce/storefront-qwik-starter"
@@ -61,7 +60,7 @@ export default component$(() => {
 									>
 										{$localize`FREE storefront starter kit`}
 									</a>
-								</p>
+								</p> */}
 							</div>
 							<div class="flex mr-[60px] 2xl:mr-0">
 								<Link
@@ -131,7 +130,7 @@ export default component$(() => {
 						</button>
 					</div>
 				</div>
-				<GitHubLink />
+				{/* <GitHubLink /> */}
 			</header>
 		</div>
 	);
