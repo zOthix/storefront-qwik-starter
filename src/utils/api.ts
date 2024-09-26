@@ -28,7 +28,7 @@ const execute = async <R, V = Record<string, any>>(
 ): Promise<R> => {
 	const requestOptions = {
 		method: 'POST',
-		headers: createHeaders(),
+		headers: await createHeaders(),
 		body: JSON.stringify(body),
 	};
 	if (options.token) {
@@ -57,10 +57,18 @@ const execute = async <R, V = Record<string, any>>(
 	return response.data;
 };
 
-const createHeaders = () => {
+export const handleCookies = server$(function () {
+	const userSession = this.cookie.get(AUTH_TOKEN)?.value;
+	return userSession;
+});
+
+const createHeaders = async () => {
 	let headers: Record<string, string> = { 'Content-Type': 'application/json' };
 	if (isBrowser) {
 		const token = getCookie(AUTH_TOKEN);
+		headers = { ...headers, Authorization: `Bearer ${token}` };
+	} else {
+		const token = await handleCookies();
 		headers = { ...headers, Authorization: `Bearer ${token}` };
 	}
 	return headers;
