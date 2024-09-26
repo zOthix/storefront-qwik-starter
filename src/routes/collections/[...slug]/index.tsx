@@ -135,33 +135,35 @@ export default component$(() => {
 					</div>
 				)}
 			</div>
-			<div class="mt-6 grid sm:grid-cols-5 gap-x-4">
-				{!!state.facedValues.length && (
-					<Filters
-						showMenu={state.showMenu}
-						facetsWithValues={state.facedValues}
-						onToggleMenu$={async () => {
-							state.showMenu = !state.showMenu;
-						}}
-						onFilterChange$={onFilterChange}
-						onOpenCloseFilter$={onOpenCloseFilter}
-					/>
-				)}
-				<div class="sm:col-span-5 lg:col-span-4">
-					<div class="grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
-						{state.search.items.map((item) => (
-							<ProductCard
-								key={item.productId}
-								productAsset={item.productAsset}
-								productName={item.productName}
-								slug={item.slug}
-								priceWithTax={item.priceWithTax}
-								currencyCode={item.currencyCode}
-							></ProductCard>
-						))}
+			{state.search.items.length > 0 && (
+				<div class="mt-6 grid sm:grid-cols-5 gap-x-4">
+					{!!state.facedValues.length && (
+						<Filters
+							showMenu={state.showMenu}
+							facetsWithValues={state.facedValues}
+							onToggleMenu$={async () => {
+								state.showMenu = !state.showMenu;
+							}}
+							onFilterChange$={onFilterChange}
+							onOpenCloseFilter$={onOpenCloseFilter}
+						/>
+					)}
+					<div class="sm:col-span-5 lg:col-span-4">
+						<div class="grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
+							{state.search.items.map((item) => (
+								<ProductCard
+									key={item.productId}
+									productAsset={item.productAsset}
+									productName={item.productName}
+									slug={item.slug}
+									priceWithTax={item.priceWithTax}
+									currencyCode={item.currencyCode}
+								></ProductCard>
+							))}
+						</div>
 					</div>
 				</div>
-			</div>
+			)}
 		</div>
 	);
 });
