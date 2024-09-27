@@ -7,9 +7,12 @@ export default component$<{
 	currencyCode: CurrencyCode | string | undefined;
 	forcedClass?: string;
 }>(({ priceWithTax, currencyCode, forcedClass }: any) => {
+	const { min = 0, max = 0 } = priceWithTax;
+	const showPrice = min !== 0 || max !== 0;
+
 	return (
 		<div>
-			{!currencyCode ? (
+			{!currencyCode || !showPrice ? (
 				<div></div>
 			) : typeof priceWithTax === 'number' ? (
 				<div class={forcedClass}>{formatPrice(priceWithTax, currencyCode)}</div>

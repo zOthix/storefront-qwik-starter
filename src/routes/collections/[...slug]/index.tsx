@@ -56,15 +56,6 @@ export default component$(() => {
 
 	useTask$(async ({ track }) => {
 		track(() => collectionSignal.value.slug);
-		params.slug = cleanUpParams(p).slug;
-		state.facetValueIds = url.searchParams.get('f')?.split('-') || [];
-		state.search = state.facetValueIds.length
-			? await searchQueryWithTerm(params.slug, '', state.facetValueIds)
-			: await searchQueryWithCollectionSlug(params.slug);
-		state.facedValues = groupFacetValues(state.search as SearchResponse, state.facetValueIds);
-	});
-
-	useTask$(async ({ track }) => {
 		track(() => appState.customer);
 		params.slug = cleanUpParams(p).slug;
 		state.facetValueIds = url.searchParams.get('f')?.split('-') || [];
