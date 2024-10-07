@@ -16,6 +16,8 @@ import Root from './root';
 import { extractBase } from './utils/i18n';
 
 export default function (opts: RenderToStreamOptions) {
+	const locale = opts.serverData?.locale;
+
 	return renderToStream(<Root />, {
 		manifest,
 		...opts,
@@ -23,6 +25,7 @@ export default function (opts: RenderToStreamOptions) {
 		// Use container attributes to set attributes on the html tag.
 		containerAttributes: {
 			lang: 'en-us',
+			dir: locale.includes('he') && 'rtl',
 			...opts.containerAttributes,
 		},
 	});
