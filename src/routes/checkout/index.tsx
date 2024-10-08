@@ -63,7 +63,11 @@ export default component$(() => {
 												<span class={`${step.state === state.step ? 'text-primary-600' : ''}`}>
 													{step.name}
 												</span>
-												{index !== steps.length - 1 ? <ChevronRightIcon /> : null}
+												{index !== steps.length - 1 ? (
+													<span class="rtl:rotate-180">
+														<ChevronRightIcon />
+													</span>
+												) : null}
 											</li>
 										)}
 									</div>
@@ -82,9 +86,8 @@ export default component$(() => {
 											delete shippingAddress.defaultBillingAddress;
 
 											const setOrderShippingAddress = async () => {
-												const setOrderShippingAddress = await setOrderShippingAddressMutation(
-													shippingAddress
-												);
+												const setOrderShippingAddress =
+													await setOrderShippingAddressMutation(shippingAddress);
 
 												if (setOrderShippingAddress.__typename === 'Order') {
 													if (isEnvVariableEnabled('VITE_SHOW_PAYMENT_STEP')) {

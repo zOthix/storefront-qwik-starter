@@ -17,13 +17,13 @@ export default component$(() => {
 				<div class="fixed inset-0 overflow-hidden z-20">
 					<div class="absolute inset-0 overflow-hidden">
 						<div class="absolute inset-0 bg-gray-500 bg-opacity-75 transition-opacity opacity-100"></div>
-						<div class="fixed inset-y-0 right-0 pl-10 max-w-full flex">
+						<div class="fixed inset-y-0 ltr:right-0 rtl:left-0 ltr:pl-10 rtl:pr-10 max-w-full flex">
 							<div class="w-screen max-w-md translate-x-0">
 								<div class="h-full flex flex-col bg-white shadow-xl overflow-y-scroll">
 									<div class="flex-1 py-6 overflow-y-auto px-4 sm:px-6">
 										<div class="flex items-start justify-between">
 											<h2 class="text-lg font-medium text-gray-900">{$localize`Shopping cart`}</h2>
-											<div class="ml-3 h-7 flex items-center">
+											<div class="ltr:ml-3 rtl:mr-3 h-7 flex items-center">
 												<button
 													type="button"
 													class="-m-2 p-2 text-gray-400 hover:text-gray-500"

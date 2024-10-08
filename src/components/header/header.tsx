@@ -77,8 +77,10 @@ export default component$(() => {
 								{appState.customer.id !== CUSTOMER_NOT_DEFINED_ID && (
 									<button onClick$={logout} class="text-gray-700">
 										<div class="flex items-center cursor-pointer">
-											<span class="mr-2">{$localize`Logout`}</span>
-											<LogoutIcon />
+											<span class="ltr:mr-2 rtl:ml-2">{$localize`Logout`}</span>
+											<span class="rtl:rotate-180">
+												<LogoutIcon />
+											</span>
 										</div>
 									</button>
 								)}
@@ -121,7 +123,7 @@ export default component$(() => {
 						>
 							<ShoppingBagIcon />
 							{totalQuantity ? (
-								<div class="absolute rounded-full -top-2 -right-2 bg-primary-600 w-6 h-6">
+								<div class="absolute rounded-full -top-2 ltr:-right-2 rtl:-left-2 bg-primary-600 w-6 h-6">
 									{totalQuantity}
 								</div>
 							) : (

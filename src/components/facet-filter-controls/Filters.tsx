@@ -51,7 +51,7 @@ export default component$<{
 														checked={value.selected}
 														onClick$={() => onFilterChange$(value.id)}
 													/>
-													<span class="ml-3">{value.name}</span>
+													<span class="ltr:ml-3 rtl:mr-3">{value.name}</span>
 												</label>
 											</div>
 										))}

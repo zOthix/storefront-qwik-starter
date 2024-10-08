@@ -54,7 +54,7 @@ export default component$<{
 								/>
 							</div>
 
-							<div class="ml-4 flex-1 flex flex-col">
+							<div class="ltr:ml-4 rtl:mr-4 flex-1 flex flex-col">
 								<div>
 									<div class="flex justify-between text-base font-medium text-gray-900">
 										<h3>
@@ -65,14 +65,14 @@ export default component$<{
 										<Price
 											priceWithTax={linePriceWithTax}
 											currencyCode={currencyCode}
-											forcedClass="ml-4"
+											forcedClass="ltr:ml-4 rtl:mr-4"
 										></Price>
 									</div>
 								</div>
 								<div class="flex-1 flex items-center text-sm">
 									{isInEditableUrl ? (
 										<form>
-											<label html-for={`quantity-${line.id}`} class="mr-2">
+											<label html-for={`quantity-${line.id}`} class="ltr:mr-2 rtl:ml-2">
 												{$localize`Quantity`}
 											</label>
 											<select
