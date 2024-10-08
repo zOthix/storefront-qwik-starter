@@ -4,6 +4,7 @@ import { EligiblePaymentMethods } from '~/types';
 import CreditCardIcon from '../icons/CreditCardIcon';
 import BraintreePayment from './BraintreePayment';
 import StripePayment from './StripePayment';
+import TranzillaPayment from './TranzillaPayment';
 
 export default component$<{ onForward$: QRL<() => void> }>(({ onForward$ }) => {
 	const paymentMethods = useSignal<EligiblePaymentMethods[]>();
@@ -32,6 +33,7 @@ export default component$<{ onForward$: QRL<() => void> }>(({ onForward$ }) => {
 							</button>
 						</>
 					)}
+					<TranzillaPayment />
 					{method.code.includes('stripe') && <StripePayment />}
 					{method.code.includes('braintree') && <BraintreePayment />}
 				</div>
