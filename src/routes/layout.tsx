@@ -74,6 +74,7 @@ export default component$(() => {
 			streetLine2: '',
 		},
 		addressBook: [],
+		payWithoutCreditCard: false,
 	});
 
 	useContextProvider(APP_STATE, state);

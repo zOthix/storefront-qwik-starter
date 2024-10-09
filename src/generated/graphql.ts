@@ -367,6 +367,13 @@ export type CreateCustomerInput = {
 	lastName: Scalars['String'];
 	phoneNumber?: InputMaybe<Scalars['String']>;
 	title?: InputMaybe<Scalars['String']>;
+	VAT: Scalars['String'];
+	accountingEmail: Scalars['String'];
+	accountingPhone: Scalars['String'];
+	businessName: Scalars['String'];
+	businessPhone: Scalars['String'];
+	contactPersonPhone: Scalars['String'];
+	fax: Scalars['String'];
 };
 
 /**

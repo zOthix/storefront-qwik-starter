@@ -181,6 +181,13 @@ export default component$<IProps>(({ onForward$ }) => {
 							lastName,
 							phoneNumber,
 							title,
+							accountingEmail: '',
+							accountingPhone: '',
+							businessName: '',
+							businessPhone: '',
+							contactPersonPhone: '',
+							fax: '',
+							VAT: '',
 						};
 						const createShippingInput: CreateAddressInput = {
 							fullName,
