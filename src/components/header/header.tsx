@@ -32,6 +32,7 @@ export default component$(() => {
 					emailAddress: activeCustomer.emailAddress,
 					phoneNumber: activeCustomer.phoneNumber ?? '',
 				};
+				appState.payWithoutCreditCard = activeCustomer.payWithoutCreditCard ?? false;
 			}
 		}
 	});

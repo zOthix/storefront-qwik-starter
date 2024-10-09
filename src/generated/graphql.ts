@@ -745,6 +745,7 @@ export type Customer = Node & {
 	title?: Maybe<Scalars['String']>;
 	updatedAt: Scalars['DateTime'];
 	user?: Maybe<User>;
+	payWithoutCreditCard?: Maybe<Scalars['Boolean']>;
 };
 
 export type CustomerOrdersArgs = {
@@ -5252,6 +5253,7 @@ export const ActiveCustomerDocument = gql`
 			lastName
 			emailAddress
 			phoneNumber
+			payWithoutCreditCard
 		}
 	}
 `;

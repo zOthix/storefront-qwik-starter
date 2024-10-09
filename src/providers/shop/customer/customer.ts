@@ -102,6 +102,7 @@ gql`
 			lastName
 			emailAddress
 			phoneNumber
+			payWithoutCreditCard
 		}
 	}
 `;

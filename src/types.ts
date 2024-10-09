@@ -9,6 +9,7 @@ export type AppState = {
 	shippingAddress: ShippingAddress;
 	availableCountries: Country[];
 	addressBook: ShippingAddress[];
+	payWithoutCreditCard: Boolean;
 };
 
 export type Product = {
@@ -208,6 +209,7 @@ export type ActiveCustomer = {
 	lastName: string;
 	emailAddress?: string;
 	phoneNumber?: string;
+	payWithoutCreditCard?: boolean;
 };
 
 export type Login = ActiveCustomer & {
