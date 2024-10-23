@@ -103,6 +103,9 @@ gql`
 			emailAddress
 			phoneNumber
 			payWithoutCreditCard
+			priceVariant {
+				name
+			}
 		}
 	}
 `;

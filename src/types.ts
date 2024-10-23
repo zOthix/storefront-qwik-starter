@@ -10,6 +10,7 @@ export type AppState = {
 	availableCountries: Country[];
 	addressBook: ShippingAddress[];
 	payWithoutCreditCard: boolean;
+	priceVariant: boolean;
 };
 
 export type Product = {

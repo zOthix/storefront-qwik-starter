@@ -910,6 +910,21 @@ input CreateGroupOptionInput {
 	translations: [ProductOptionGroupTranslationInput!]!
 }
 
+input CreateOrUpdateProductInput {
+	assetIds: [ID]
+	description: String
+	enabled: Boolean
+	facetValueIds: [ID]
+	featuredAssetId: ID
+	id: ID
+	name: String!
+	priceVariants: [PriceVariantInput]
+	productVariantName: String
+	productVariantPrice: Money
+	productVariantSKU: String
+	slug: String!
+}
+
 input CreatePaymentMethodInput {
 	checker: ConfigurableOperationInput
 	code: String!
@@ -3945,6 +3960,11 @@ type Mutation {
 	createFacetValues(input: [CreateFacetValueInput!]!): [FacetValue!]!
 
 	"""
+	Create or update multiple existing Products
+	"""
+	createOrUpdateProducts(input: [CreateOrUpdateProductInput!]!): [Product!]!
+
+	"""
 	Create existing PaymentMethod
 	"""
 	createPaymentMethod(input: CreatePaymentMethodInput!): PaymentMethod!
@@ -5629,6 +5649,12 @@ type PriceRange {
 	min: Money!
 }
 
+input PriceVariantInput {
+	id: ID!
+	name: String!
+	price: Money!
+}
+
 type Product implements Node {
 	assets: [Asset!]!
 	channels: [Channel!]!
@@ -6282,6 +6308,11 @@ type Query {
 	List Products
 	"""
 	products(options: ProductListOptions): ProductList!
+
+	"""
+	Get products by ids
+	"""
+	productsByIds(productIds: [ID]!): [Product]!
 	promotion(id: ID!): Promotion
 	promotionActions: [ConfigurableOperationDefinition!]!
 	promotionConditions: [ConfigurableOperationDefinition!]!

@@ -33,6 +33,7 @@ export default component$(() => {
 					phoneNumber: activeCustomer.phoneNumber ?? '',
 				};
 				appState.payWithoutCreditCard = activeCustomer.payWithoutCreditCard ?? false;
+				appState.priceVariant = activeCustomer.priceVariant !== null ? true : false;
 			}
 		}
 	});

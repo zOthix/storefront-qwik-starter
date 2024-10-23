@@ -791,6 +791,7 @@ export type Customer = Node & {
 	addresses?: Maybe<Array<Address>>;
 	businessName: Scalars['String']['output'];
 	businessPhone: Scalars['String']['output'];
+	category?: Maybe<Collection>;
 	contactPersonPhone: Scalars['String']['output'];
 	createdAt: Scalars['DateTime']['output'];
 	customFields?: Maybe<Scalars['JSON']['output']>;
@@ -802,6 +803,7 @@ export type Customer = Node & {
 	orders: OrderList;
 	payWithoutCreditCard?: Maybe<Scalars['Boolean']['output']>;
 	phoneNumber?: Maybe<Scalars['String']['output']>;
+	priceVariant?: Maybe<ProductVariantPriceVariant>;
 	title?: Maybe<Scalars['String']['output']>;
 	updatedAt: Scalars['DateTime']['output'];
 	user?: Maybe<User>;
@@ -2794,6 +2796,13 @@ export type ProductVariantListOptions = {
 	take?: InputMaybe<Scalars['Int']['input']>;
 };
 
+export type ProductVariantPriceVariant = Node & {
+	__typename?: 'ProductVariantPriceVariant';
+	customFields?: Maybe<Scalars['JSON']['output']>;
+	id: Scalars['ID']['output'];
+	name: Scalars['String']['output'];
+};
+
 export type ProductVariantSortParameter = {
 	createdAt?: InputMaybe<SortOrder>;
 	id?: InputMaybe<SortOrder>;
@@ -3864,6 +3873,7 @@ export type ActiveCustomerQuery = {
 		emailAddress: string;
 		phoneNumber?: string | null;
 		payWithoutCreditCard?: boolean | null;
+		priceVariant?: { __typename?: 'ProductVariantPriceVariant'; name: string } | null;
 	} | null;
 };
 
@@ -5368,6 +5378,9 @@ export const ActiveCustomerDocument = gql`
 			emailAddress
 			phoneNumber
 			payWithoutCreditCard
+			priceVariant {
+				name
+			}
 		}
 	}
 `;

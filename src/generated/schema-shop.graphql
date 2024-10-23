@@ -1231,6 +1231,7 @@ type Customer implements Node {
 	addresses: [Address!]
 	businessName: String!
 	businessPhone: String!
+	category: Collection
 	contactPersonPhone: String!
 	createdAt: DateTime!
 	customFields: JSON
@@ -1242,6 +1243,7 @@ type Customer implements Node {
 	orders(options: OrderListOptions): OrderList!
 	payWithoutCreditCard: Boolean
 	phoneNumber: String
+	priceVariant: ProductVariantPriceVariant
 	title: String
 	updatedAt: DateTime!
 	user: User
@@ -4113,6 +4115,12 @@ input ProductVariantListOptions {
 	Takes n results, for use in pagination
 	"""
 	take: Int
+}
+
+type ProductVariantPriceVariant implements Node {
+	customFields: JSON
+	id: ID!
+	name: String!
 }
 
 input ProductVariantSortParameter {

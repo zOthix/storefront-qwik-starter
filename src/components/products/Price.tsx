@@ -1,4 +1,5 @@
-import { component$ } from '@builder.io/qwik';
+import { component$, useContext } from '@builder.io/qwik';
+import { APP_STATE } from '~/constants';
 import { CurrencyCode } from '~/types';
 import { formatPrice } from '~/utils';
 
@@ -7,16 +8,15 @@ export default component$<{
 	currencyCode: CurrencyCode | string | undefined;
 	forcedClass?: string;
 }>(({ priceWithTax, currencyCode, forcedClass }: any) => {
-	const { min = 0, max = 0, value = 0 } = priceWithTax;
-	let showPrice = min !== 0 || max !== 0 || value !== 0;
+	const appState = useContext(APP_STATE);
 
-	if (typeof priceWithTax === 'number') {
-		showPrice = true;
+	if (!appState.priceVariant) {
+		return <div></div>;
 	}
 
 	return (
 		<div>
-			{!currencyCode || !showPrice ? (
+			{!currencyCode ? (
 				<div></div>
 			) : typeof priceWithTax === 'number' ? (
 				<div class={forcedClass}>{formatPrice(priceWithTax, currencyCode)}</div>

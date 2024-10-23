@@ -753,6 +753,13 @@ export type Customer = Node & {
 	updatedAt: Scalars['DateTime'];
 	user?: Maybe<User>;
 	payWithoutCreditCard?: Maybe<Scalars['Boolean']>;
+	priceVariant?: Maybe<ProductVariantPriceVariant>;
+};
+
+export type ProductVariantPriceVariant = Node & {
+	__typename?: 'ProductVariantPriceVariant';
+	name?: Maybe<Scalars['String']>;
+	id?: Maybe<Scalars['ID']>;
 };
 
 export type CustomerOrdersArgs = {
