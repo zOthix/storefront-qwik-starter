@@ -116,7 +116,7 @@ export default component$(() => {
 							</div>
 							{1 < productSignal.value.variants.length && (
 								<div class="mt-4">
-									<label class="block text-sm font-medium text-gray-700">Select option</label>
+									<label class="block text-sm font-medium text-gray-700">{$localize`Select option`}</label>
 									<select
 										class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm rounded-md"
 										value={selectedVariantIdSignal.value}
@@ -134,57 +134,59 @@ export default component$(() => {
 									</select>
 								</div>
 							)}
-							<div class="mt-10 flex flex-col sm:flex-row sm:items-center">
-								<Price
-									priceWithTax={selectedVariantSignal.value?.priceWithTax}
-									currencyCode={selectedVariantSignal.value?.currencyCode}
-									forcedClass="text-3xl text-gray-900 mr-4"
-								></Price>
-								<div class="flex sm:flex-col1 align-baseline">
-									<button
-										class={{
-											'max-w-xs flex-1 transition-colors border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-primary-500 sm:w-full':
-												true,
-											'bg-primary-600 hover:bg-primary-700':
-												quantitySignal.value[selectedVariantIdSignal.value] === 0,
-											'bg-green-600 active:bg-green-700 hover:bg-green-700':
-												quantitySignal.value[selectedVariantIdSignal.value] >= 1 &&
-												quantitySignal.value[selectedVariantIdSignal.value] <= 7,
-											'bg-gray-600 cursor-not-allowed':
-												quantitySignal.value[selectedVariantIdSignal.value] > 7,
-										}}
-										onClick$={async () => {
-											if (quantitySignal.value[selectedVariantIdSignal.value] <= 7) {
-												const addItemToOrder = await addItemToOrderMutation(
-													selectedVariantIdSignal.value,
-													1
-												);
-												if (addItemToOrder.__typename !== 'Order') {
-													addItemToOrderErrorSignal.value = addItemToOrder.errorCode;
-												} else {
-													appState.activeOrder = addItemToOrder as Order;
+							{appState.priceVariant && (
+								<div class="mt-10 flex flex-col sm:flex-row sm:items-center">
+									<Price
+										priceWithTax={selectedVariantSignal.value?.priceWithTax}
+										currencyCode={selectedVariantSignal.value?.currencyCode}
+										forcedClass="text-3xl text-gray-900 mr-4 rtl:ml-4"
+									></Price>
+									<div class="flex sm:flex-col1 align-baseline">
+										<button
+											class={{
+												'max-w-xs flex-1 transition-colors border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-primary-500 sm:w-full':
+													true,
+												'bg-primary-600 hover:bg-primary-700':
+													quantitySignal.value[selectedVariantIdSignal.value] === 0,
+												'bg-green-600 active:bg-green-700 hover:bg-green-700':
+													quantitySignal.value[selectedVariantIdSignal.value] >= 1 &&
+													quantitySignal.value[selectedVariantIdSignal.value] <= 7,
+												'bg-gray-600 cursor-not-allowed':
+													quantitySignal.value[selectedVariantIdSignal.value] > 7,
+											}}
+											onClick$={async () => {
+												if (quantitySignal.value[selectedVariantIdSignal.value] <= 7) {
+													const addItemToOrder = await addItemToOrderMutation(
+														selectedVariantIdSignal.value,
+														1
+													);
+													if (addItemToOrder.__typename !== 'Order') {
+														addItemToOrderErrorSignal.value = addItemToOrder.errorCode;
+													} else {
+														appState.activeOrder = addItemToOrder as Order;
+													}
 												}
-											}
-										}}
-									>
-										{quantitySignal.value[selectedVariantIdSignal.value] ? (
-											<span class="flex items-center">
-												<CheckIcon />
-												{$localize`${quantitySignal.value[selectedVariantIdSignal.value]} in cart`}
-											</span>
-										) : (
-											$localize`Add to cart`
-										)}
-									</button>
-									<button
-										type="button"
-										class="ml-4 py-3 px-3 rounded-md flex items-center justify-center text-gray-400 hover:bg-gray-100 hover:text-gray-500"
-									>
-										<HeartIcon />
-										<span class="sr-only">{$localize`Add to favorites`}</span>
-									</button>
+											}}
+										>
+											{quantitySignal.value[selectedVariantIdSignal.value] ? (
+												<span class="flex items-center">
+													<CheckIcon />
+													{$localize`${quantitySignal.value[selectedVariantIdSignal.value]} in cart`}
+												</span>
+											) : (
+												$localize`Add to cart`
+											)}
+										</button>
+										<button
+											type="button"
+											class="ml-4 py-3 px-3 rounded-md flex items-center justify-center text-gray-400 hover:bg-gray-100 hover:text-gray-500"
+										>
+											<HeartIcon />
+											<span class="sr-only">{$localize`Add to favorites`}</span>
+										</button>
+									</div>
 								</div>
-							</div>
+							)}
 							<div class="mt-2 flex items-center space-x-2">
 								<span class="text-gray-500">{selectedVariantSignal.value?.sku}</span>
 								<StockLevelLabel stockLevel={selectedVariantSignal.value?.stockLevel} />

@@ -111,12 +111,12 @@ export default component$(() => {
 						<div class="flex flex-col items-center justify-center text-center">
 							{appState.customer?.phoneNumber && (
 								<div class="text-sm md:text-lg">
-									Phone:
+									{$localize`Phone`}:
 									<span class="font-bold px-2">{appState.customer?.phoneNumber}</span>
 								</div>
 							)}
 							<div class="text-sm md:text-lg">
-								Email:
+								{$localize`Email`}:
 								<span class="font-bold px-2">{appState.customer?.emailAddress}</span>
 							</div>
 						</div>
@@ -138,10 +138,14 @@ export default component$(() => {
 						<ShieldCheckIcon forcedClass="h-10 w-10 text-primary-500" />
 					</div>
 					<div q:slot="modalContent" class="space-y-4">
-						<p>We will send a verification E-Mail to {newEmail.value}</p>
+						<p>
+							{$localize`We will send a verification E-Mail to`} {newEmail.value}
+						</p>
 
 						<div class="space-y-1">
-							<label html-for="password">Confirm the change by entering your password:</label>
+							<label html-for="password">
+								{$localize`Confirm the change by entering your password`}:
+							</label>
 							<input
 								type="password"
 								name="password"
@@ -154,7 +158,7 @@ export default component$(() => {
 
 						{errorMessage.value !== '' && (
 							<ErrorMessage
-								heading="We ran into a problem changing your E-Mail!"
+								heading={$localize`We ran into a problem changing your E-Mail!`}
 								message={errorMessage.value}
 							/>
 						)}
@@ -164,7 +168,7 @@ export default component$(() => {
 					<div class="max-w-3xl m-auto">
 						<div class="gap-4 grid grid-cols-1 md:grid-cols-2">
 							<div class="md:col-span-2 md:w-1/4">
-								<h3 class="text-sm text-gray-500">Title</h3>
+								<h3 class="text-sm text-gray-500">{$localize`Title`}</h3>
 								<input
 									type="text"
 									value={appState.customer?.title}
@@ -177,7 +181,7 @@ export default component$(() => {
 
 							<div>
 								<label html-for="firstName" class="text-sm text-gray-500">
-									First Name
+									{$localize`First Name`}
 								</label>
 								<input
 									type="text"
@@ -192,7 +196,7 @@ export default component$(() => {
 							</div>
 							<div>
 								<label html-for="lastName" class="text-sm text-gray-500">
-									Last Name
+									{$localize`Last Name`}
 								</label>
 								<input
 									type="text"
@@ -206,7 +210,7 @@ export default component$(() => {
 								/>
 							</div>
 							<div>
-								<h3 class="text-sm text-gray-500">E-Mail</h3>
+								<h3 class="text-sm text-gray-500">{$localize`E-Mail`}</h3>
 								<input
 									type="email"
 									value={appState.customer?.emailAddress}
@@ -220,7 +224,7 @@ export default component$(() => {
 							</div>
 
 							<div>
-								<h3 class="text-sm text-gray-500">Phone Nr.</h3>
+								<h3 class="text-sm text-gray-500">{$`Phone No`}</h3>
 								<input
 									type="tel"
 									value={appState.customer?.phoneNumber}
@@ -239,7 +243,7 @@ export default component$(() => {
 									updateCustomer();
 								}}
 							>
-								<CheckIcon /> &nbsp; Save
+								<CheckIcon /> &nbsp; {$localize`Save`}
 							</HighlightedButton>
 
 							<Button
@@ -247,7 +251,7 @@ export default component$(() => {
 									isEditing.value = false;
 								}}
 							>
-								<XMarkIcon forcedClass="w-4 h-4" /> &nbsp; Cancel
+								<XMarkIcon forcedClass="w-4 h-4" /> &nbsp; {$localize`Cancel`}
 							</Button>
 						</div>
 					</div>

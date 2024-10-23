@@ -119,7 +119,7 @@ export default component$(() => {
 								</div>
 								<div class="ml-3">
 									<h3 class="text-sm font-medium text-red-800">
-										We ran into a problem updating your address!
+										{$localize`We ran into a problem updating your address!`}
 									</h3>
 
 									{Object.entries(action?.value?.fieldErrors || {}).map(([field, error], index) => (
@@ -136,7 +136,7 @@ export default component$(() => {
 							type="submit"
 							class="flex items-center justify-around bg-primary-500 border border-transparent rounded-md py-2 px-4 text-base font-medium text-white hover:bg-primary-600 focus:outline-none focus:ring-2 focus:ring-offset-0 focus:ring-gray-800"
 						>
-							<CheckIcon /> &nbsp; Save
+							<CheckIcon /> &nbsp; {$localize`Save`}
 						</button>
 
 						<span class="mr-4" />
@@ -145,7 +145,7 @@ export default component$(() => {
 								navigate('/account/address-book');
 							}}
 						>
-							<XMarkIcon /> &nbsp; Cancel
+							<XMarkIcon /> &nbsp; {$localize`Cancel`}
 						</Button>
 					</div>
 				</Form>

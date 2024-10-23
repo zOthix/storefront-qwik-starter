@@ -70,7 +70,7 @@ export default component$(() => {
 						navigate('/account/address-book/add');
 					}}
 				>
-					<PlusIcon /> &nbsp; New Address
+					<PlusIcon /> &nbsp; {$localize`New Address`}
 				</HighlightedButton>
 			</div>
 		</div>

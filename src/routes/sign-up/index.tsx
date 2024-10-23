@@ -1,9 +1,10 @@
 import { $, component$, useSignal } from '@builder.io/qwik';
-import { Link } from '@builder.io/qwik-city';
+import { Link, useNavigate } from '@builder.io/qwik-city';
 import XCircleIcon from '~/components/icons/XCircleIcon';
 import { registerCustomerAccountMutation } from '~/providers/shop/account/account';
 
 export default component$(() => {
+	const navigate = useNavigate();
 	const email = useSignal('');
 	const firstName = useSignal('');
 	const lastName = useSignal('');
@@ -36,6 +37,10 @@ export default component$(() => {
 			});
 			if (registerCustomerAccount.__typename === 'Success') {
 				successSignal.value = true;
+				window.scrollTo({ top: 0, left: 0 });
+				setTimeout(() => {
+					navigate('/sign-in');
+				}, 1000);
 			} else {
 				error.value = registerCustomerAccount.message;
 			}
@@ -43,13 +48,13 @@ export default component$(() => {
 	});
 
 	return (
-		<div class="flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+		<div class="flex flex-col justify-center py-12 sm:px-6 lg:px-8 scroll-smooth">
 			<div class="sm:mx-auto sm:w-full sm:max-w-md">
-				<h2 class="mt-6 text-center text-3xl text-gray-900">Create a new account</h2>
+				<h2 class="mt-6 text-center text-3xl text-gray-900">{$localize`Create a new account`}</h2>
 				<p class="mt-2 text-center text-sm text-gray-600">
-					Or{' '}
+					{$localize`Or`}{' '}
 					<Link href="/sign-in" class="font-medium text-primary-600 hover:text-primary-500">
-						login to your existing account
+						{$localize`login to your existing account`}
 					</Link>
 				</p>
 			</div>
@@ -58,14 +63,14 @@ export default component$(() => {
 				<div class="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
 					<div class="mb-6 bg-yellow-50 border border-yellow-400 text-yellow-800 rounded p-4 text-center text-sm">
 						{successSignal.value ? (
-							<p>Please wait for admin to verify your email before logging in.</p>
+							<p>{$localize`Please wait for admin to verify your email before logging in.`}</p>
 						) : (
-							<p>Please fill the form.</p>
+							<p>{$localize`Please fill the form.`}</p>
 						)}
 					</div>
 					<div class="space-y-6">
 						<div>
-							<label class="block text-sm font-medium text-gray-700">Email address</label>
+							<label class="block text-sm font-medium text-gray-700">{$localize`Email address`}</label>
 							<div class="mt-1">
 								<input
 									type="email"
@@ -79,7 +84,7 @@ export default component$(() => {
 						</div>
 
 						<div>
-							<label class="block text-sm font-medium text-gray-700">Firstname</label>
+							<label class="block text-sm font-medium text-gray-700">{$localize`Firstname`}</label>
 							<div class="mt-1">
 								<input
 									type="text"
@@ -92,7 +97,7 @@ export default component$(() => {
 						</div>
 
 						<div>
-							<label class="block text-sm font-medium text-gray-700">Lastname</label>
+							<label class="block text-sm font-medium text-gray-700">{$localize`Lastname`}</label>
 							<div class="mt-1">
 								<input
 									type="text"
@@ -105,7 +110,7 @@ export default component$(() => {
 						</div>
 
 						<div>
-							<label class="block text-sm font-medium text-gray-700">Password</label>
+							<label class="block text-sm font-medium text-gray-700">{$localize`Password`}</label>
 							<div class="mt-1">
 								<input
 									type="password"
@@ -118,7 +123,7 @@ export default component$(() => {
 						</div>
 
 						<div>
-							<label class="block text-sm font-medium text-gray-700">Repeat Password</label>
+							<label class="block text-sm font-medium text-gray-700">{$localize`Repeat Password`}</label>
 							<div class="mt-1">
 								<input
 									type="password"
@@ -138,7 +143,7 @@ export default component$(() => {
 									</div>
 									<div class="ml-3">
 										<h3 class="text-sm font-medium text-red-800">
-											We ran into a problem signing you up!
+											{$localize`We ran into a problem signing you up!`}
 										</h3>
 										<p class="text-sm text-red-700 mt-2">{error.value}</p>
 									</div>
@@ -150,7 +155,7 @@ export default component$(() => {
 								class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
 								onClick$={registerCustomer}
 							>
-								Sign up
+								{$localize`Sign up`}
 							</button>
 						</div>
 					</div>

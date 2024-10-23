@@ -19,10 +19,10 @@ export default component$(() => {
 		<div class="max-w-6xl m-auto rounded-lg p-4 space-y-4 text-gray-900">
 			<div>
 				<h2 class="mb-2">
-					Order <span class="text-xl font-semibold">{store.order?.code}</span>
+					{$localize`Order`} <span class="text-xl font-semibold">{store.order?.code}</span>
 				</h2>
 				<p class="mb-4">
-					Placed on{' '}
+					{$localize`Placed on`}{' '}
 					<span class="text-xl font-semibold">{formatDateTime(store.order?.createdAt)}</span>
 				</p>
 				<ul class="divide-y divide-gray-200">
@@ -69,16 +69,16 @@ export default component$(() => {
 			</div>
 			<dl class="border-t mt-6 border-gray-200 py-6 space-y-6">
 				<div class="flex items-center justify-between">
-					<dt class="text-sm">Subtotal</dt>
+					<dt class="text-sm">{$localize`Subtotal`}</dt>
 					<dd class="text-sm font-medium">
 						{formatPrice(store.order?.subTotal, store.order?.currencyCode || 'USD')}
 					</dd>
 				</div>
 				<div class="flex items-center justify-between">
 					<dt class="text-sm">
-						Shipping{' '}
+						{$localize`Shipping`}{' '}
 						<span class="text-gray-600">
-							(<span>Standard Shipping</span>)
+							(<span>{$localize`Standard Shipping`}</span>)
 						</span>
 					</dt>
 					<dd class="text-sm font-medium">
@@ -92,14 +92,14 @@ export default component$(() => {
 					</dd>
 				</div>
 				<div class="flex items-center justify-between border-t border-gray-200 pt-6">
-					<dt class="text-base font-medium">Total</dt>
+					<dt class="text-base font-medium">{$localize`Total`}</dt>
 					<dd class="text-base font-medium">
 						{formatPrice(store.order?.totalWithTax, store.order?.currencyCode || 'USD')}
 					</dd>
 				</div>
 			</dl>
 			<div class="w-full bg-gray-100 p-8">
-				<p class="mb-4 text-gray-600">Shipping Address</p>
+				<p class="mb-4 text-gray-600">{$localize`Shipping Address`}</p>
 				<p class="text-base font-medium">{store.order?.shippingAddress?.fullName}</p>
 				<p class="text-base font-medium">{store.order?.shippingAddress?.streetLine1}</p>
 				<p class="text-base font-medium">{store.order?.shippingAddress?.city}</p>

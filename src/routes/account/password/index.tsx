@@ -27,20 +27,20 @@ export default component$(() => {
 
 			switch (updateCustomerPassword.__typename) {
 				case 'PasswordValidationError':
-					errorMessage.value = 'Please set a stronger new password!';
+					errorMessage.value = $localize`Please set a stronger new password!`;
 					break;
 				case 'InvalidCredentialsError':
-					errorMessage.value = 'Current password does not match!';
+					errorMessage.value = $localize`Current password does not match!`;
 					break;
 				case 'NativeAuthStrategyError':
-					errorMessage.value = 'Login method mismatch!';
+					errorMessage.value = $localize`Login method mismatch!`;
 					break;
 				default:
 					navigate('/account');
 					break;
 			}
 		} else {
-			errorMessage.value = 'Confirm password does not match!';
+			errorMessage.value = $localize`Confirm password does not match!`;
 		}
 	});
 
@@ -63,7 +63,7 @@ export default component$(() => {
 		<div class="max-w-6xl m-auto rounded-lg p-4 space-y-4 flex justify-center">
 			<form class="bg-white shadow-lg rounded-lg w-[20rem] py-4 px-6">
 				<div class="p-4">
-					<h3 class="text-sm text-gray-500">Current Password</h3>
+					<h3 class="text-sm text-gray-500">{$localize`Current Password`}</h3>
 					<input
 						type="password"
 						onChange$={(_, el) => {
@@ -74,7 +74,7 @@ export default component$(() => {
 					/>
 				</div>
 				<div class="p-4">
-					<h3 class="text-sm text-gray-500">New Password</h3>
+					<h3 class="text-sm text-gray-500">{$localize`New Password`}</h3>
 					<input
 						type="password"
 						onChange$={(_, el) => {
@@ -85,7 +85,7 @@ export default component$(() => {
 					/>
 				</div>
 				<div class="p-4">
-					<h3 class="text-sm text-gray-500">Confirm Password</h3>
+					<h3 class="text-sm text-gray-500">{$localize`Confirm Password`}</h3>
 					<input
 						type="password"
 						onChange$={(_, el) => {
@@ -97,7 +97,7 @@ export default component$(() => {
 				</div>
 				<div class="flex gap-x-4 p-4 justify-between">
 					<HighlightedButton onClick$={updatePassword}>
-						<CheckIcon /> &nbsp; Save
+						<CheckIcon /> &nbsp; {$localize`Save`}
 					</HighlightedButton>
 					<div>
 						<button preventdefault:click onClick$={togglePasswordFields}>
@@ -108,7 +108,7 @@ export default component$(() => {
 				{errorMessage.value !== '' && (
 					<div class="p-4">
 						<ErrorMessage
-							heading="We ran into a problem changing your password!"
+							heading={$localize`We ran into a problem changing your password!`}
 							message={errorMessage.value}
 						/>
 					</div>

@@ -27,7 +27,7 @@ export default component$(() => {
 		<div class="px-4 min-h-screen">
 			<div class="max-w-6xl m-auto flex items-baseline justify-between mb-8">
 				<p class="text-gray-700 text-2xl mt-8 mr-4">
-					Welcome back, {fullNameWithTitle(appState.customer)}
+					{$localize`Welcome back`}, {fullNameWithTitle(appState.customer)}
 				</p>
 			</div>
 			<div class="flex justify-center">
