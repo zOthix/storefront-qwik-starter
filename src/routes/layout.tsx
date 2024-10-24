@@ -75,6 +75,7 @@ export default component$(() => {
 		},
 		addressBook: [],
 		payWithoutCreditCard: false,
+		priceVariant: false,
 	});
 
 	useContextProvider(APP_STATE, state);

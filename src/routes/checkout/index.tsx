@@ -43,6 +43,11 @@ export default component$(() => {
 		navigate(`/checkout/confirmation/${activeOrder.code}`);
 	});
 
+	useVisibleTask$(async ({ track }) => {
+		track(() => state.step);
+		window.scrollTo(0, 0);
+	});
+
 	return (
 		<div>
 			{appState.activeOrder?.id && (
