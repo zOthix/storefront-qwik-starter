@@ -1,5 +1,6 @@
-import { $, component$, useContext, useStore, useVisibleTask$ } from '@builder.io/qwik';
+import { $, component$, useContext, useSignal, useStore, useVisibleTask$ } from '@builder.io/qwik';
 import { useNavigate } from '@builder.io/qwik-city';
+import { v4 as uuidv4 } from 'uuid';
 import CartContents from '~/components/cart-contents/CartContents';
 import CartTotals from '~/components/cart-totals/CartTotals';
 import ChevronRightIcon from '~/components/icons/ChevronRightIcon';
@@ -15,6 +16,7 @@ import {
 	setCustomerForOrderMutation,
 	setOrderShippingAddressMutation,
 } from '~/providers/shop/orders/order';
+import { disconnectSocket, initializeSocket } from '~/services/socket';
 import { isEnvVariableEnabled } from '~/utils';
 
 type Step = 'SHIPPING' | 'PAYMENT' | 'CONFIRMATION';
@@ -23,6 +25,8 @@ export default component$(() => {
 	const navigate = useNavigate();
 	const appState = useContext(APP_STATE);
 	const state = useStore<{ step: Step }>({ step: 'SHIPPING' });
+	const clientId = useSignal<string>(uuidv4());
+	const paymentError = useSignal<string | null>(null);
 	const steps: { name: string; state: Step }[] = [
 		{ name: $localize`Shipping Checkout`, state: 'SHIPPING' },
 		{ name: $localize`Payment`, state: 'PAYMENT' },
@@ -46,6 +50,23 @@ export default component$(() => {
 	useVisibleTask$(async ({ track }) => {
 		track(() => state.step);
 		window.scrollTo(0, 0);
+	});
+
+	const successPayment$ = $(async () => {
+		navigate(`/checkout/confirmation/${appState.activeOrder.code}`);
+	});
+
+	const errorPayment$ = $(async (message: string) => {
+		paymentError.value = message;
+		navigate(`/error?message=${paymentError.value}`);
+	});
+
+	useVisibleTask$(({ track, cleanup }) => {
+		track(() => state.step);
+		initializeSocket(clientId.value, successPayment$, errorPayment$);
+		cleanup(() => {
+			disconnectSocket();
+		});
 	});
 
 	return (
@@ -114,7 +135,7 @@ export default component$(() => {
 										}}
 									/>
 								) : state.step === 'PAYMENT' ? (
-									<Payment onForward$={confirmPayment} />
+									<Payment clientId={clientId.value} onForward$={confirmPayment} />
 								) : (
 									<div></div>
 								)}
