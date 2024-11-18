@@ -3,7 +3,6 @@ import {
 	LoginMutation,
 	LogoutMutation,
 	RegisterCustomerAccountMutation,
-	RegisterCustomerAccountMutationVariables,
 	RequestPasswordResetMutation,
 	ResetPasswordMutation,
 	Success,
@@ -11,6 +10,7 @@ import {
 	UpdateCustomerInput,
 	VerifyCustomerAccountMutation,
 } from '~/generated/graphql';
+import { RegisterCustomerAccountMutationVariables } from '~/generated/graphql-shop';
 import { shopSdk } from '~/graphql-wrapper';
 
 export const loginMutation = async (

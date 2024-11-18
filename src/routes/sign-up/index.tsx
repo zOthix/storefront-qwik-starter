@@ -10,6 +10,15 @@ export default component$(() => {
 	const lastName = useSignal('');
 	const password = useSignal('');
 	const confirmPassword = useSignal('');
+	const businessName = useSignal('');
+	const vat = useSignal('');
+	const address = useSignal('');
+	const businessPhone = useSignal('');
+	const contactPersonPhone = useSignal('');
+	const fax = useSignal('');
+	const accountingPhone = useSignal('');
+	const accountingEmail = useSignal('');
+	const managerAddress = useSignal('');
 	const successSignal = useSignal(false);
 	const error = useSignal('');
 
@@ -18,7 +27,16 @@ export default component$(() => {
 			email.value === '' ||
 			firstName.value === '' ||
 			lastName.value === '' ||
-			password.value === ''
+			password.value === '' ||
+			businessName.value === '' ||
+			vat.value === '' ||
+			address.value === '' ||
+			businessPhone.value === '' ||
+			contactPersonPhone.value === '' ||
+			fax.value === '' ||
+			accountingPhone.value === '' ||
+			accountingEmail.value === '' ||
+			managerAddress.value === ''
 		) {
 			error.value = 'All fields are required';
 		} else if (password.value !== confirmPassword.value) {
@@ -33,6 +51,15 @@ export default component$(() => {
 					firstName: firstName.value,
 					lastName: lastName.value,
 					password: password.value,
+					accountingEmail: accountingEmail.value,
+					accountingPhone: accountingPhone.value,
+					address: address.value,
+					businessName: businessName.value,
+					businessPhone: businessPhone.value,
+					contactPersonPhone: contactPersonPhone.value,
+					fax: fax.value,
+					managerAddress: managerAddress.value,
+					vat: vat.value,
 				},
 			});
 			if (registerCustomerAccount.__typename === 'Success') {
@@ -84,7 +111,7 @@ export default component$(() => {
 						</div>
 
 						<div>
-							<label class="block text-sm font-medium text-gray-700">{$localize`Firstname`}</label>
+							<label class="block text-sm font-medium text-gray-700">{$localize`First name`}</label>
 							<div class="mt-1">
 								<input
 									type="text"
@@ -97,7 +124,7 @@ export default component$(() => {
 						</div>
 
 						<div>
-							<label class="block text-sm font-medium text-gray-700">{$localize`Lastname`}</label>
+							<label class="block text-sm font-medium text-gray-700">{$localize`Last name`}</label>
 							<div class="mt-1">
 								<input
 									type="text"
@@ -130,6 +157,124 @@ export default component$(() => {
 									value={confirmPassword.value}
 									required
 									onInput$={(_, el) => (confirmPassword.value = el.value)}
+									class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
+								/>
+							</div>
+						</div>
+
+						<div>
+							<label class="block text-sm font-medium text-gray-700">{$localize`Business name`}</label>
+							<div class="mt-1">
+								<input
+									type="text"
+									value={businessName.value}
+									required
+									onInput$={(_, el) => (businessName.value = el.value)}
+									class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
+								/>
+							</div>
+						</div>
+
+						<div>
+							<label class="block text-sm font-medium text-gray-700">{$localize`VAT number / Company number`}</label>
+							<div class="mt-1">
+								<input
+									type="text"
+									value={vat.value}
+									required
+									onInput$={(_, el) => (vat.value = el.value)}
+									class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
+								/>
+							</div>
+						</div>
+
+						<div>
+							<label class="block text-sm font-medium text-gray-700">{$localize`Address`}</label>
+							<div class="mt-1">
+								<input
+									type="text"
+									value={address.value}
+									required
+									onInput$={(_, el) => (address.value = el.value)}
+									class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
+								/>
+							</div>
+						</div>
+
+						<div>
+							<label class="block text-sm font-medium text-gray-700">{$localize`Business phone`}</label>
+							<div class="mt-1">
+								<input
+									type="text"
+									value={businessPhone.value}
+									required
+									onInput$={(_, el) => (businessPhone.value = el.value)}
+									class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
+								/>
+							</div>
+						</div>
+
+						<div>
+							<label class="block text-sm font-medium text-gray-700">{$localize`Contact person phone`}</label>
+							<div class="mt-1">
+								<input
+									type="text"
+									value={contactPersonPhone.value}
+									required
+									onInput$={(_, el) => (contactPersonPhone.value = el.value)}
+									class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
+								/>
+							</div>
+						</div>
+
+						<div>
+							<label class="block text-sm font-medium text-gray-700">{$localize`Fax`}</label>
+							<div class="mt-1">
+								<input
+									type="text"
+									value={fax.value}
+									required
+									onInput$={(_, el) => (fax.value = el.value)}
+									class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
+								/>
+							</div>
+						</div>
+
+						<div>
+							<label class="block text-sm font-medium text-gray-700">{$localize`Accounting phone`}</label>
+							<div class="mt-1">
+								<input
+									type="text"
+									value={accountingPhone.value}
+									required
+									onInput$={(_, el) => (accountingPhone.value = el.value)}
+									class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
+								/>
+							</div>
+						</div>
+
+						<div>
+							<label class="block text-sm font-medium text-gray-700">{$localize`Accounting email`}</label>
+							<div class="mt-1">
+								<input
+									type="email"
+									autoComplete="email"
+									value={accountingEmail.value}
+									required
+									onInput$={(_, el) => (accountingEmail.value = el.value)}
+									class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
+								/>
+							</div>
+						</div>
+
+						<div>
+							<label class="block text-sm font-medium text-gray-700">{$localize`Manager address`}</label>
+							<div class="mt-1">
+								<input
+									type="text"
+									value={managerAddress.value}
+									required
+									onInput$={(_, el) => (managerAddress.value = el.value)}
 									class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
 								/>
 							</div>

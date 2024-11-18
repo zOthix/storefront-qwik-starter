@@ -917,12 +917,12 @@ input CreateOrUpdateProductInput {
 	facetValueIds: [ID]
 	featuredAssetId: ID
 	id: ID
-	name: String!
+	name: String
 	priceVariants: [PriceVariantInput]
 	productVariantName: String
 	productVariantPrice: Money
 	productVariantSKU: String
-	slug: String!
+	slug: String
 }
 
 input CreatePaymentMethodInput {

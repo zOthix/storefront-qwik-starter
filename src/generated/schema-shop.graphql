@@ -4345,12 +4345,21 @@ union RegisterCustomerAccountResult =
 	| Success
 
 input RegisterCustomerInput {
+	accountingEmail: String!
+	accountingPhone: String!
+	address: String!
+	businessName: String!
+	businessPhone: String!
+	contactPersonPhone: String!
 	emailAddress: String!
+	fax: String!
 	firstName: String
 	lastName: String
+	managerAddress: String!
 	password: String
 	phoneNumber: String
 	title: String
+	vat: String!
 }
 
 type RelationCustomFieldConfig implements CustomField {

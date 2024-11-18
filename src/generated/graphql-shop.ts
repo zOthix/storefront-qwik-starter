@@ -3035,12 +3035,21 @@ export type RegisterCustomerAccountResult =
 	| Success;
 
 export type RegisterCustomerInput = {
+	accountingEmail: Scalars['String']['input'];
+	accountingPhone: Scalars['String']['input'];
+	address: Scalars['String']['input'];
+	businessName: Scalars['String']['input'];
+	businessPhone: Scalars['String']['input'];
+	contactPersonPhone: Scalars['String']['input'];
 	emailAddress: Scalars['String']['input'];
+	fax: Scalars['String']['input'];
 	firstName?: InputMaybe<Scalars['String']['input']>;
 	lastName?: InputMaybe<Scalars['String']['input']>;
+	managerAddress: Scalars['String']['input'];
 	password?: InputMaybe<Scalars['String']['input']>;
 	phoneNumber?: InputMaybe<Scalars['String']['input']>;
 	title?: InputMaybe<Scalars['String']['input']>;
+	vat: Scalars['String']['input'];
 };
 
 export type RelationCustomFieldConfig = CustomField & {
