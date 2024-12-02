@@ -32,7 +32,7 @@ export const useAvailableCountriesLoader = routeLoader$(async () => {
 	return await getAvailableCountriesQuery();
 });
 
-export const onRequest: RequestHandler = ({ request, locale }) => {
+export const onRequest: RequestHandler = ({ locale }) => {
 	// locale(extractLang(request.headers.get('accept-language'), request.url));
 
 	/**
