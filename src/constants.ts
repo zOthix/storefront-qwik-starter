@@ -13,7 +13,7 @@ export const DEFAULT_METADATA_DESCRIPTION =
 	'A headless commerce storefront starter kit built with Vendure & Qwik';
 export const DEFAULT_METADATA_IMAGE = 'https://qwik-storefront.vendure.io/social-image.png';
 export const TERMINAL_NAME_TRANZILA = 'newtectest';
-export const DEFAULT_LOCALE = 'en';
+export const DEFAULT_LOCALE = 'he';
 // TODO: replace DEV_API and PROD_API with your dev and prod API urls.
 export const WEBHOOK_URL = 'https://efac-154-192-30-52.ngrok-free.app';
 export const DEV_API = 'http://localhost:3000';

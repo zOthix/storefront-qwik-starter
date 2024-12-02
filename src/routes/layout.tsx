@@ -10,13 +10,12 @@ import {
 import { RequestHandler, routeLoader$ } from '@builder.io/qwik-city';
 import { ImageTransformerProps, useImageProvider } from 'qwik-image';
 import Menu from '~/components/menu/Menu';
-import { APP_STATE, CUSTOMER_NOT_DEFINED_ID, IMAGE_RESOLUTIONS } from '~/constants';
+import { APP_STATE, CUSTOMER_NOT_DEFINED_ID, DEFAULT_LOCALE, IMAGE_RESOLUTIONS } from '~/constants';
 import { Order } from '~/generated/graphql';
 import { getAvailableCountriesQuery } from '~/providers/shop/checkout/checkout';
 import { getCollections } from '~/providers/shop/collections/collections';
 import { getActiveOrderQuery } from '~/providers/shop/orders/order';
 import { ActiveCustomer, AppState } from '~/types';
-import { extractLang } from '~/utils/i18n';
 import Cart from '../components/cart/Cart';
 import Footer from '../components/footer/footer';
 import Header from '../components/header/header';
@@ -34,7 +33,13 @@ export const useAvailableCountriesLoader = routeLoader$(async () => {
 });
 
 export const onRequest: RequestHandler = ({ request, locale }) => {
-	locale(extractLang(request.headers.get('accept-language'), request.url));
+	// locale(extractLang(request.headers.get('accept-language'), request.url));
+
+	/**
+	 * Keeping default locale to HE
+	 */
+
+	locale(DEFAULT_LOCALE);
 };
 
 export default component$(() => {

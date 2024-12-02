@@ -5,35 +5,49 @@ import { EligiblePaymentMethods } from '~/types';
 import CreditCardIcon from '../icons/CreditCardIcon';
 import TranzillaPayment from './TranzilaPayment';
 
-export default component$<{ onForward$: QRL<() => void>; clientId: string }>(
-	({ onForward$, clientId }) => {
-		const appState = useContext(APP_STATE);
-		const paymentMethods = useSignal<EligiblePaymentMethods[]>();
+export default component$<{
+	onForward$: QRL<() => void>;
+	clientId: string;
+	paymentError: string | null;
+	clearError: QRL<() => void>;
+}>(({ onForward$, clientId, paymentError, clearError }) => {
+	const appState = useContext(APP_STATE);
+	const paymentMethods = useSignal<EligiblePaymentMethods[]>();
 
-		useVisibleTask$(async () => {
-			paymentMethods.value = await getEligiblePaymentMethodsQuery();
-		});
+	useVisibleTask$(async () => {
+		paymentMethods.value = await getEligiblePaymentMethodsQuery();
+	});
 
-		return (
-			<div class="flex flex-col space-y-24 items-center">
-				{appState.payWithoutCreditCard ? (
-					<button
-						class="flex px-6 bg-primary-600 hover:bg-primary-700 items-center justify-center space-x-2 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
-						onClick$={$(async () => {
-							onForward$();
-						})}
-					>
-						<CreditCardIcon />
-						<span>{$localize`Complete Order`}</span>
-					</button>
-				) : (
-					<TranzillaPayment clientId={clientId} />
-				)}
-				{/**
-				 * Below lines have been commented in case we want to revert to the
-				 * older payment system that was being followed.
-				 */}
-				{/* {paymentMethods.value?.map((method) => (
+	return (
+		<div class="flex flex-col space-y-24 items-center">
+			{appState.payWithoutCreditCard ? (
+				<button
+					class="flex px-6 bg-primary-600 hover:bg-primary-700 items-center justify-center space-x-2 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
+					onClick$={$(async () => {
+						onForward$();
+					})}
+				>
+					<CreditCardIcon />
+					<span>{$localize`Complete Order`}</span>
+				</button>
+			) : (
+				paymentMethods.value?.map((method) => {
+					return (
+						method.code.includes('tranzila') && (
+							<TranzillaPayment
+								clearError={clearError}
+								clientId={clientId}
+								paymentError={paymentError}
+							/>
+						)
+					);
+				})
+			)}
+			{/**
+			 * Below lines have been commented in case we want to revert to the
+			 * older payment system that was being followed.
+			 */}
+			{/* {paymentMethods.value?.map((method) => (
 				<div key={method.code} class="flex flex-col items-center">
 					{method.code === 'standard-payment' && (
 						<>
@@ -56,7 +70,6 @@ export default component$<{ onForward$: QRL<() => void>; clientId: string }>(
 					{method.code.includes('braintree') && <BraintreePayment />}
 				</div>
 			))} */}
-			</div>
-		);
-	}
-);
+		</div>
+	);
+});

@@ -58,7 +58,10 @@ export default component$(() => {
 
 	const errorPayment$ = $(async (message: string) => {
 		paymentError.value = message;
-		navigate(`/error?message=${paymentError.value}`);
+	});
+
+	const clearError$ = $(() => {
+		paymentError.value = null;
 	});
 
 	useVisibleTask$(({ track, cleanup }) => {
@@ -135,7 +138,12 @@ export default component$(() => {
 										}}
 									/>
 								) : state.step === 'PAYMENT' ? (
-									<Payment clientId={clientId.value} onForward$={confirmPayment} />
+									<Payment
+										clientId={clientId.value}
+										onForward$={confirmPayment}
+										paymentError={paymentError.value}
+										clearError={clearError$}
+									/>
 								) : (
 									<div></div>
 								)}
