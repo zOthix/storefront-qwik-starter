@@ -1,7 +1,7 @@
-import { component$, useStore, useVisibleTask$ } from '@builder.io/qwik';
+import { component$, useSignal, useStore, useVisibleTask$ } from '@builder.io/qwik';
 import { useLocation } from '@builder.io/qwik-city';
 import { Image } from 'qwik-image';
-import { Order } from '~/generated/graphql';
+import { HistoryEntry, HistoryEntryType, Order } from '~/generated/graphql-shop';
 import { getOrderByCodeQuery } from '~/providers/shop/orders/order';
 import { formatDateTime, formatPrice } from '~/utils';
 
@@ -10,9 +10,13 @@ export default component$(() => {
 		params: { code },
 	} = useLocation();
 	const store = useStore<{ order?: Order }>({});
+	const history = useSignal<HistoryEntry[]>([]);
 
 	useVisibleTask$(async () => {
 		store.order = await getOrderByCodeQuery(code);
+		history.value = store.order?.history.items.filter(
+			(i: HistoryEntry) => i.type === HistoryEntryType.OrderNote
+		);
 	});
 
 	return store.order ? (
@@ -98,6 +102,17 @@ export default component$(() => {
 					</dd>
 				</div>
 			</dl>
+			<div class="w-full bg-gray-100 p-8">
+				<p class="mb-4 text-gray-600">{$localize`Notes`}</p>
+				{history.value.length <= 0 && <p class="text-base">{$localize`No notes`}</p>}
+				<ol class="list-disc">
+					{history.value.map((j) => (
+						<li class="text-base" key={j.id}>
+							{j.data.note}
+						</li>
+					))}
+				</ol>
+			</div>
 			<div class="w-full bg-gray-100 p-8">
 				<p class="mb-4 text-gray-600">{$localize`Shipping Address`}</p>
 				<p class="text-base font-medium">{store.order?.shippingAddress?.fullName}</p>

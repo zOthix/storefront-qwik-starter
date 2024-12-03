@@ -11,7 +11,7 @@ import {
 	SetCustomerForOrderMutation,
 	SetOrderShippingAddressMutation,
 	SetOrderShippingMethodMutation,
-} from '~/generated/graphql';
+} from '~/generated/graphql-shop';
 import { shopSdk } from '~/graphql-wrapper';
 
 export const getActiveOrderQuery = async () => {
@@ -125,6 +125,12 @@ gql`
 		}
 		shippingWithTax
 		totalWithTax
+		history {
+			items {
+				type
+				data
+			}
+		}
 		customer {
 			id
 			firstName

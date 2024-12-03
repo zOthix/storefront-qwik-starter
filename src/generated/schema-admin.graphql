@@ -862,6 +862,7 @@ input CreateCustomerInput {
 	VAT: String!
 	accountingEmail: String!
 	accountingPhone: String!
+	address: String!
 	businessName: String!
 	businessPhone: String!
 	contactPersonPhone: String!
@@ -870,6 +871,7 @@ input CreateCustomerInput {
 	fax: String!
 	firstName: String!
 	lastName: String!
+	managerAddress: String!
 	phoneNumber: String
 	title: String
 }
@@ -965,6 +967,7 @@ input CreateProductVariantInput {
 	optionIds: [ID!]
 	outOfStockThreshold: Int
 	price: Money
+	priceVariants: [PriceVariantInput]
 	productId: ID!
 	sku: String!
 	stockLevels: [StockLevelInput!]
@@ -1926,10 +1929,11 @@ type Customer implements Node {
 	VAT: String!
 	accountingEmail: String!
 	accountingPhone: String!
+	address: String!
 	addresses: [Address!]
 	businessName: String!
 	businessPhone: String!
-	category: Collection
+	category: [Collection]
 	contactPersonPhone: String!
 	createdAt: DateTime!
 	customFields: JSON
@@ -1940,6 +1944,7 @@ type Customer implements Node {
 	history(options: HistoryEntryListOptions): HistoryEntryList!
 	id: ID!
 	lastName: String!
+	managerAddress: String!
 	orders(options: OrderListOptions): OrderList!
 	payWithoutCreditCard: Boolean
 	phoneNumber: String
@@ -1955,6 +1960,7 @@ input CustomerFilterParameter {
 	_or: [CustomerFilterParameter!]
 	accountingEmail: StringOperators
 	accountingPhone: StringOperators
+	address: StringOperators
 	businessName: StringOperators
 	businessPhone: StringOperators
 	contactPersonPhone: StringOperators
@@ -1964,6 +1970,7 @@ input CustomerFilterParameter {
 	firstName: StringOperators
 	id: IDOperators
 	lastName: StringOperators
+	managerAddress: StringOperators
 	payWithoutCreditCard: BooleanOperators
 	phoneNumber: StringOperators
 	postalCode: StringOperators
@@ -2064,6 +2071,7 @@ input CustomerSortParameter {
 	VAT: SortOrder
 	accountingEmail: SortOrder
 	accountingPhone: SortOrder
+	address: SortOrder
 	businessName: SortOrder
 	businessPhone: SortOrder
 	contactPersonPhone: SortOrder
@@ -2073,6 +2081,7 @@ input CustomerSortParameter {
 	firstName: SortOrder
 	id: SortOrder
 	lastName: SortOrder
+	managerAddress: SortOrder
 	phoneNumber: SortOrder
 	title: SortOrder
 	updatedAt: SortOrder
@@ -7424,9 +7433,10 @@ input UpdateCustomerInput {
 	VAT: String
 	accountingEmail: String
 	accountingPhone: String
+	address: String
 	businessName: String
 	businessPhone: String
-	categoryId: ID
+	categoryId: [ID]
 	contactPersonPhone: String
 	customFields: JSON
 	emailAddress: String
@@ -7434,6 +7444,7 @@ input UpdateCustomerInput {
 	firstName: String
 	id: ID!
 	lastName: String
+	managerAddress: String
 	payWithoutCreditCard: Boolean
 	phoneNumber: String
 	priceVariantId: ID

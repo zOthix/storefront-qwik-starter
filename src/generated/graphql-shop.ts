@@ -408,6 +408,7 @@ export type CreateCustomerInput = {
 	VAT: Scalars['String']['input'];
 	accountingEmail: Scalars['String']['input'];
 	accountingPhone: Scalars['String']['input'];
+	address: Scalars['String']['input'];
 	businessName: Scalars['String']['input'];
 	businessPhone: Scalars['String']['input'];
 	contactPersonPhone: Scalars['String']['input'];
@@ -416,6 +417,7 @@ export type CreateCustomerInput = {
 	fax: Scalars['String']['input'];
 	firstName: Scalars['String']['input'];
 	lastName: Scalars['String']['input'];
+	managerAddress: Scalars['String']['input'];
 	phoneNumber?: InputMaybe<Scalars['String']['input']>;
 	title?: InputMaybe<Scalars['String']['input']>;
 };
@@ -788,10 +790,11 @@ export type Customer = Node & {
 	VAT: Scalars['String']['output'];
 	accountingEmail: Scalars['String']['output'];
 	accountingPhone: Scalars['String']['output'];
+	address: Scalars['String']['output'];
 	addresses?: Maybe<Array<Address>>;
 	businessName: Scalars['String']['output'];
 	businessPhone: Scalars['String']['output'];
-	category?: Maybe<Collection>;
+	category?: Maybe<Array<Maybe<Collection>>>;
 	contactPersonPhone: Scalars['String']['output'];
 	createdAt: Scalars['DateTime']['output'];
 	customFields?: Maybe<Scalars['JSON']['output']>;
@@ -800,6 +803,7 @@ export type Customer = Node & {
 	firstName: Scalars['String']['output'];
 	id: Scalars['ID']['output'];
 	lastName: Scalars['String']['output'];
+	managerAddress: Scalars['String']['output'];
 	orders: OrderList;
 	payWithoutCreditCard?: Maybe<Scalars['Boolean']['output']>;
 	phoneNumber?: Maybe<Scalars['String']['output']>;
@@ -819,6 +823,7 @@ export type CustomerFilterParameter = {
 	_or?: InputMaybe<Array<CustomerFilterParameter>>;
 	accountingEmail?: InputMaybe<StringOperators>;
 	accountingPhone?: InputMaybe<StringOperators>;
+	address?: InputMaybe<StringOperators>;
 	businessName?: InputMaybe<StringOperators>;
 	businessPhone?: InputMaybe<StringOperators>;
 	contactPersonPhone?: InputMaybe<StringOperators>;
@@ -828,6 +833,7 @@ export type CustomerFilterParameter = {
 	firstName?: InputMaybe<StringOperators>;
 	id?: InputMaybe<IdOperators>;
 	lastName?: InputMaybe<StringOperators>;
+	managerAddress?: InputMaybe<StringOperators>;
 	payWithoutCreditCard?: InputMaybe<BooleanOperators>;
 	phoneNumber?: InputMaybe<StringOperators>;
 	title?: InputMaybe<StringOperators>;
@@ -871,6 +877,7 @@ export type CustomerSortParameter = {
 	VAT?: InputMaybe<SortOrder>;
 	accountingEmail?: InputMaybe<SortOrder>;
 	accountingPhone?: InputMaybe<SortOrder>;
+	address?: InputMaybe<SortOrder>;
 	businessName?: InputMaybe<SortOrder>;
 	businessPhone?: InputMaybe<SortOrder>;
 	contactPersonPhone?: InputMaybe<SortOrder>;
@@ -880,6 +887,7 @@ export type CustomerSortParameter = {
 	firstName?: InputMaybe<SortOrder>;
 	id?: InputMaybe<SortOrder>;
 	lastName?: InputMaybe<SortOrder>;
+	managerAddress?: InputMaybe<SortOrder>;
 	phoneNumber?: InputMaybe<SortOrder>;
 	title?: InputMaybe<SortOrder>;
 	updatedAt?: InputMaybe<SortOrder>;
@@ -3651,6 +3659,10 @@ export type AddPaymentToOrderMutation = {
 					taxRate: number;
 					taxTotal: any;
 				}>;
+				history: {
+					__typename?: 'HistoryEntryList';
+					items: Array<{ __typename?: 'HistoryEntry'; type: HistoryEntryType; data: any }>;
+				};
 				customer?: {
 					__typename?: 'Customer';
 					id: string;
@@ -3723,6 +3735,10 @@ export type TransitionOrderToStateMutation = {
 					taxRate: number;
 					taxTotal: any;
 				}>;
+				history: {
+					__typename?: 'HistoryEntryList';
+					items: Array<{ __typename?: 'HistoryEntry'; type: HistoryEntryType; data: any }>;
+				};
 				customer?: {
 					__typename?: 'Customer';
 					id: string;
@@ -4255,6 +4271,10 @@ export type SetOrderShippingAddressMutation = {
 					taxRate: number;
 					taxTotal: any;
 				}>;
+				history: {
+					__typename?: 'HistoryEntryList';
+					items: Array<{ __typename?: 'HistoryEntry'; type: HistoryEntryType; data: any }>;
+				};
 				customer?: {
 					__typename?: 'Customer';
 					id: string;
@@ -4327,6 +4347,10 @@ export type SetCustomerForOrderMutation = {
 					taxRate: number;
 					taxTotal: any;
 				}>;
+				history: {
+					__typename?: 'HistoryEntryList';
+					items: Array<{ __typename?: 'HistoryEntry'; type: HistoryEntryType; data: any }>;
+				};
 				customer?: {
 					__typename?: 'Customer';
 					id: string;
@@ -4398,6 +4422,10 @@ export type AddItemToOrderMutation = {
 					taxRate: number;
 					taxTotal: any;
 				}>;
+				history: {
+					__typename?: 'HistoryEntryList';
+					items: Array<{ __typename?: 'HistoryEntry'; type: HistoryEntryType; data: any }>;
+				};
 				customer?: {
 					__typename?: 'Customer';
 					id: string;
@@ -4470,6 +4498,10 @@ export type SetOrderShippingMethodMutation = {
 					taxRate: number;
 					taxTotal: any;
 				}>;
+				history: {
+					__typename?: 'HistoryEntryList';
+					items: Array<{ __typename?: 'HistoryEntry'; type: HistoryEntryType; data: any }>;
+				};
 				customer?: {
 					__typename?: 'Customer';
 					id: string;
@@ -4532,6 +4564,10 @@ export type OrderDetailFragment = {
 		taxRate: number;
 		taxTotal: any;
 	}>;
+	history: {
+		__typename?: 'HistoryEntryList';
+		items: Array<{ __typename?: 'HistoryEntry'; type: HistoryEntryType; data: any }>;
+	};
 	customer?: {
 		__typename?: 'Customer';
 		id: string;
@@ -4602,6 +4638,10 @@ export type AdjustOrderLineMutation = {
 					taxRate: number;
 					taxTotal: any;
 				}>;
+				history: {
+					__typename?: 'HistoryEntryList';
+					items: Array<{ __typename?: 'HistoryEntry'; type: HistoryEntryType; data: any }>;
+				};
 				customer?: {
 					__typename?: 'Customer';
 					id: string;
@@ -4672,6 +4712,10 @@ export type RemoveOrderLineMutation = {
 					taxRate: number;
 					taxTotal: any;
 				}>;
+				history: {
+					__typename?: 'HistoryEntryList';
+					items: Array<{ __typename?: 'HistoryEntry'; type: HistoryEntryType; data: any }>;
+				};
 				customer?: {
 					__typename?: 'Customer';
 					id: string;
@@ -4738,6 +4782,10 @@ export type ActiveOrderQuery = {
 			taxRate: number;
 			taxTotal: any;
 		}>;
+		history: {
+			__typename?: 'HistoryEntryList';
+			items: Array<{ __typename?: 'HistoryEntry'; type: HistoryEntryType; data: any }>;
+		};
 		customer?: {
 			__typename?: 'Customer';
 			id: string;
@@ -4805,6 +4853,10 @@ export type OrderByCodeQuery = {
 			taxRate: number;
 			taxTotal: any;
 		}>;
+		history: {
+			__typename?: 'HistoryEntryList';
+			items: Array<{ __typename?: 'HistoryEntry'; type: HistoryEntryType; data: any }>;
+		};
 		customer?: {
 			__typename?: 'Customer';
 			id: string;
@@ -5024,6 +5076,12 @@ export const OrderDetailFragmentDoc = gql`
 		}
 		shippingWithTax
 		totalWithTax
+		history {
+			items {
+				type
+				data
+			}
+		}
 		customer {
 			id
 			firstName
