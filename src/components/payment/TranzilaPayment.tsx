@@ -1,4 +1,4 @@
-import { component$, QRL, useContext, useSignal } from '@builder.io/qwik';
+import { $, component$, QRL, useContext, useSignal, useVisibleTask$ } from '@builder.io/qwik';
 import { APP_STATE, DEFAULT_LOCALE, TERMINAL_NAME_TRANZILA, WEBHOOK_URL } from '~/constants';
 import { ErrorMessage } from '../error-message/ErrorMessage';
 import CreditCardIcon from '../icons/CreditCardIcon';
@@ -9,7 +9,19 @@ export default component$<{
 	clearError: QRL<() => void>;
 }>(({ clientId, paymentError, clearError }) => {
 	const appState = useContext(APP_STATE);
-	const showIframe = useSignal(false);
+	const submitButtonRef = useSignal<HTMLButtonElement>();
+
+	useVisibleTask$(() => {
+		submitButtonRef.value?.click();
+	});
+
+	const clearPaymentError$ = $(async () => {
+		const fn = await clearError.resolve();
+		fn();
+	});
+
+	const isIframeVisible = !paymentError;
+	const isSubmitButtonVisible = paymentError ? true : false;
 
 	return (
 		<div class="flex flex-col items-center">
@@ -27,31 +39,24 @@ export default component$<{
 				<input type="hidden" name="nologo" value="1" />
 				{DEFAULT_LOCALE === 'he' && <input type="hidden" name="lang" value="il" />}
 				<input type="hidden" name="notify_url_address" value={`${WEBHOOK_URL}/payments/tranzila`} />
-				<input type="hidden" name="currency" value="2" />
+				<input type="hidden" name="currency" value={DEFAULT_LOCALE === 'he' ? '1' : '2'} />
 				<input type="hidden" name="trButtonColor" value="2563eb" />
 				<input type="hidden" name="trBgColor" value="f9fafb" />
 				<input type="hidden" name="orderId" value={appState.activeOrder.id} />
 				<input type="hidden" name="clientId" value={clientId} />
-
 				<button
-					class="flex px-6 bg-primary-600 hover:bg-primary-700 items-center justify-center space-x-2 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
+					ref={submitButtonRef}
+					class={`${!isSubmitButtonVisible && 'hidden'} flex px-6 bg-primary-600 hover:bg-primary-700 items-center justify-center space-x-2 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500`}
 					type="submit"
 					name="submit"
 					value="pay"
-					onClick$={async () => {
-						showIframe.value = true;
-						const fn = await clearError.resolve();
-						fn();
-					}}
+					onClick$={clearPaymentError$}
 				>
 					<CreditCardIcon />
 					<span>{$localize`Pay with Tranzilla`}</span>
 				</button>
 			</form>
-			<div
-				class="mt-12"
-				style={`width: 150%; height: 600px; display: ${showIframe.value && !paymentError ? 'block' : 'none'}`}
-			>
+			<div class={`${!isIframeVisible && 'hidden'}`} style="width: 150%; height: 600px;">
 				<iframe
 					id="tranzila-frame"
 					// @ts-ignore
@@ -62,7 +67,7 @@ export default component$<{
 				></iframe>
 			</div>
 			{paymentError && (
-				<div class="mt-12">
+				<div class="mt-6">
 					<ErrorMessage heading="Transaction failed" message={paymentError ?? ''} />
 				</div>
 			)}
