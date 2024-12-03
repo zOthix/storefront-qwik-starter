@@ -8,7 +8,7 @@ import {
 	useVisibleTask$,
 } from '@builder.io/qwik';
 import { APP_STATE, CUSTOMER_NOT_DEFINED_ID } from '~/constants';
-import { Address, CreateAddressInput, CreateCustomerInput } from '~/generated/graphql';
+import { Address, CreateAddressInput, CreateCustomerInput } from '~/generated/graphql-shop';
 import { getActiveCustomerAddressesQuery } from '~/providers/shop/customer/customer';
 import { getActiveOrderQuery } from '~/providers/shop/orders/order';
 import { isActiveCustomerValid, isShippingAddressValid } from '~/utils';
@@ -188,6 +188,8 @@ export default component$<IProps>(({ onForward$ }) => {
 							contactPersonPhone: '',
 							fax: '',
 							VAT: '',
+							address: '',
+							managerAddress: '',
 						};
 						const createShippingInput: CreateAddressInput = {
 							fullName,
