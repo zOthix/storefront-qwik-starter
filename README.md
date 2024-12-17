@@ -125,3 +125,13 @@ The application will now be available at port 3000 on the local machine. The def
 - [Qwik Github](https://github.com/BuilderIO/qwik)
 - [@QwikDev](https://twitter.com/QwikDev)
 - [Qwik Discord](https://qwik.builder.io/chat)
+
+## Express Server
+
+This app has a minimal [Express server](https://expressjs.com/) implementation. After running a full build, you can preview the build using the command:
+
+```
+yarn serve
+```
+
+Then visit [http://localhost:8080/](http://localhost:8080/)
