@@ -1,6 +1,6 @@
 import { QRL } from '@builder.io/qwik';
 import { io, Socket } from 'socket.io-client';
-import { PROD_API } from '~/constants';
+import { API_URL } from '~/constants';
 
 let socket: Socket | null = null;
 
@@ -10,7 +10,7 @@ export function initializeSocket(
 	onError$: QRL<(message: string) => void>
 ): void {
 	if (!socket) {
-		socket = io(PROD_API);
+		socket = io(API_URL);
 
 		socket.on('connect', () => {
 			socket?.emit('joinRoom', clientId);

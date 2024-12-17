@@ -1,4 +1,5 @@
 import { createContextId } from '@builder.io/qwik';
+import { ENV_VARIABLES } from '~/env';
 import { AppState } from './types';
 
 export const APP_STATE = createContextId<AppState>('app_state');
@@ -12,10 +13,7 @@ export const DEFAULT_METADATA_TITLE = 'Vendure Qwik Storefront';
 export const DEFAULT_METADATA_DESCRIPTION =
 	'A headless commerce storefront starter kit built with Vendure & Qwik';
 export const DEFAULT_METADATA_IMAGE = 'https://qwik-storefront.vendure.io/social-image.png';
-export const TERMINAL_NAME_TRANZILA = 'newtectest';
-export const DEFAULT_LOCALE = 'he';
-// TODO: replace DEV_API and PROD_API with your dev and prod API urls.
-export const WEBHOOK_URL = 'https://efac-154-192-30-52.ngrok-free.app';
-export const DEV_API = 'http://localhost:3000';
-export const PROD_API = 'http://64.176.164.234:4090';
-export const LOCAL_API = 'http://localhost:3000';
+export const TERMINAL_NAME_TRANZILA = ENV_VARIABLES['VITE_TERMINAL_NAME_TRANZILA'];
+export const DEFAULT_LOCALE = ENV_VARIABLES['VITE_DEFAULT_LOCALE'] ?? 'he';
+export const WEBHOOK_URL = ENV_VARIABLES['VITE_WEBHOOK_URL'];
+export const API_URL = ENV_VARIABLES['VITE_API_URL'];

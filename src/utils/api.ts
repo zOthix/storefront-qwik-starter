@@ -2,7 +2,7 @@ import { server$ } from '@builder.io/qwik-city';
 import { isBrowser } from '@builder.io/qwik/build';
 import type { DocumentNode } from 'graphql/index';
 import { print } from 'graphql/index';
-import { AUTH_TOKEN, DEV_API, HEADER_AUTH_TOKEN_KEY, PROD_API } from '~/constants';
+import { API_URL, AUTH_TOKEN, HEADER_AUTH_TOKEN_KEY } from '~/constants';
 import type { Options as RequesterOptions } from '~/graphql-wrapper';
 import { getCookie, setCookie } from '.';
 
@@ -10,7 +10,7 @@ type ResponseProps<T> = { token: string; data: T };
 type ExecuteProps<V> = { query: string; variables?: V };
 type Options = { method: string; headers: Record<string, string>; body: string };
 
-const baseUrl = import.meta.env.DEV ? DEV_API : PROD_API;
+const baseUrl = API_URL;
 const shopApi = `${baseUrl}/shop-api`;
 
 export const requester = async <R, V>(

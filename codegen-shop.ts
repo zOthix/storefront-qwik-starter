@@ -1,11 +1,7 @@
 import type { CodegenConfig } from '@graphql-codegen/cli';
-import { DEV_API, LOCAL_API, PROD_API } from './src/constants';
+import { API_URL } from './src/constants';
 
-let GRAPHQL_API = import.meta.env.IS_DEV
-	? DEV_API
-	: import.meta.env.IS_LOCAL
-	? LOCAL_API
-	: PROD_API;
+let GRAPHQL_API = API_URL;
 
 GRAPHQL_API = `${GRAPHQL_API}/shop-api`;
 
