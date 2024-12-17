@@ -25,48 +25,52 @@ An e-commerce storefront for [Vendure](https://www.vendure.io) built with [Qwik]
 - SPA-mode navigation ✅
 - Set up GraphQL code generation ✅
 
-**Contributions welcome!**
+## Prerequisites
 
-## Frequently Asked Questions
+- Node.js version **20.x.x** or higher
 
-- [Can I deploy the application in different environment (e.g Netlify, Fastify, etc. etc)?](#can-i-host-the-application-in-my-environment-or-is-limited-to-cloudflare)
-- [Why can I not reach my remote server?](#why-can-i-not-reach-my-remote-server)
-- [Why does signup or login not work?](#why-does-signup-or-login-not-work)
-- [What payment systems are supported?](#what-payment-systems-are-supported)
+You can check your current Node.js version by running:
 
-### Can I host the application in my environment or is limited to Cloudflare?
+```bash
+node -v
+```
 
-We are using Cloudflare, but there isn't a specific Cloudflare feature for this application.
-If you want to deploy your application in a different environment, you can follow the [Qwik guide](https://qwik.builder.io/docs/deployments/#add-an-adapter) and customize the code base according to your needs.
+- Make sure `yarn` is installed.
 
-### Why can I not reach my remote server?
+You can check current version of yarn by running:
 
-When running the storefront make sure when in dev mode (ie: using vite) to attach it to the network by using `--host 0.0.0.0`
-For example: `"start": "vite --open --mode ssr --port 80 --host 0.0.0.0",`
+```
+yarn -v
 
-Also make sure your firewall allows traffic on your selected port.
-For Ubuntu: `sudo ufw status` to see what is blocked or allowed.
+```
 
-### Why does signup or login not work?
+if yarn is not installed, you can install it via the command:
 
-https needs to be enabled, please confirm you are using ssl. You can use apache or nginx to forward ssl traffic to your selected port.
+```
+npm install -g yarn
+```
 
-Make sure that your vendure instance is accessible and not being blocked by a firewall for example.
+## Dependencies
 
-If you see a message on signup "Account registration is not supported by the demo Vendure instance. In order to use it, please connect to your own local / production instance." This is simply a static message, it is not doing any actual check. Simply remove this message. To connect to your vendure instance simply set the .env variables to point to your vendure setup.
+The first step is to install all packages using the command:
 
-### What payment systems are supported?
+```
+yarn install
+```
 
-Currently Braintree and Stripe are supported on the frontend, but not currently Mollie.
-For Braintree make sure to name your payment method in your vendure admin "braintree payment" and specifically code "braintree-payment".
+## Environment variables
+
+Create a new file `.env` and copy all contents from `.env.example` copy to the `.env` file you just created. Make sure the required variables have values whereas the rest can be left blank.
 
 ## Development
 
 Development mode uses [Vite's development server](https://vitejs.dev/). During development, the `dev` command will server-side render (SSR) the output.
 
 ```shell
-pnpm start
+yarn run dev
 ```
+
+This will run the application on port 8080 by default.
 
 > Note: during dev mode, Vite may request a significant number of `.js` files. This does not represent a Qwik production build.
 
@@ -75,7 +79,7 @@ pnpm start
 The preview command will create a production build of the client modules, a production build of `src/entry.preview.tsx`, and run a local server. The preview server is only for convenience to locally preview a production build, and it should not be used as a production server.
 
 ```shell
-pnpm preview # or `yarn preview`
+yarn preview
 ```
 
 ## Production
@@ -83,56 +87,34 @@ pnpm preview # or `yarn preview`
 The production build will generate client and server modules by running both client and server build commands. Additionally, the build command will use Typescript to run a type check on the source code.
 
 ```shell
-pnpm build # or `yarn build`
+yarn build
 ```
 
-## i18n
+## Deployment
 
-### Marking string for translation
+There are multiple ways to deploy this application as referenced in [Qwik Deployment Guides](https://qwik.dev/docs/deployments/). But we will be following the [node express guide](https://qwik.dev/docs/deployments/node/) to deploy this application.
 
-Any string can be marked for translation by using the `$localize` template function like so:
+- Before the production build, run the command:
 
-```typescript
-export default component$((props: { name: string }) => {
-	return <span>{$localize`Hello ${props.name}!`}</span>;
-});
+```
+yarn run qwik add express
 ```
 
-### Extracting string for translation
+This will add a production ready express server to serve our application.
 
-The first step in translation is to build the application. Once the artifacts are build the strings can be extracted for translation.
+- The next step is to build the application using:
 
-```bash
-pnpm build.client
-pnpm i18n-extract
+```
+yarn run build
 ```
 
-The result of the commands is `src/locale/message.en.json`.
+- The final step is to serve the application using:
 
-### Translating strings
-
-Take the resulting string and send them for translation. Produce a file for each language. For example:
-
-```bash
-src/locale/message.en.json    # Original strings
-src/locale/message.es.json
+```
+yarn run serve
 ```
 
-### Sorting translations
-
-Qwik hashes bundles based on the content of the files. This means that if a file changes, the order of i18n translations will be lost and can be difficult to manage manually.
-
-```bash
-pnpm i18n-sort
-```
-
-The `i18n-sort` script will sort by first appearance in the src folder to keep a consistent order.
-
-### Testing translations
-
-The resulting language should match your browser language. You can also override the language by adding ?lang=es to the URL.
-
----
+The application will now be available at port 3000 on the local machine. The default port can be overridden by adding `PORT` to the `.env` file.
 
 ## Related
 
