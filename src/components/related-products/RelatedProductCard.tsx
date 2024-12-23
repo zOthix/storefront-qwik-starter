@@ -53,7 +53,7 @@ export default component$(
 									quantity.value >= 1 && quantity.value <= 7,
 								'bg-gray-600 cursor-not-allowed': quantity.value > 7,
 							}}
-							onClick$={async (event) => {
+							onClick$={async () => {
 								if (quantity.value <= 7) {
 									const addItemToOrder = await addItemToOrderMutation(id, 1);
 									if (addItemToOrder.__typename === 'Order') {
