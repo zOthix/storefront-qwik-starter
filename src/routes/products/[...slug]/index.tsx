@@ -22,7 +22,7 @@ import { cleanUpParams, generateDocumentHead, isEnvVariableEnabled } from '~/uti
 export const useProductLoader = routeLoader$(async ({ params }) => {
 	const { slug } = cleanUpParams(params);
 	const product = await getProductBySlug(slug);
-	if (product.assets.length === 1) {
+	if (product?.assets.length === 1) {
 		product.assets.push({
 			id: 'placeholder_2',
 			name: 'placeholder',
