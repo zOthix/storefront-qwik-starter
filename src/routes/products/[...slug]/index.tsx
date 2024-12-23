@@ -6,12 +6,16 @@ import Breadcrumbs from '~/components/breadcrumbs/Breadcrumbs';
 import CheckIcon from '~/components/icons/CheckIcon';
 import HeartIcon from '~/components/icons/HeartIcon';
 import Price from '~/components/products/Price';
+import RelatedProducts from '~/components/related-products/RelatedProducts';
 import StockLevelLabel from '~/components/stock-level-label/StockLevelLabel';
 import TopReviews from '~/components/top-reviews/TopReviews';
 import { APP_STATE } from '~/constants';
-import { Order, OrderLine, Product } from '~/generated/graphql';
+import { Order, OrderLine, Product, ProductVariant } from '~/generated/graphql';
 import { addItemToOrderMutation } from '~/providers/shop/orders/order';
-import { getProductBySlug } from '~/providers/shop/products/products';
+import {
+	getProductBySlug,
+	searchQueryWithCollectionSlug,
+} from '~/providers/shop/products/products';
 import { Variant } from '~/types';
 import { cleanUpParams, generateDocumentHead, isEnvVariableEnabled } from '~/utils';
 
@@ -30,6 +34,7 @@ export const useProductLoader = routeLoader$(async ({ params }) => {
 
 export default component$(() => {
 	const appState = useContext(APP_STATE);
+	const relatedProductVariants = useSignal<ProductVariant[]>();
 
 	const calculateQuantities = $((product: Product) => {
 		const result: Record<string, number> = {};
@@ -55,6 +60,35 @@ export default component$(() => {
 	useTask$(async (tracker) => {
 		tracker.track(() => appState.activeOrder);
 		quantitySignal.value = await calculateQuantities(productSignal.value);
+	});
+
+	useTask$(async () => {
+		/**
+		 * Generate some random products from the same
+		 * collection to show that related products on
+		 * the product detail page. This will enable
+		 * users to buy things directly from this component
+		 * as well.
+		 */
+		const variants: ProductVariant[] = [];
+		const collections = productSignal.value.collections.map((i) => i.slug);
+		const slug = collections[Math.floor(Math.random() * collections.length)];
+		const relatedProducts = await searchQueryWithCollectionSlug(slug);
+		const slugs = relatedProducts.items
+			.map((i) => i.slug)
+			.filter((slug) => slug !== productSignal.value.slug);
+		if (slugs.length > 0) {
+			const shuffledSlugs = slugs.sort(() => Math.random() - 0.5);
+			const randomSlugs = shuffledSlugs.slice(0, 4);
+			for (const slug of randomSlugs) {
+				const product = await getProductBySlug(slug);
+				const selected = product.variants[Math.floor(Math.random() * product.variants.length)];
+				product.slug = slug;
+				selected.product = product;
+				variants.push(selected);
+			}
+			relatedProductVariants.value = variants;
+		}
 	});
 
 	return (
@@ -196,7 +230,6 @@ export default component$(() => {
 									<Alert message={addItemToOrderErrorSignal.value} />
 								</div>
 							)}
-
 							<section class="mt-12 pt-12 border-t text-xs">
 								<h3 class="text-gray-600 font-bold mb-2">{$localize`Shipping & Returns`}</h3>
 								<div class="text-gray-500 space-y-1">
@@ -212,6 +245,9 @@ export default component$(() => {
 										{$localize`for further information`}.
 									</p>
 								</div>
+							</section>
+							<section class="mt-12">
+								<RelatedProducts relatedProductVariants={relatedProductVariants.value} />
 							</section>
 						</div>
 					</div>

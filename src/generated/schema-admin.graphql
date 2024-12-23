@@ -1949,6 +1949,7 @@ type Customer implements Node {
 	payWithoutCreditCard: Boolean
 	phoneNumber: String
 	priceVariant: ProductVariantPriceVariant
+	pushToken: String
 	title: String
 	updatedAt: DateTime!
 	user: User
@@ -1974,6 +1975,7 @@ input CustomerFilterParameter {
 	payWithoutCreditCard: BooleanOperators
 	phoneNumber: StringOperators
 	postalCode: StringOperators
+	pushToken: StringOperators
 	title: StringOperators
 	updatedAt: DateOperators
 }
@@ -2083,6 +2085,7 @@ input CustomerSortParameter {
 	lastName: SortOrder
 	managerAddress: SortOrder
 	phoneNumber: SortOrder
+	pushToken: SortOrder
 	title: SortOrder
 	updatedAt: SortOrder
 }
@@ -4363,6 +4366,11 @@ type Mutation {
 	"""
 	removeStockLocationsFromChannel(input: RemoveStockLocationsFromChannelInput!): [StockLocation!]!
 	runPendingSearchIndexUpdates: Success!
+
+	"""
+	Send notification
+	"""
+	sendNotification(input: SendNotificationInput!): Success!
 	setCustomerForDraftOrder(
 		customerId: ID
 		input: CreateCustomerInput
@@ -4586,6 +4594,12 @@ Returned if an attempting to refund an Order but neither items nor shipping refu
 type NothingToRefundError implements ErrorResult {
 	errorCode: ErrorCode!
 	message: String!
+}
+
+input NotificationBody {
+	body: String
+	subtitle: String
+	title: String
 }
 
 """
@@ -6738,6 +6752,15 @@ input SellerSortParameter {
 	id: SortOrder
 	name: SortOrder
 	updatedAt: SortOrder
+}
+
+input SendNotificationInput {
+	categories: [ID!]
+	customerIds: [ID!]
+	days: Int
+	noOrderCustomers: Boolean
+	notificationBody: NotificationBody!
+	priceVariant: ID
 }
 
 type ServerConfig {

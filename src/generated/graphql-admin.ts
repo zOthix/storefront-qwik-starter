@@ -1451,6 +1451,7 @@ export type Customer = Node & {
 	payWithoutCreditCard?: Maybe<Scalars['Boolean']['output']>;
 	phoneNumber?: Maybe<Scalars['String']['output']>;
 	priceVariant?: Maybe<ProductVariantPriceVariant>;
+	pushToken?: Maybe<Scalars['String']['output']>;
 	title?: Maybe<Scalars['String']['output']>;
 	updatedAt: Scalars['DateTime']['output'];
 	user?: Maybe<User>;
@@ -1484,6 +1485,7 @@ export type CustomerFilterParameter = {
 	payWithoutCreditCard?: InputMaybe<BooleanOperators>;
 	phoneNumber?: InputMaybe<StringOperators>;
 	postalCode?: InputMaybe<StringOperators>;
+	pushToken?: InputMaybe<StringOperators>;
 	title?: InputMaybe<StringOperators>;
 	updatedAt?: InputMaybe<DateOperators>;
 };
@@ -1572,6 +1574,7 @@ export type CustomerSortParameter = {
 	lastName?: InputMaybe<SortOrder>;
 	managerAddress?: InputMaybe<SortOrder>;
 	phoneNumber?: InputMaybe<SortOrder>;
+	pushToken?: InputMaybe<SortOrder>;
 	title?: InputMaybe<SortOrder>;
 	updatedAt?: InputMaybe<SortOrder>;
 };
@@ -3023,6 +3026,8 @@ export type Mutation = {
 	/** Removes StockLocations from the specified Channel */
 	removeStockLocationsFromChannel: Array<StockLocation>;
 	runPendingSearchIndexUpdates: Success;
+	/** Send notification */
+	sendNotification: Success;
 	setCustomerForDraftOrder: SetCustomerForDraftOrderResult;
 	/** Sets the billing address for a draft Order */
 	setDraftOrderBillingAddress: Order;
@@ -3599,6 +3604,10 @@ export type MutationRemoveStockLocationsFromChannelArgs = {
 	input: RemoveStockLocationsFromChannelInput;
 };
 
+export type MutationSendNotificationArgs = {
+	input: SendNotificationInput;
+};
+
 export type MutationSetCustomerForDraftOrderArgs = {
 	customerId?: InputMaybe<Scalars['ID']['input']>;
 	input?: InputMaybe<CreateCustomerInput>;
@@ -3830,6 +3839,12 @@ export type NothingToRefundError = ErrorResult & {
 	__typename?: 'NothingToRefundError';
 	errorCode: ErrorCode;
 	message: Scalars['String']['output'];
+};
+
+export type NotificationBody = {
+	body?: InputMaybe<Scalars['String']['input']>;
+	subtitle?: InputMaybe<Scalars['String']['input']>;
+	title?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** Operators for filtering on a list of Number fields */
@@ -5737,6 +5752,15 @@ export type SellerSortParameter = {
 	id?: InputMaybe<SortOrder>;
 	name?: InputMaybe<SortOrder>;
 	updatedAt?: InputMaybe<SortOrder>;
+};
+
+export type SendNotificationInput = {
+	categories?: InputMaybe<Array<Scalars['ID']['input']>>;
+	customerIds?: InputMaybe<Array<Scalars['ID']['input']>>;
+	days?: InputMaybe<Scalars['Int']['input']>;
+	noOrderCustomers?: InputMaybe<Scalars['Boolean']['input']>;
+	notificationBody: NotificationBody;
+	priceVariant?: InputMaybe<Scalars['ID']['input']>;
 };
 
 export type ServerConfig = {

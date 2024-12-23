@@ -1248,6 +1248,7 @@ type Customer implements Node {
 	payWithoutCreditCard: Boolean
 	phoneNumber: String
 	priceVariant: ProductVariantPriceVariant
+	pushToken: String
 	title: String
 	updatedAt: DateTime!
 	user: User
@@ -1272,6 +1273,7 @@ input CustomerFilterParameter {
 	managerAddress: StringOperators
 	payWithoutCreditCard: BooleanOperators
 	phoneNumber: StringOperators
+	pushToken: StringOperators
 	title: StringOperators
 	updatedAt: DateOperators
 }
@@ -1333,6 +1335,7 @@ input CustomerSortParameter {
 	lastName: SortOrder
 	managerAddress: SortOrder
 	phoneNumber: SortOrder
+	pushToken: SortOrder
 	title: SortOrder
 	updatedAt: SortOrder
 }
@@ -2815,6 +2818,12 @@ type Mutation {
 	Set the Customer for the Order. Required only if the Customer is not currently logged in
 	"""
 	setCustomerForOrder(input: CreateCustomerInput!): SetCustomerForOrderResult!
+
+	"""
+	Set customer notification token
+	"""
+	setCustomerNotificationToken(token: String!): Success!
+	setNotificationToken(token: String!): Success!
 
 	"""
 	Sets the billing address for this order
