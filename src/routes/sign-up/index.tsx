@@ -33,7 +33,6 @@ export default component$(() => {
 			address.value === '' ||
 			businessPhone.value === '' ||
 			contactPersonPhone.value === '' ||
-			fax.value === '' ||
 			accountingPhone.value === '' ||
 			accountingEmail.value === '' ||
 			managerAddress.value === ''
