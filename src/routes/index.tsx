@@ -1,13 +1,31 @@
 import { component$, useContext } from '@builder.io/qwik';
 import Carousal from '~/components/carousal/Carousal';
 import CollectionCard from '~/components/collection-card/CollectionCard';
+import LinkCard from '~/components/link-card/LinkCard';
 import { APP_STATE } from '~/constants';
 
 export default component$(() => {
 	const collections = useContext(APP_STATE).collections;
+
+	const links = ['Link1', 'Link2', 'Link3', 'Link4'];
+
 	return (
 		<div>
 			<Carousal />
+			<div class="pt-12 xl:max-w-7xl xl:mx-auto xl:px-8">
+				<section>
+					<div class="grid gap-2 grid-cols-2 md:grid-cols-3 lg:grid-cols-4 px-2 md:px-6">
+						{links.map((link) => {
+							return (
+								<LinkCard
+									src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRyW7l-lLoY4nBYEnqA9ydYbUU56CgDtaq-rQ&s"
+									name={link}
+								/>
+							);
+						})}
+					</div>
+				</section>
+			</div>
 			<section class="pt-12 xl:max-w-7xl xl:mx-auto xl:px-8">
 				<div class="mt-4 flow-root">
 					<div class="-my-2">
