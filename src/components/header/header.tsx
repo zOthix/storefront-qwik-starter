@@ -38,6 +38,51 @@ export default component$(() => {
 		}
 	});
 
+	const links = [
+		{
+			text: 'Link1',
+			href: '#',
+			submenu: [
+				{
+					text: 'Submenu1',
+					href: '#',
+					submenu: [
+						{
+							text: 'Sebsubmenu1',
+							href: '#',
+						},
+					],
+				},
+			],
+		},
+		{
+			text: 'Link2',
+			href: '#',
+			submenu: [],
+		},
+		{
+			text: 'Link3',
+			href: '#',
+			submenu: [
+				{
+					text: 'Submenu1',
+					href: '#',
+					submenu: [],
+				},
+				{
+					text: 'Submenu2',
+					href: '#',
+					submenu: [],
+				},
+				{
+					text: 'Submenu3',
+					href: '#',
+					submenu: [],
+				},
+			],
+		},
+	];
+
 	const logout = $(async () => {
 		await logoutMutation();
 		// force hard refresh
@@ -52,18 +97,7 @@ export default component$(() => {
 				<div class="bg-zinc-100 text-gray-600 shadow-inner text-center text-sm py-1 px-2 xl:px-0">
 					<div class="max-w-6xl mx-2 h-5 min-h-full md:mx-auto flex items-center justify-between my-1">
 						<div class="flex justify-between items-center w-full">
-							<div>
-								{/* <p class="hidden sm:block">
-									{$localize`Exclusive: Get your own`}{' '}
-									<a
-										href="https://github.com/vendure-ecommerce/storefront-qwik-starter"
-										target="_blank"
-										class="underline"
-									>
-										{$localize`FREE storefront starter kit`}
-									</a>
-								</p> */}
-							</div>
+							<div></div>
 							<div class="flex mr-[60px] 2xl:mr-0">
 								<Link
 									href={appState.customer.id !== CUSTOMER_NOT_DEFINED_ID ? '/account' : '/sign-in'}
@@ -102,7 +136,7 @@ export default component$(() => {
 							<img src={`/cube-logo-small.webp`} width={40} height={31} alt="Vendure logo" />
 						</Link>
 					</h1>
-					<div class="hidden space-x-4 sm:block">
+					<div class="hidden md:flex items-center space-x-4 sm:block">
 						{collections.map((collection) => (
 							<Link
 								class="text-sm md:text-base text-gray-200 hover:text-white"
@@ -112,6 +146,53 @@ export default component$(() => {
 								{collection.name}
 							</Link>
 						))}
+						<nav class="dropdownmenu">
+							<ul>
+								{links.map((link, index) => {
+									return (
+										<li>
+											<a
+												class="text-sm md:text-base text-gray-200 hover:text-white"
+												href={link.href}
+											>
+												{link.text}
+											</a>
+											<ul class="submenu">
+												{link.submenu &&
+													link.submenu.map((sublink, subindex) => {
+														return (
+															<li>
+																<a
+																	class="text-sm md:text-base text-gray-200 hover:text-white"
+																	href={sublink.href}
+																>
+																	{sublink.text}
+																</a>
+																{sublink.submenu && (
+																	<ul class="submenu">
+																		{sublink.submenu.map((sublink, subindex) => {
+																			return (
+																				<li>
+																					<a
+																						class="text-sm md:text-base text-gray-200 hover:text-white"
+																						href={sublink.href}
+																					>
+																						{sublink.text}
+																					</a>
+																				</li>
+																			);
+																		})}
+																	</ul>
+																)}
+															</li>
+														);
+													})}
+											</ul>
+										</li>
+									);
+								})}
+							</ul>
+						</nav>
 					</div>
 					<div class="flex-1 block md:pr-8">
 						<SearchBar />
@@ -134,7 +215,6 @@ export default component$(() => {
 						</button>
 					</div>
 				</div>
-				{/* <GitHubLink /> */}
 			</header>
 		</div>
 	);

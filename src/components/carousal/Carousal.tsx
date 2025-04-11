@@ -35,7 +35,7 @@ export default component$(() => {
 		<div class="carousal-swiper swiper">
 			<div class="swiper-wrapper">
 				{[...Array(3)].map((_, i) => (
-					<div class="swiper-slide">
+					<div key={i} class="swiper-slide">
 						<div
 							style={{
 								backgroundImage: `url(${imageUrl})`,
