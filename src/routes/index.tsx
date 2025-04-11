@@ -14,6 +14,7 @@ export default component$(() => {
 	const collections = useContext(APP_STATE).collections;
 
 	const links = ['Link1', 'Link2', 'Link3', 'Link4'];
+	const brands = ['Brand1', 'Brand2', 'Brand3', 'Brand4', 'Brand5', 'Brand6', 'Brand7'];
 
 	useVisibleTask$(() => {
 		new Swiper('.brand-swiper', {
@@ -44,6 +45,7 @@ export default component$(() => {
 						{links.map((link) => {
 							return (
 								<LinkCard
+									key={link}
 									href="/"
 									src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRyW7l-lLoY4nBYEnqA9ydYbUU56CgDtaq-rQ&s"
 									name={link}
@@ -58,19 +60,19 @@ export default component$(() => {
 						<div class="overflow-hidden mt-4">
 							<div class="brand-swiper swiper">
 								<div class="swiper-wrapper">
-									{['Brand1', 'Brand2', 'Brand3', 'Brand4', 'Brand5', 'Brand6', 'Brand7'].map(
-										(brand) => {
-											return (
-												<div class="swiper-slide flex justify-center">
+									{brands.map((brand) => {
+										return (
+											<div key={brand} class="swiper-slide">
+												<div class="flex justify-center">
 													<BrandLink
 														name={brand}
 														href="/account/"
 														src="https://images.seeklogo.com/logo-png/31/2/honda-logo-png_seeklogo-310689.png"
 													/>
 												</div>
-											);
-										}
-									)}
+											</div>
+										);
+									})}
 								</div>
 							</div>
 						</div>
