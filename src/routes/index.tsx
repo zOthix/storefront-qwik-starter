@@ -7,6 +7,7 @@ import { Navigation } from 'swiper/modules';
 import BrandLink from '~/components/brand-link/BrandLink';
 import Carousal from '~/components/carousal/Carousal';
 import LinkCard from '~/components/link-card/LinkCard';
+import Editor from '~/components/wyswyg/Editor';
 
 const commonSwiperOptions = {
 	loop: true,
@@ -70,6 +71,11 @@ export default component$(() => {
 				</section>
 				<section>
 					<HotProductsSlider products={products} />
+				</section>
+				<section>
+					<div class="flex justify-center">
+						<Editor />
+					</div>
 				</section>
 			</div>
 		</div>

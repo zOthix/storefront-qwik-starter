@@ -80,6 +80,7 @@
 		"express": "4.19.2",
 		"graphql": "^16.8.1",
 		"graphql-tag": "^2.12.6",
+		"quill": "^2.0.3",
 		"qwik-image": "^0.0.8",
 		"socket.io-client": "^4.8.1",
 		"swiper": "^11.2.6",

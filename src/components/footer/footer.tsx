@@ -23,7 +23,7 @@ export default component$(() => {
 	};
 
 	return (
-		<footer class="pt-6 border-t bg-gray-50">
+		<footer class="pt-6 border-t bg-gray-50 mt-12 md:mt-24">
 			<div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8 ">
 				<div class="xl:grid xl:grid-cols-3 xl:gap-8">
 					<div class="grid grid-cols-2 gap-8 xl:col-span-2">
