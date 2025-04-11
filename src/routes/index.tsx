@@ -45,6 +45,7 @@ export default component$(() => {
 
 	return (
 		<div>
+			<AnnouncementBar announcementText="Sale ends in 2 days!" />
 			<Carousal />
 			<div class="pt-12 md:pt-24 xl:max-w-7xl xl:mx-auto px-2 md:px-6 flex flex-col gap-y-12 md:gap-y-24">
 				<section>
