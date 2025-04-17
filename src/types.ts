@@ -1,4 +1,5 @@
 import { Collection as CollectionGql, Order } from '~/generated/graphql';
+import { Website } from './generated/graphql-admin';
 
 export type AppState = {
 	collections: CollectionGql[];
@@ -11,6 +12,7 @@ export type AppState = {
 	addressBook: ShippingAddress[];
 	payWithoutCreditCard: boolean;
 	priceVariant: boolean;
+	website: Website;
 };
 
 export type Product = {

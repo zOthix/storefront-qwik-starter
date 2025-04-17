@@ -1,4 +1,4 @@
-import { component$, useVisibleTask$ } from '@builder.io/qwik';
+import { component$, useContext, useVisibleTask$ } from '@builder.io/qwik';
 import Swiper from 'swiper';
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -8,6 +8,7 @@ import BrandLink from '~/components/brand-link/BrandLink';
 import Carousal from '~/components/carousal/Carousal';
 import LinkCard from '~/components/link-card/LinkCard';
 import Editor from '~/components/wyswyg/Editor';
+import { APP_STATE } from '~/constants';
 
 const commonSwiperOptions = {
 	loop: true,
@@ -31,6 +32,7 @@ const commonSwiperOptions = {
 };
 
 export default component$(() => {
+	const appState = useContext(APP_STATE);
 	const links = ['Link1', 'Link2', 'Link3', 'Link4'];
 	const brands = ['Brand1', 'Brand2', 'Brand3', 'Brand4', 'Brand5', 'Brand6', 'Brand7', 'Brand8'];
 	const products = [
@@ -46,21 +48,27 @@ export default component$(() => {
 
 	return (
 		<div class="pb-12 md:pb-24">
-			<AnnouncementBar announcementText="Sale ends in 2 days!" />
+			<AnnouncementBar announcementText={appState.website.announcementBarText} />
 			<Carousal />
 			<div class="pt-12 md:pt-24 xl:max-w-7xl xl:mx-auto px-2 md:px-6 flex flex-col gap-y-12 md:gap-y-24">
 				<section>
 					<div class="grid gap-2 grid-cols-2 md:grid-cols-3 lg:grid-cols-4 place-items-center">
-						{links.map((link) => {
-							return (
-								<LinkCard
-									key={link}
-									href="/"
-									src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRyW7l-lLoY4nBYEnqA9ydYbUU56CgDtaq-rQ&s"
-									name={link}
-								/>
-							);
-						})}
+						{appState.website.weblinks
+							.sort((a, b) => {
+								const aPos = a?.position ?? Infinity;
+								const bPos = b?.position ?? Infinity;
+								return aPos - bPos;
+							})
+							.map((link) => {
+								return (
+									<LinkCard
+										key={link?.id}
+										href={link?.link ?? ''}
+										src={link?.featuredAsset?.preview ?? ''}
+										name={link?.linkText ?? ''}
+									/>
+								);
+							})}
 					</div>
 				</section>
 				<section>
@@ -74,7 +82,7 @@ export default component$(() => {
 				</section>
 				<section>
 					<div class="flex justify-center">
-						<Editor />
+						<Editor content={appState.website.content} />
 					</div>
 				</section>
 			</div>

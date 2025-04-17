@@ -2,6 +2,8 @@ import { component$, useContext } from '@builder.io/qwik';
 import { APP_STATE } from '~/constants';
 
 export default component$(() => {
+	const appState = useContext(APP_STATE);
+
 	const collections = useContext(APP_STATE).collections.filter(
 		(item) => item.parent?.name === '__root_collection__' && !!item.featuredAsset
 	);
@@ -67,5 +69,5 @@ export default component$(() => {
 		</footer>
 	`;
 
-	return <div dangerouslySetInnerHTML={footerMarkup}></div>;
+	return <div dangerouslySetInnerHTML={appState.website.footerContent}></div>;
 });

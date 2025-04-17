@@ -12,6 +12,7 @@ import { ImageTransformerProps, useImageProvider } from 'qwik-image';
 import Menu from '~/components/menu/Menu';
 import { APP_STATE, CUSTOMER_NOT_DEFINED_ID, DEFAULT_LOCALE, IMAGE_RESOLUTIONS } from '~/constants';
 import { Order } from '~/generated/graphql';
+import { getWebsiteQuery } from '~/providers/admin/website';
 import { getAvailableCountriesQuery } from '~/providers/shop/checkout/checkout';
 import { getCollections } from '~/providers/shop/collections/collections';
 import { getActiveOrderQuery } from '~/providers/shop/orders/order';
@@ -30,6 +31,10 @@ export const useCollectionsLoader = routeLoader$(async () => {
 
 export const useAvailableCountriesLoader = routeLoader$(async () => {
 	return await getAvailableCountriesQuery();
+});
+
+export const useWebsiteLoader = routeLoader$(async () => {
+	return await getWebsiteQuery();
 });
 
 export const onRequest: RequestHandler = ({ locale }) => {
@@ -55,6 +60,7 @@ export default component$(() => {
 
 	const collectionsSignal = useCollectionsLoader();
 	const availableCountriesSignal = useAvailableCountriesLoader();
+	const websiteSignal = useWebsiteLoader();
 
 	const state = useStore<AppState>({
 		showCart: false,
@@ -81,6 +87,7 @@ export default component$(() => {
 		addressBook: [],
 		payWithoutCreditCard: false,
 		priceVariant: false,
+		website: websiteSignal.value,
 	});
 
 	useContextProvider(APP_STATE, state);
