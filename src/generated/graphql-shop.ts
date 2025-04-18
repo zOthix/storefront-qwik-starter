@@ -3611,7 +3611,7 @@ export type GenerateBraintreeClientTokenQuery = { __typename?: 'Query', generate
 export type CollectionsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type CollectionsQuery = { __typename?: 'Query', collections: { __typename?: 'CollectionList', items: Array<{ __typename?: 'Collection', id: string, name: string, slug: string, parent?: { __typename?: 'Collection', name: string } | null, featuredAsset?: { __typename?: 'Asset', id: string, preview: string } | null }> } };
+export type CollectionsQuery = { __typename?: 'Query', collections: { __typename?: 'CollectionList', items: Array<{ __typename?: 'Collection', id: string, name: string, slug: string, parent?: { __typename?: 'Collection', name: string } | null, children?: Array<{ __typename?: 'Collection', id: string, children?: Array<{ __typename?: 'Collection', id: string }> | null }> | null, featuredAsset?: { __typename?: 'Asset', id: string, preview: string } | null }> } };
 
 export type CollectionQueryVariables = Exact<{
   slug?: InputMaybe<Scalars['String']['input']>;
@@ -3619,7 +3619,7 @@ export type CollectionQueryVariables = Exact<{
 }>;
 
 
-export type CollectionQuery = { __typename?: 'Query', collection?: { __typename?: 'Collection', id: string, name: string, slug: string, breadcrumbs: Array<{ __typename?: 'CollectionBreadcrumb', id: string, name: string, slug: string }>, children?: Array<{ __typename?: 'Collection', id: string, name: string, slug: string, featuredAsset?: { __typename?: 'Asset', id: string, preview: string } | null }> | null } | null };
+export type CollectionQuery = { __typename?: 'Query', collection?: { __typename?: 'Collection', id: string, name: string, slug: string, breadcrumbs: Array<{ __typename?: 'CollectionBreadcrumb', id: string, name: string, slug: string }>, children?: Array<{ __typename?: 'Collection', id: string, name: string, slug: string, featuredAsset?: { __typename?: 'Asset', id: string, preview: string } | null, children?: Array<{ __typename?: 'Collection', id: string }> | null }> | null } | null };
 
 export type ActiveCustomerAddressesQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -4171,6 +4171,12 @@ export const CollectionsDocument = gql`
       parent {
         name
       }
+      children {
+        id
+        children {
+          id
+        }
+      }
       featuredAsset {
         id
         preview
@@ -4197,6 +4203,9 @@ export const CollectionDocument = gql`
       featuredAsset {
         id
         preview
+      }
+      children {
+        id
       }
     }
   }

@@ -20,6 +20,9 @@ gql`
 				parent {
 					name
 				}
+				children {
+					id
+				}
 				featuredAsset {
 					id
 					preview
@@ -47,6 +50,9 @@ gql`
 				featuredAsset {
 					id
 					preview
+				}
+				children {
+					id
 				}
 			}
 		}

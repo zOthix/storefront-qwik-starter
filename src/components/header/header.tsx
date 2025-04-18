@@ -3,6 +3,7 @@ import { Link } from '@builder.io/qwik-city';
 import { APP_STATE, CUSTOMER_NOT_DEFINED_ID } from '~/constants';
 import { logoutMutation } from '~/providers/shop/account/account';
 import { getActiveCustomerQuery } from '~/providers/shop/customer/customer';
+import DropdownMenu from '../dropdown-menu/DropdownMenu';
 import LogoutIcon from '../icons/LogoutIcon';
 import MenuIcon from '../icons/MenuIcon';
 import ShoppingBagIcon from '../icons/ShoppingBagIcon';
@@ -137,62 +138,7 @@ export default component$(() => {
 						</Link>
 					</h1>
 					<div class="hidden md:flex items-center space-x-4 sm:block">
-						{collections.map((collection) => (
-							<Link
-								class="text-sm md:text-base text-gray-200 hover:text-white"
-								href={`/collections/${collection.slug}`}
-								key={collection.id}
-							>
-								{collection.name}
-							</Link>
-						))}
-						<nav class="dropdownmenu">
-							<ul>
-								{links.map((link, index) => {
-									return (
-										<li>
-											<a
-												class="text-sm md:text-base text-gray-200 hover:text-white"
-												href={link.href}
-											>
-												{link.text}
-											</a>
-											<ul class="submenu">
-												{link.submenu &&
-													link.submenu.map((sublink, subindex) => {
-														return (
-															<li>
-																<a
-																	class="text-sm md:text-base text-gray-200 hover:text-white"
-																	href={sublink.href}
-																>
-																	{sublink.text}
-																</a>
-																{sublink.submenu && (
-																	<ul class="submenu">
-																		{sublink.submenu.map((sublink, subindex) => {
-																			return (
-																				<li>
-																					<a
-																						class="text-sm md:text-base text-gray-200 hover:text-white"
-																						href={sublink.href}
-																					>
-																						{sublink.text}
-																					</a>
-																				</li>
-																			);
-																		})}
-																	</ul>
-																)}
-															</li>
-														);
-													})}
-											</ul>
-										</li>
-									);
-								})}
-							</ul>
-						</nav>
+						<DropdownMenu collections={collections} />
 					</div>
 					<div class="flex-1 block md:pr-8">
 						<SearchBar />

@@ -1,7 +1,6 @@
 import type { CodegenConfig } from '@graphql-codegen/cli';
-import { API_URL } from './src/constants';
 
-let GRAPHQL_API = API_URL;
+let GRAPHQL_API = 'http://localhost:4090';
 GRAPHQL_API = `${GRAPHQL_API}/admin-api`;
 
 const config: CodegenConfig = {

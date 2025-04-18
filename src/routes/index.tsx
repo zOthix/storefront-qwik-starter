@@ -53,22 +53,16 @@ export default component$(() => {
 			<div class="pt-12 md:pt-24 xl:max-w-7xl xl:mx-auto px-2 md:px-6 flex flex-col gap-y-12 md:gap-y-24">
 				<section>
 					<div class="grid gap-2 grid-cols-2 md:grid-cols-3 lg:grid-cols-4 place-items-center">
-						{appState.website.weblinks
-							.sort((a, b) => {
-								const aPos = a?.position ?? Infinity;
-								const bPos = b?.position ?? Infinity;
-								return aPos - bPos;
-							})
-							.map((link) => {
-								return (
-									<LinkCard
-										key={link?.id}
-										href={link?.link ?? ''}
-										src={link?.featuredAsset?.preview ?? ''}
-										name={link?.linkText ?? ''}
-									/>
-								);
-							})}
+						{appState.website.weblinks.map((link) => {
+							return (
+								<LinkCard
+									key={link?.id}
+									href={link?.link ?? ''}
+									src={link?.featuredAsset?.preview ?? ''}
+									name={link?.linkText ?? ''}
+								/>
+							);
+						})}
 					</div>
 				</section>
 				<section>
