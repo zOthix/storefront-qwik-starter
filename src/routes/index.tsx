@@ -7,7 +7,6 @@ import { Navigation } from 'swiper/modules';
 import BrandLink from '~/components/brand-link/BrandLink';
 import Carousal from '~/components/carousal/Carousal';
 import LinkCard from '~/components/link-card/LinkCard';
-import Editor from '~/components/wyswyg/Editor';
 import { APP_STATE } from '~/constants';
 
 const commonSwiperOptions = {
@@ -74,8 +73,11 @@ export default component$(() => {
 					<HotProductsSlider products={products} />
 				</section>
 				<section>
-					<div class="flex justify-center">
-						<Editor content={appState.website.content} />
+					<div class="relative w-full max-w-[700px] h-[200px] border border-gray-500 bg-gray-200 mx-auto text-center py-4 px-2 rounded-lg">
+						<div dangerouslySetInnerHTML={appState.website.content}></div>
+						<div class="absolute md:right-4 md:bottom-4 right-2 bottom-2 text-xs text-gray-700">
+							Last updated: {new Date().toLocaleString()}
+						</div>
 					</div>
 				</section>
 			</div>
@@ -84,36 +86,19 @@ export default component$(() => {
 });
 
 const BrandsSlider = component$<{ brands: string[] }>(({ brands }) => {
-	useVisibleTask$(() => {
-		new Swiper('.brand-swiper', {
-			navigation: {
-				nextEl: '.swiper-button-next-brand',
-				prevEl: '.swiper-button-prev-brand',
-			},
-			direction: 'horizontal',
-			...commonSwiperOptions,
-		});
-	});
-
 	return (
-		<div class="brand-swiper swiper">
-			<div class="swiper-wrapper">
+		<div class="w-full flex justify-center">
+			<div class="flex flex-wrap mx-auto gap-x-14 gap-y-4">
 				{brands.map((brand) => {
 					return (
-						<div key={brand} class="swiper-slide">
-							<div class="flex justify-center">
-								<BrandLink
-									name={brand}
-									href="/account/"
-									src="https://images.seeklogo.com/logo-png/31/2/honda-logo-png_seeklogo-310689.png"
-								/>
-							</div>
-						</div>
+						<BrandLink
+							name={brand}
+							href="/account/"
+							src="https://images.seeklogo.com/logo-png/31/2/honda-logo-png_seeklogo-310689.png"
+						/>
 					);
 				})}
 			</div>
-			<div class="swiper-button-prev swiper-button-next-brand"></div>
-			<div class="swiper-button-next swiper-button-next-brand"></div>
 		</div>
 	);
 });
