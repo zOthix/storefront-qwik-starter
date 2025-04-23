@@ -380,6 +380,14 @@ export type Cancellation = Node & StockMovement & {
   updatedAt: Scalars['DateTime']['output'];
 };
 
+export type CarousalItem = Node & {
+  __typename?: 'CarousalItem';
+  featuredAsset: Asset;
+  id: Scalars['ID']['output'];
+  isActive: Scalars['Boolean']['output'];
+  position: Scalars['Int']['output'];
+};
+
 export type Channel = Node & {
   __typename?: 'Channel';
   availableCurrencyCodes: Array<CurrencyCode>;
@@ -752,6 +760,12 @@ export type CreateAssetInput = {
 };
 
 export type CreateAssetResult = Asset | MimeTypeError;
+
+export type CreateCarousalItemInput = {
+  featuredAsset: Scalars['ID']['input'];
+  isActive: Scalars['Boolean']['input'];
+  position: Scalars['Int']['input'];
+};
 
 export type CreateChannelInput = {
   availableCurrencyCodes?: InputMaybe<Array<CurrencyCode>>;
@@ -2802,6 +2816,8 @@ export type Mutation = {
   createAdministrator: Administrator;
   /** Create a new Asset */
   createAssets: Array<CreateAssetResult>;
+  /** Create carousalItem */
+  createCarousalItem: CarousalItem;
   /** Create a new Channel */
   createChannel: CreateChannelResult;
   /** Create a new Collection */
@@ -3028,6 +3044,8 @@ export type Mutation = {
   updateAdministrator: Administrator;
   /** Update an existing Asset */
   updateAsset: Asset;
+  /** Update carousal items */
+  updateCarousalItems: Array<Maybe<CarousalItem>>;
   /** Update an existing Channel */
   updateChannel: UpdateChannelResult;
   /** Update an existing Collection */
@@ -3226,6 +3244,11 @@ export type MutationCreateAdministratorArgs = {
 
 export type MutationCreateAssetsArgs = {
   input: Array<CreateAssetInput>;
+};
+
+
+export type MutationCreateCarousalItemArgs = {
+  input: CreateCarousalItemInput;
 };
 
 
@@ -3807,6 +3830,11 @@ export type MutationUpdateAdministratorArgs = {
 
 export type MutationUpdateAssetArgs = {
   input: UpdateAssetInput;
+};
+
+
+export type MutationUpdateCarousalItemsArgs = {
+  input: UpdateCarousalItemsInput;
 };
 
 
@@ -6555,6 +6583,17 @@ export type UpdateAssetInput = {
   tags?: InputMaybe<Array<Scalars['String']['input']>>;
 };
 
+export type UpdateCarousalItemInput = {
+  featuredAsset?: InputMaybe<Scalars['ID']['input']>;
+  id: Scalars['ID']['input'];
+  isActive?: InputMaybe<Scalars['Boolean']['input']>;
+  position?: InputMaybe<Scalars['Int']['input']>;
+};
+
+export type UpdateCarousalItemsInput = {
+  items?: InputMaybe<Array<UpdateCarousalItemInput>>;
+};
+
 export type UpdateChannelInput = {
   availableCurrencyCodes?: InputMaybe<Array<CurrencyCode>>;
   availableLanguageCodes?: InputMaybe<Array<LanguageCode>>;
@@ -6883,6 +6922,7 @@ export type WebLink = Node & {
 export type Website = Node & {
   __typename?: 'Website';
   announcementBarText: Scalars['String']['output'];
+  carousalItems: Array<Maybe<CarousalItem>>;
   content: Scalars['String']['output'];
   customFields?: Maybe<Scalars['JSON']['output']>;
   footerContent: Scalars['String']['output'];
@@ -6944,14 +6984,16 @@ export type OrdersQueryVariables = Exact<{
 
 export type OrdersQuery = { __typename?: 'Query', orders: { __typename?: 'OrderList', items: Array<{ __typename: 'Order', id: string, code: string, active: boolean, createdAt: any, state: string, currencyCode: CurrencyCode, totalQuantity: number, subTotal: any, subTotalWithTax: any, shippingWithTax: any, totalWithTax: any, taxSummary: Array<{ __typename?: 'OrderTaxSummary', description: string, taxRate: number, taxTotal: any }>, customer?: { __typename?: 'Customer', id: string, firstName: string, lastName: string, emailAddress: string } | null, shippingAddress?: { __typename?: 'OrderAddress', fullName?: string | null, streetLine1?: string | null, streetLine2?: string | null, company?: string | null, city?: string | null, province?: string | null, postalCode?: string | null, countryCode?: string | null, phoneNumber?: string | null } | null, shippingLines: Array<{ __typename?: 'ShippingLine', priceWithTax: any, shippingMethod: { __typename?: 'ShippingMethod', id: string, name: string, code: string } }>, lines: Array<{ __typename?: 'OrderLine', id: string, unitPriceWithTax: any, linePriceWithTax: any, quantity: number, featuredAsset?: { __typename?: 'Asset', id: string, preview: string } | null, productVariant: { __typename?: 'ProductVariant', id: string, name: string, price: any, product: { __typename?: 'Product', id: string, slug: string } } }> }> } };
 
+export type CarousalItemFragment = { __typename?: 'CarousalItem', id: string, position: number, isActive: boolean, featuredAsset: { __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, preview: string, focalPoint?: { __typename?: 'Coordinate', x: number, y: number } | null } };
+
 export type WebLinkFragment = { __typename?: 'WebLink', id: string, link: string, linkText: string, position?: number | null, featuredAsset?: { __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, preview: string, focalPoint?: { __typename?: 'Coordinate', x: number, y: number } | null } | null };
 
-export type WebsiteFragment = { __typename?: 'Website', content: string, footerContent: string, announcementBarText: string, id: string, weblinks: Array<{ __typename?: 'WebLink', id: string, link: string, linkText: string, position?: number | null, featuredAsset?: { __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, preview: string, focalPoint?: { __typename?: 'Coordinate', x: number, y: number } | null } | null } | null> };
+export type WebsiteFragment = { __typename?: 'Website', content: string, footerContent: string, announcementBarText: string, id: string, weblinks: Array<{ __typename?: 'WebLink', id: string, link: string, linkText: string, position?: number | null, featuredAsset?: { __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, preview: string, focalPoint?: { __typename?: 'Coordinate', x: number, y: number } | null } | null } | null>, carousalItems: Array<{ __typename?: 'CarousalItem', id: string, position: number, isActive: boolean, featuredAsset: { __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, preview: string, focalPoint?: { __typename?: 'Coordinate', x: number, y: number } | null } } | null> };
 
 export type GetWebsiteQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetWebsiteQuery = { __typename?: 'Query', getWebsite?: { __typename?: 'Website', content: string, footerContent: string, announcementBarText: string, id: string, weblinks: Array<{ __typename?: 'WebLink', id: string, link: string, linkText: string, position?: number | null, featuredAsset?: { __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, preview: string, focalPoint?: { __typename?: 'Coordinate', x: number, y: number } | null } | null } | null> } | null };
+export type GetWebsiteQuery = { __typename?: 'Query', getWebsite?: { __typename?: 'Website', content: string, footerContent: string, announcementBarText: string, id: string, weblinks: Array<{ __typename?: 'WebLink', id: string, link: string, linkText: string, position?: number | null, featuredAsset?: { __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, preview: string, focalPoint?: { __typename?: 'Coordinate', x: number, y: number } | null } | null } | null>, carousalItems: Array<{ __typename?: 'CarousalItem', id: string, position: number, isActive: boolean, featuredAsset: { __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, preview: string, focalPoint?: { __typename?: 'Coordinate', x: number, y: number } | null } } | null> } | null };
 
 export const OrderDetailFragmentDoc = gql`
     fragment OrderDetail on Order {
@@ -7036,6 +7078,23 @@ export const WebLinkFragmentDoc = gql`
   }
 }
     `;
+export const CarousalItemFragmentDoc = gql`
+    fragment CarousalItem on CarousalItem {
+  id
+  position
+  isActive
+  featuredAsset {
+    id
+    createdAt
+    updatedAt
+    preview
+    focalPoint {
+      x
+      y
+    }
+  }
+}
+    `;
 export const WebsiteFragmentDoc = gql`
     fragment Website on Website {
   content
@@ -7045,8 +7104,12 @@ export const WebsiteFragmentDoc = gql`
   weblinks {
     ...WebLink
   }
+  carousalItems {
+    ...CarousalItem
+  }
 }
-    ${WebLinkFragmentDoc}`;
+    ${WebLinkFragmentDoc}
+${CarousalItemFragmentDoc}`;
 export const OrdersDocument = gql`
     query orders($options: OrderListOptions) {
   orders(options: $options) {

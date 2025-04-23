@@ -109,6 +109,13 @@ input BooleanOperators {
   isNull: Boolean
 }
 
+type CarousalItem implements Node {
+  featuredAsset: Asset!
+  id: ID!
+  isActive: Boolean!
+  position: Int!
+}
+
 type Channel implements Node {
   availableCurrencyCodes: [CurrencyCode!]!
   availableLanguageCodes: [LanguageCode!]
@@ -3708,6 +3715,7 @@ type WebLink implements Node {
 
 type Website implements Node {
   announcementBarText: String!
+  carousalItems: [CarousalItem]!
   content: String!
   customFields: JSON
   footerContent: String!

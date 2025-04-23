@@ -361,6 +361,13 @@ type Cancellation implements Node & StockMovement {
   updatedAt: DateTime!
 }
 
+type CarousalItem implements Node {
+  featuredAsset: Asset!
+  id: ID!
+  isActive: Boolean!
+  position: Int!
+}
+
 type Channel implements Node {
   availableCurrencyCodes: [CurrencyCode!]!
   availableLanguageCodes: [LanguageCode!]
@@ -730,6 +737,12 @@ input CreateAssetInput {
 }
 
 union CreateAssetResult = Asset | MimeTypeError
+
+input CreateCarousalItemInput {
+  featuredAsset: ID!
+  isActive: Boolean!
+  position: Int!
+}
 
 input CreateChannelInput {
   availableCurrencyCodes: [CurrencyCode!]
@@ -3099,6 +3112,9 @@ type Mutation {
   """Create a new Asset"""
   createAssets(input: [CreateAssetInput!]!): [CreateAssetResult!]!
 
+  """Create carousalItem"""
+  createCarousalItem(input: CreateCarousalItemInput!): CarousalItem!
+
   """Create a new Channel"""
   createChannel(input: CreateChannelInput!): CreateChannelResult!
 
@@ -3430,6 +3446,9 @@ type Mutation {
 
   """Update an existing Asset"""
   updateAsset(input: UpdateAssetInput!): Asset!
+
+  """Update carousal items"""
+  updateCarousalItems(input: UpdateCarousalItemsInput!): [CarousalItem]!
 
   """Update an existing Channel"""
   updateChannel(input: UpdateChannelInput!): UpdateChannelResult!
@@ -5956,6 +5975,17 @@ input UpdateAssetInput {
   tags: [String!]
 }
 
+input UpdateCarousalItemInput {
+  featuredAsset: ID
+  id: ID!
+  isActive: Boolean
+  position: Int
+}
+
+input UpdateCarousalItemsInput {
+  items: [UpdateCarousalItemInput!]
+}
+
 input UpdateChannelInput {
   availableCurrencyCodes: [CurrencyCode!]
   availableLanguageCodes: [LanguageCode!]
@@ -6290,6 +6320,7 @@ type WebLink implements Node {
 
 type Website implements Node {
   announcementBarText: String!
+  carousalItems: [CarousalItem]!
   content: String!
   customFields: JSON
   footerContent: String!

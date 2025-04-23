@@ -6,8 +6,9 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import { Navigation, Pagination } from 'swiper/modules';
 import { HOMEPAGE_IMAGE } from '~/constants';
+import { CarousalItem, Maybe } from '~/generated/graphql-admin';
 
-export default component$(() => {
+export default component$<{ items: Maybe<CarousalItem>[] }>(({ items }) => {
 	const loc = useLocation();
 	const origin = loc.url.origin;
 	const imageUrl = `${origin}/${HOMEPAGE_IMAGE}`;
@@ -34,11 +35,11 @@ export default component$(() => {
 	return (
 		<div class="carousal-swiper swiper">
 			<div class="swiper-wrapper">
-				{[...Array(3)].map((_, i) => (
+				{items.map((item, i) => (
 					<div key={i} class="swiper-slide">
 						<div
 							style={{
-								backgroundImage: `url(${imageUrl})`,
+								backgroundImage: `url(${item?.featuredAsset.preview})`,
 							}}
 							class="relative h-screen w-full bg-center bg-cover"
 						>

@@ -13,6 +13,24 @@ export const getWebsiteQuery = async () => {
 };
 
 gql`
+	fragment CarousalItem on CarousalItem {
+		id
+		position
+		isActive
+		featuredAsset {
+			id
+			createdAt
+			updatedAt
+			preview
+			focalPoint {
+				x
+				y
+			}
+		}
+	}
+`;
+
+gql`
 	fragment WebLink on WebLink {
 		id
 		link
@@ -39,6 +57,9 @@ gql`
 		id
 		weblinks {
 			...WebLink
+		}
+		carousalItems {
+			...CarousalItem
 		}
 	}
 `;

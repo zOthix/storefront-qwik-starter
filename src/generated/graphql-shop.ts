@@ -142,6 +142,14 @@ export type BooleanOperators = {
   isNull?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
+export type CarousalItem = Node & {
+  __typename?: 'CarousalItem';
+  featuredAsset: Asset;
+  id: Scalars['ID']['output'];
+  isActive: Scalars['Boolean']['output'];
+  position: Scalars['Int']['output'];
+};
+
 export type Channel = Node & {
   __typename?: 'Channel';
   availableCurrencyCodes: Array<CurrencyCode>;
@@ -3483,6 +3491,7 @@ export type WebLink = Node & {
 export type Website = Node & {
   __typename?: 'Website';
   announcementBarText: Scalars['String']['output'];
+  carousalItems: Array<Maybe<CarousalItem>>;
   content: Scalars['String']['output'];
   customFields?: Maybe<Scalars['JSON']['output']>;
   footerContent: Scalars['String']['output'];
@@ -3611,7 +3620,7 @@ export type GenerateBraintreeClientTokenQuery = { __typename?: 'Query', generate
 export type CollectionsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type CollectionsQuery = { __typename?: 'Query', collections: { __typename?: 'CollectionList', items: Array<{ __typename?: 'Collection', id: string, name: string, slug: string, parent?: { __typename?: 'Collection', name: string } | null, children?: Array<{ __typename?: 'Collection', id: string, children?: Array<{ __typename?: 'Collection', id: string }> | null }> | null, featuredAsset?: { __typename?: 'Asset', id: string, preview: string } | null }> } };
+export type CollectionsQuery = { __typename?: 'Query', collections: { __typename?: 'CollectionList', items: Array<{ __typename?: 'Collection', id: string, name: string, slug: string, parent?: { __typename?: 'Collection', name: string } | null, children?: Array<{ __typename?: 'Collection', id: string }> | null, featuredAsset?: { __typename?: 'Asset', id: string, preview: string } | null }> } };
 
 export type CollectionQueryVariables = Exact<{
   slug?: InputMaybe<Scalars['String']['input']>;
@@ -4173,9 +4182,6 @@ export const CollectionsDocument = gql`
       }
       children {
         id
-        children {
-          id
-        }
       }
       featuredAsset {
         id
