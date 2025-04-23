@@ -48,8 +48,7 @@ export default component$(() => {
 
 	return (
 		<div class="pb-12 md:pb-24">
-			<AnnouncementBar announcementText={appState.website.announcementBarText} />
-			<Carousal />
+			<Carousal items={appState.website.carousalItems} />
 			<div class="pt-12 md:pt-24 xl:max-w-7xl xl:mx-auto px-2 md:px-6 flex flex-col gap-y-12 md:gap-y-24">
 				<section>
 					<div class="grid gap-2 grid-cols-2 md:grid-cols-3 lg:grid-cols-4 place-items-center">
@@ -80,14 +79,6 @@ export default component$(() => {
 					</div>
 				</section>
 			</div>
-		</div>
-	);
-});
-
-const AnnouncementBar = component$<{ announcementText: string }>(({ announcementText }) => {
-	return (
-		<div class="p-3">
-			<p class="text-center font-semibold">{announcementText}</p>
 		</div>
 	);
 });

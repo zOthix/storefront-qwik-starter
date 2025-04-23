@@ -95,36 +95,6 @@ export default component$(() => {
 			class={`bg-gradient-to-r from-blue-700 to-indigo-900 transform shadow-xl sticky top-0 z-10 animate-dropIn`}
 		>
 			<header>
-				<div class="bg-zinc-100 text-gray-600 shadow-inner text-center text-sm py-1 px-2 xl:px-0">
-					<div class="max-w-6xl mx-2 h-5 min-h-full md:mx-auto flex items-center justify-between my-1">
-						<div class="flex justify-between items-center w-full">
-							<div></div>
-							<div class="flex mr-[60px] 2xl:mr-0">
-								<Link
-									href={appState.customer.id !== CUSTOMER_NOT_DEFINED_ID ? '/account' : '/sign-in'}
-									class="flex items-center space-x-1 pb-1 pr-2"
-								>
-									<UserIcon />
-									<span class="mt-1 text-gray-700">
-										{appState.customer.id !== CUSTOMER_NOT_DEFINED_ID
-											? $localize`My Account`
-											: $localize`Sign In`}
-									</span>
-								</Link>
-								{appState.customer.id !== CUSTOMER_NOT_DEFINED_ID && (
-									<button onClick$={logout} class="text-gray-700">
-										<div class="flex items-center cursor-pointer">
-											<span class="ltr:mr-2 rtl:ml-2">{$localize`Logout`}</span>
-											<span class="rtl:rotate-180">
-												<LogoutIcon />
-											</span>
-										</div>
-									</button>
-								)}
-							</div>
-						</div>
-					</div>
-				</div>
 				<div class="max-w-6xl mx-auto p-4 flex items-center space-x-4">
 					<button
 						class="block sm:hidden text-white"
@@ -143,7 +113,7 @@ export default component$(() => {
 					<div class="flex-1 block md:pr-8">
 						<SearchBar />
 					</div>
-					<div class="">
+					<div class="flex gap-x-4 items-center">
 						<button
 							name="Cart"
 							aria-label={`${totalQuantity} items in cart`}
@@ -159,6 +129,29 @@ export default component$(() => {
 								''
 							)}
 						</button>
+						<div class="flex 2xl:mr-0">
+							<Link
+								href={appState.customer.id !== CUSTOMER_NOT_DEFINED_ID ? '/account' : '/sign-in'}
+								class="flex items-center space-x-1 pb-1 pr-2"
+							>
+								<UserIcon />
+								<span class="mt-1 text-gray-200 hidden md:inline-block">
+									{appState.customer.id !== CUSTOMER_NOT_DEFINED_ID
+										? $localize`My Account`
+										: $localize`Sign In`}
+								</span>
+							</Link>
+							{appState.customer.id !== CUSTOMER_NOT_DEFINED_ID && (
+								<button onClick$={logout} class="text-gray-200">
+									<div class="flex items-center cursor-pointer">
+										<span class="ltr:mr-2 rtl:ml-2 hidden md:inline-block">{$localize`Logout`}</span>
+										<span class="rtl:rotate-180">
+											<LogoutIcon />
+										</span>
+									</div>
+								</button>
+							)}
+						</div>
 					</div>
 				</div>
 			</header>

@@ -117,6 +117,7 @@ export default component$(() => {
 
 	return (
 		<div>
+			<AnnouncementBar announcementText={websiteSignal.value.announcementBarText} />
 			<Header />
 			<Cart />
 			<Menu />
@@ -124,6 +125,14 @@ export default component$(() => {
 				<Slot />
 			</main>
 			<Footer />
+		</div>
+	);
+});
+
+const AnnouncementBar = component$<{ announcementText: string }>(({ announcementText }) => {
+	return (
+		<div class="p-3">
+			<p class="text-center font-semibold">{announcementText}</p>
 		</div>
 	);
 });

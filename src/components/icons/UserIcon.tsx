@@ -6,7 +6,7 @@ export default component$(() => {
 			xmlns="http://www.w3.org/2000/svg"
 			viewBox="0 0 20 20"
 			fill="currentColor"
-			class="w-7 h-7 mt-0.3 fill-black"
+			class="w-7 h-7 mt-0.3 fill-gray-200"
 		>
 			<path
 				fill-rule="evenodd"
