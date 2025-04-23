@@ -1,4 +1,5 @@
 import { component$, useContext, useVisibleTask$ } from '@builder.io/qwik';
+import { routeLoader$ } from '@builder.io/qwik-city';
 import Swiper from 'swiper';
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -8,6 +9,8 @@ import BrandLink from '~/components/brand-link/BrandLink';
 import Carousal from '~/components/carousal/Carousal';
 import LinkCard from '~/components/link-card/LinkCard';
 import { APP_STATE } from '~/constants';
+import { Product } from '~/generated/graphql';
+import { getProducts } from '~/providers/shop/products/products';
 
 const commonSwiperOptions = {
 	loop: true,
@@ -30,9 +33,18 @@ const commonSwiperOptions = {
 	},
 };
 
+export const useProductsLoader = routeLoader$(async () => {
+	const products = await getProducts({
+		sort: {
+			createdAt: 'DESC',
+		},
+		take: 8,
+	});
+	return products;
+});
+
 export default component$(() => {
 	const appState = useContext(APP_STATE);
-	const links = ['Link1', 'Link2', 'Link3', 'Link4'];
 	const brands = ['Brand1', 'Brand2', 'Brand3', 'Brand4', 'Brand5', 'Brand6', 'Brand7', 'Brand8'];
 	const products = [
 		'Product1',
@@ -44,6 +56,8 @@ export default component$(() => {
 		'Product7',
 		'Product8',
 	];
+
+	const productsSignal = useProductsLoader();
 
 	return (
 		<div class="pb-12 md:pb-24">
@@ -67,7 +81,7 @@ export default component$(() => {
 					<BrandsSlider brands={brands} />
 				</section>
 				<section>
-					<NewProductsSlider products={products} />
+					<NewProductsSlider products={productsSignal.value} />
 				</section>
 				<section>
 					<HotProductsSlider products={products} />
@@ -103,7 +117,7 @@ const BrandsSlider = component$<{ brands: string[] }>(({ brands }) => {
 	);
 });
 
-const NewProductsSlider = component$<{ products: string[] }>(({ products }) => {
+const NewProductsSlider = component$<{ products: Product[] }>(({ products }) => {
 	useVisibleTask$(() => {
 		new Swiper('.newest-products-swiper', {
 			navigation: {
@@ -124,12 +138,12 @@ const NewProductsSlider = component$<{ products: string[] }>(({ products }) => {
 				<div class="swiper-wrapper">
 					{products.map((product) => {
 						return (
-							<div key={product} class="swiper-slide">
+							<div key={product.id} class="swiper-slide">
 								<div class="flex justify-center">
 									<BrandLink
-										name={product}
-										href="/account/"
-										src="https://i.pinimg.com/736x/23/af/2f/23af2f41af8df4154630cd6aa45ae802.jpg"
+										name={product.name}
+										src={product.featuredAsset?.preview ?? '/'}
+										href={product.slug ?? '/'}
 									/>
 								</div>
 							</div>

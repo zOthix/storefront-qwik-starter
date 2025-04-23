@@ -9,7 +9,7 @@ type Props = {
 
 export default component$<Props>(({ name, src, href }) => {
 	return (
-		<a href={href}>
+		<a href={`products/${href}/`}>
 			<div class="flex justify-center relative border rounded-full overflow-hidden hover:scale-100 scale-90 transition">
 				<Image class="h-[100px] w-[100px] " layout="fixed" src={src} />
 				<span class="absolute w-full bottom-x-0 bottom-0 h-2/3 bg-gradient-to-t from-gray-800 opacity-50" />

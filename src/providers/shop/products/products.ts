@@ -1,5 +1,12 @@
 import gql from 'graphql-tag';
-import { Product, ProductQuery, SearchInput, SearchResponse } from '~/generated/graphql';
+import {
+	Product,
+	ProductListOptions,
+	ProductQuery,
+	SearchInput,
+	SearchResponse,
+} from '~/generated/graphql';
+import { ProductsQuery } from '~/generated/graphql-shop';
 import { shopSdk } from '~/graphql-wrapper';
 
 export const search = async (searchInput: SearchInput) => {
@@ -19,6 +26,12 @@ export const searchQueryWithTerm = async (
 
 export const getProductBySlug = async (slug: string) => {
 	return shopSdk.product({ slug }).then((res: ProductQuery) => res.product as Product);
+};
+
+export const getProducts = async (options: ProductListOptions) => {
+	return shopSdk
+		.products({ options })
+		.then((res: ProductsQuery) => res.products.items as Product[]);
 };
 
 export const detailedProductFragment = gql`
@@ -74,6 +87,16 @@ gql`
 	query product($slug: String, $id: ID) {
 		product(slug: $slug, id: $id) {
 			...DetailedProduct
+		}
+	}
+`;
+
+gql`
+	query products($options: ProductListOptions) {
+		products(options: $options) {
+			items {
+				...DetailedProduct
+			}
 		}
 	}
 `;
