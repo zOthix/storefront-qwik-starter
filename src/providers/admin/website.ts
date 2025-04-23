@@ -52,6 +52,7 @@ gql`
 gql`
 	fragment Website on Website {
 		content
+		contentUpdatedAt
 		footerContent
 		announcementBarText
 		id

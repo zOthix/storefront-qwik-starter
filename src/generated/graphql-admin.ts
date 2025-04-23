@@ -6924,6 +6924,7 @@ export type Website = Node & {
   announcementBarText: Scalars['String']['output'];
   carousalItems: Array<Maybe<CarousalItem>>;
   content: Scalars['String']['output'];
+  contentUpdatedAt: Scalars['DateTime']['output'];
   customFields?: Maybe<Scalars['JSON']['output']>;
   footerContent: Scalars['String']['output'];
   id: Scalars['ID']['output'];
@@ -6988,12 +6989,12 @@ export type CarousalItemFragment = { __typename?: 'CarousalItem', id: string, po
 
 export type WebLinkFragment = { __typename?: 'WebLink', id: string, link: string, linkText: string, position?: number | null, featuredAsset?: { __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, preview: string, focalPoint?: { __typename?: 'Coordinate', x: number, y: number } | null } | null };
 
-export type WebsiteFragment = { __typename?: 'Website', content: string, footerContent: string, announcementBarText: string, id: string, weblinks: Array<{ __typename?: 'WebLink', id: string, link: string, linkText: string, position?: number | null, featuredAsset?: { __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, preview: string, focalPoint?: { __typename?: 'Coordinate', x: number, y: number } | null } | null } | null>, carousalItems: Array<{ __typename?: 'CarousalItem', id: string, position: number, isActive: boolean, featuredAsset: { __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, preview: string, focalPoint?: { __typename?: 'Coordinate', x: number, y: number } | null } } | null> };
+export type WebsiteFragment = { __typename?: 'Website', content: string, contentUpdatedAt: any, footerContent: string, announcementBarText: string, id: string, weblinks: Array<{ __typename?: 'WebLink', id: string, link: string, linkText: string, position?: number | null, featuredAsset?: { __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, preview: string, focalPoint?: { __typename?: 'Coordinate', x: number, y: number } | null } | null } | null>, carousalItems: Array<{ __typename?: 'CarousalItem', id: string, position: number, isActive: boolean, featuredAsset: { __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, preview: string, focalPoint?: { __typename?: 'Coordinate', x: number, y: number } | null } } | null> };
 
 export type GetWebsiteQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetWebsiteQuery = { __typename?: 'Query', getWebsite?: { __typename?: 'Website', content: string, footerContent: string, announcementBarText: string, id: string, weblinks: Array<{ __typename?: 'WebLink', id: string, link: string, linkText: string, position?: number | null, featuredAsset?: { __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, preview: string, focalPoint?: { __typename?: 'Coordinate', x: number, y: number } | null } | null } | null>, carousalItems: Array<{ __typename?: 'CarousalItem', id: string, position: number, isActive: boolean, featuredAsset: { __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, preview: string, focalPoint?: { __typename?: 'Coordinate', x: number, y: number } | null } } | null> } | null };
+export type GetWebsiteQuery = { __typename?: 'Query', getWebsite?: { __typename?: 'Website', content: string, contentUpdatedAt: any, footerContent: string, announcementBarText: string, id: string, weblinks: Array<{ __typename?: 'WebLink', id: string, link: string, linkText: string, position?: number | null, featuredAsset?: { __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, preview: string, focalPoint?: { __typename?: 'Coordinate', x: number, y: number } | null } | null } | null>, carousalItems: Array<{ __typename?: 'CarousalItem', id: string, position: number, isActive: boolean, featuredAsset: { __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, preview: string, focalPoint?: { __typename?: 'Coordinate', x: number, y: number } | null } } | null> } | null };
 
 export const OrderDetailFragmentDoc = gql`
     fragment OrderDetail on Order {
@@ -7098,6 +7099,7 @@ export const CarousalItemFragmentDoc = gql`
 export const WebsiteFragmentDoc = gql`
     fragment Website on Website {
   content
+  contentUpdatedAt
   footerContent
   announcementBarText
   id

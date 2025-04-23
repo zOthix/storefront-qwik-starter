@@ -3493,6 +3493,7 @@ export type Website = Node & {
   announcementBarText: Scalars['String']['output'];
   carousalItems: Array<Maybe<CarousalItem>>;
   content: Scalars['String']['output'];
+  contentUpdatedAt: Scalars['DateTime']['output'];
   customFields?: Maybe<Scalars['JSON']['output']>;
   footerContent: Scalars['String']['output'];
   id: Scalars['ID']['output'];

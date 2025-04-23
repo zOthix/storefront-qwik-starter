@@ -3717,6 +3717,7 @@ type Website implements Node {
   announcementBarText: String!
   carousalItems: [CarousalItem]!
   content: String!
+  contentUpdatedAt: DateTime!
   customFields: JSON
   footerContent: String!
   id: ID!

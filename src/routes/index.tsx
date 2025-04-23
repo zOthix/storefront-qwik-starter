@@ -76,7 +76,7 @@ export default component$(() => {
 					<div class="relative w-full max-w-[700px] h-[200px] border border-gray-500 bg-gray-200 mx-auto text-center py-4 px-2 rounded-lg">
 						<div dangerouslySetInnerHTML={appState.website.content}></div>
 						<div class="absolute md:right-4 md:bottom-4 right-2 bottom-2 text-xs text-gray-700">
-							Last updated: {new Date().toLocaleString()}
+							Last updated: {new Date(appState.website.contentUpdatedAt).toLocaleString()}
 						</div>
 					</div>
 				</section>
