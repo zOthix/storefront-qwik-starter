@@ -263,6 +263,10 @@ input AssignProductsToChannelInput {
   productIds: [ID!]!
 }
 
+input AssignProductsToHotProductsInput {
+  productIds: [ID!]!
+}
+
 input AssignPromotionsToChannelInput {
   channelId: ID!
   promotionIds: [ID!]!
@@ -3088,6 +3092,9 @@ type Mutation {
   """Assigns all ProductVariants of Product to the specified Channel"""
   assignProductsToChannel(input: AssignProductsToChannelInput!): [Product!]!
 
+  """Assigns hot products"""
+  assignProductsToHotProducts(input: AssignProductsToHotProductsInput!): [Product!]!
+
   """Assigns Promotions to the specified Channel"""
   assignPromotionsToChannel(input: AssignPromotionsToChannelInput!): [Promotion!]!
 
@@ -3393,6 +3400,9 @@ type Mutation {
 
   """Removes all ProductVariants of Product from the specified Channel"""
   removeProductsFromChannel(input: RemoveProductsFromChannelInput!): [Product!]!
+
+  """Remove hot products"""
+  removeProductsFromHotProducts(input: RemoveProductsFromHotProductsInput!): [Product!]!
 
   """Removes Promotions from the specified Channel"""
   removePromotionsFromChannel(input: RemovePromotionsFromChannelInput!): [Promotion!]!
@@ -4424,6 +4434,7 @@ type Product implements Node {
   facetValues: [FacetValue!]!
   featuredAsset: Asset
   id: ID!
+  isHottest: Boolean!
   languageCode: LanguageCode!
   name: String!
   optionGroups: [ProductOptionGroup!]!
@@ -4446,6 +4457,7 @@ input ProductFilterParameter {
   enabled: BooleanOperators
   facetValueId: IDOperators
   id: IDOperators
+  isHottest: BooleanOperators
   languageCode: StringOperators
   name: StringOperators
   sku: StringOperators
@@ -5185,6 +5197,10 @@ input RemoveProductVariantsFromChannelInput {
 
 input RemoveProductsFromChannelInput {
   channelId: ID!
+  productIds: [ID!]!
+}
+
+input RemoveProductsFromHotProductsInput {
   productIds: [ID!]!
 }
 

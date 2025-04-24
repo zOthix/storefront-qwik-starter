@@ -285,6 +285,10 @@ export type AssignProductsToChannelInput = {
   productIds: Array<Scalars['ID']['input']>;
 };
 
+export type AssignProductsToHotProductsInput = {
+  productIds: Array<Scalars['ID']['input']>;
+};
+
 export type AssignPromotionsToChannelInput = {
   channelId: Scalars['ID']['input'];
   promotionIds: Array<Scalars['ID']['input']>;
@@ -2799,6 +2803,8 @@ export type Mutation = {
   assignProductVariantsToChannel: Array<ProductVariant>;
   /** Assigns all ProductVariants of Product to the specified Channel */
   assignProductsToChannel: Array<Product>;
+  /** Assigns hot products */
+  assignProductsToHotProducts: Array<Product>;
   /** Assigns Promotions to the specified Channel */
   assignPromotionsToChannel: Array<Promotion>;
   /** Assign a Role to an Administrator */
@@ -3010,6 +3016,8 @@ export type Mutation = {
   removeProductVariantsFromChannel: Array<ProductVariant>;
   /** Removes all ProductVariants of Product from the specified Channel */
   removeProductsFromChannel: Array<Product>;
+  /** Remove hot products */
+  removeProductsFromHotProducts: Array<Product>;
   /** Removes Promotions from the specified Channel */
   removePromotionsFromChannel: Array<Promotion>;
   /** Remove all settled jobs in the given queues older than the given date. Returns the number of jobs deleted. */
@@ -3192,6 +3200,11 @@ export type MutationAssignProductVariantsToChannelArgs = {
 
 export type MutationAssignProductsToChannelArgs = {
   input: AssignProductsToChannelInput;
+};
+
+
+export type MutationAssignProductsToHotProductsArgs = {
+  input: AssignProductsToHotProductsInput;
 };
 
 
@@ -3720,6 +3733,11 @@ export type MutationRemoveProductVariantsFromChannelArgs = {
 
 export type MutationRemoveProductsFromChannelArgs = {
   input: RemoveProductsFromChannelInput;
+};
+
+
+export type MutationRemoveProductsFromHotProductsArgs = {
+  input: RemoveProductsFromHotProductsInput;
 };
 
 
@@ -4753,6 +4771,7 @@ export type Product = Node & {
   facetValues: Array<FacetValue>;
   featuredAsset?: Maybe<Asset>;
   id: Scalars['ID']['output'];
+  isHottest: Scalars['Boolean']['output'];
   languageCode: LanguageCode;
   name: Scalars['String']['output'];
   optionGroups: Array<ProductOptionGroup>;
@@ -4778,6 +4797,7 @@ export type ProductFilterParameter = {
   enabled?: InputMaybe<BooleanOperators>;
   facetValueId?: InputMaybe<IdOperators>;
   id?: InputMaybe<IdOperators>;
+  isHottest?: InputMaybe<BooleanOperators>;
   languageCode?: InputMaybe<StringOperators>;
   name?: InputMaybe<StringOperators>;
   sku?: InputMaybe<StringOperators>;
@@ -5807,6 +5827,10 @@ export type RemoveProductVariantsFromChannelInput = {
 
 export type RemoveProductsFromChannelInput = {
   channelId: Scalars['ID']['input'];
+  productIds: Array<Scalars['ID']['input']>;
+};
+
+export type RemoveProductsFromHotProductsInput = {
   productIds: Array<Scalars['ID']['input']>;
 };
 

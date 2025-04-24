@@ -6,7 +6,7 @@ import {
 	SearchInput,
 	SearchResponse,
 } from '~/generated/graphql';
-import { ProductsQuery } from '~/generated/graphql-shop';
+import { GetHotProductsQuery, ProductsQuery } from '~/generated/graphql-shop';
 import { shopSdk } from '~/graphql-wrapper';
 
 export const search = async (searchInput: SearchInput) => {
@@ -32,6 +32,12 @@ export const getProducts = async (options: ProductListOptions) => {
 	return shopSdk
 		.products({ options })
 		.then((res: ProductsQuery) => res.products.items as Product[]);
+};
+
+export const getHotProducts = async () => {
+	return shopSdk
+		.getHotProducts()
+		.then((res: GetHotProductsQuery) => res.getHotProducts as Product[]);
 };
 
 export const detailedProductFragment = gql`
@@ -144,4 +150,12 @@ gql`
 		}
 	}
 	${listedProductFragment}
+`;
+
+gql`
+	query getHotProducts {
+		getHotProducts {
+			...DetailedProduct
+		}
+	}
 `;

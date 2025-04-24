@@ -10,7 +10,7 @@ import Carousal from '~/components/carousal/Carousal';
 import LinkCard from '~/components/link-card/LinkCard';
 import { APP_STATE } from '~/constants';
 import { Product } from '~/generated/graphql';
-import { getProducts } from '~/providers/shop/products/products';
+import { getHotProducts, getProducts } from '~/providers/shop/products/products';
 
 const commonSwiperOptions = {
 	loop: true,
@@ -33,7 +33,7 @@ const commonSwiperOptions = {
 	},
 };
 
-export const useProductsLoader = routeLoader$(async () => {
+export const useNewProductsLoader = routeLoader$(async () => {
 	const products = await getProducts({
 		sort: {
 			createdAt: 'DESC',
@@ -43,21 +43,17 @@ export const useProductsLoader = routeLoader$(async () => {
 	return products;
 });
 
+export const useHotProductsLoader = routeLoader$(async () => {
+	const products = await getHotProducts();
+	return products;
+});
+
 export default component$(() => {
 	const appState = useContext(APP_STATE);
 	const brands = ['Brand1', 'Brand2', 'Brand3', 'Brand4', 'Brand5', 'Brand6', 'Brand7', 'Brand8'];
-	const products = [
-		'Product1',
-		'Product2',
-		'Product3',
-		'Product4',
-		'Product5',
-		'Product6',
-		'Product7',
-		'Product8',
-	];
 
-	const productsSignal = useProductsLoader();
+	const newProductsSignal = useNewProductsLoader();
+	const hotProductsSignal = useHotProductsLoader();
 
 	return (
 		<div class="pb-12 md:pb-24">
@@ -81,10 +77,10 @@ export default component$(() => {
 					<BrandsSlider brands={brands} />
 				</section>
 				<section>
-					<NewProductsSlider products={productsSignal.value} />
+					<NewProductsSlider products={newProductsSignal.value} />
 				</section>
 				<section>
-					<HotProductsSlider products={products} />
+					<HotProductsSlider products={hotProductsSignal.value} />
 				</section>
 				<section>
 					<div class="relative w-full max-w-[700px] h-[200px] border border-gray-500 bg-gray-200 mx-auto text-center py-4 px-2 rounded-lg">
@@ -157,7 +153,7 @@ const NewProductsSlider = component$<{ products: Product[] }>(({ products }) => 
 	);
 });
 
-const HotProductsSlider = component$<{ products: string[] }>(({ products }) => {
+const HotProductsSlider = component$<{ products: Product[] }>(({ products }) => {
 	useVisibleTask$(() => {
 		new Swiper('.hot-products-swiper', {
 			navigation: {
@@ -178,12 +174,12 @@ const HotProductsSlider = component$<{ products: string[] }>(({ products }) => {
 				<div class="swiper-wrapper">
 					{products.map((product) => {
 						return (
-							<div key={product} class="swiper-slide">
+							<div key={product.id} class="swiper-slide">
 								<div class="flex justify-center">
 									<BrandLink
-										name={product}
-										href="/account/"
-										src="https://cdn.logojoy.com/wp-content/uploads/20240202171627/2002-Ferrari-Logo-600x319.png"
+										name={product.name}
+										href={product.slug ?? '/'}
+										src={product.featuredAsset?.preview ?? '/'}
 									/>
 								</div>
 							</div>

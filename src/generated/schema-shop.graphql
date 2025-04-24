@@ -2940,6 +2940,7 @@ type Product implements Node {
   facetValues: [FacetValue!]!
   featuredAsset: Asset
   id: ID!
+  isHottest: Boolean!
   languageCode: LanguageCode!
   name: String!
   optionGroups: [ProductOptionGroup!]!
@@ -2961,6 +2962,7 @@ input ProductFilterParameter {
   description: StringOperators
   enabled: BooleanOperators
   id: IDOperators
+  isHottest: BooleanOperators
   languageCode: StringOperators
   name: StringOperators
   slug: StringOperators
@@ -3233,6 +3235,9 @@ type Query {
   """A list of Facets available to the shop"""
   facets(options: FacetListOptions): FacetList!
   generateBraintreeClientToken(includeCustomerId: Boolean, orderId: ID): String
+
+  """Get hot products"""
+  getHotProducts: [Product!]!
 
   """Returns information about the current authenticated User"""
   me: CurrentUser

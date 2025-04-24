@@ -2661,6 +2661,7 @@ export type Product = Node & {
   facetValues: Array<FacetValue>;
   featuredAsset?: Maybe<Asset>;
   id: Scalars['ID']['output'];
+  isHottest: Scalars['Boolean']['output'];
   languageCode: LanguageCode;
   name: Scalars['String']['output'];
   optionGroups: Array<ProductOptionGroup>;
@@ -2685,6 +2686,7 @@ export type ProductFilterParameter = {
   description?: InputMaybe<StringOperators>;
   enabled?: InputMaybe<BooleanOperators>;
   id?: InputMaybe<IdOperators>;
+  isHottest?: InputMaybe<BooleanOperators>;
   languageCode?: InputMaybe<StringOperators>;
   name?: InputMaybe<StringOperators>;
   slug?: InputMaybe<StringOperators>;
@@ -2946,6 +2948,8 @@ export type Query = {
   /** A list of Facets available to the shop */
   facets: FacetList;
   generateBraintreeClientToken?: Maybe<Scalars['String']['output']>;
+  /** Get hot products */
+  getHotProducts: Array<Product>;
   /** Returns information about the current authenticated User */
   me?: Maybe<CurrentUser>;
   /** Returns the possible next states that the activeOrder can transition to */
@@ -3830,6 +3834,11 @@ export type SearchQueryVariables = Exact<{
 
 export type SearchQuery = { __typename?: 'Query', search: { __typename?: 'SearchResponse', totalItems: number, items: Array<{ __typename?: 'SearchResult', productId: string, productName: string, slug: string, currencyCode: CurrencyCode, productAsset?: { __typename?: 'SearchResultAsset', id: string, preview: string } | null, priceWithTax: { __typename?: 'PriceRange', min: any, max: any } | { __typename?: 'SinglePrice', value: any } }>, facetValues: Array<{ __typename?: 'FacetValueResult', count: number, facetValue: { __typename?: 'FacetValue', id: string, name: string, facet: { __typename?: 'Facet', id: string, name: string } } }> } };
 
+export type GetHotProductsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetHotProductsQuery = { __typename?: 'Query', getHotProducts: Array<{ __typename?: 'Product', id: string, name: string, description: string, slug: string, collections: Array<{ __typename?: 'Collection', id: string, slug: string, name: string, breadcrumbs: Array<{ __typename?: 'CollectionBreadcrumb', id: string, name: string, slug: string }> }>, facetValues: Array<{ __typename?: 'FacetValue', id: string, code: string, name: string, facet: { __typename?: 'Facet', id: string, code: string, name: string } }>, featuredAsset?: { __typename?: 'Asset', id: string, preview: string } | null, assets: Array<{ __typename?: 'Asset', id: string, preview: string }>, variants: Array<{ __typename?: 'ProductVariant', id: string, name: string, priceWithTax: any, currencyCode: CurrencyCode, sku: string, stockLevel: string, featuredAsset?: { __typename?: 'Asset', id: string, preview: string } | null }> }> };
+
 export const AddressFragmentDoc = gql`
     fragment Address on Address {
   id
@@ -4452,6 +4461,13 @@ export const SearchDocument = gql`
   }
 }
     ${ListedProductFragmentDoc}`;
+export const GetHotProductsDocument = gql`
+    query getHotProducts {
+  getHotProducts {
+    ...DetailedProduct
+  }
+}
+    ${DetailedProductFragmentDoc}`;
 export type Requester<C = {}> = <R, V>(doc: DocumentNode, vars?: V, options?: C) => Promise<R> | AsyncIterable<R>
 export function getSdk<C>(requester: Requester<C>) {
   return {
@@ -4565,6 +4581,9 @@ export function getSdk<C>(requester: Requester<C>) {
     },
     search(variables: SearchQueryVariables, options?: C): Promise<SearchQuery> {
       return requester<SearchQuery, SearchQueryVariables>(SearchDocument, variables, options) as Promise<SearchQuery>;
+    },
+    getHotProducts(variables?: GetHotProductsQueryVariables, options?: C): Promise<GetHotProductsQuery> {
+      return requester<GetHotProductsQuery, GetHotProductsQueryVariables>(GetHotProductsDocument, variables, options) as Promise<GetHotProductsQuery>;
     }
   };
 }
