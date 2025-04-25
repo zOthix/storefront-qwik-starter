@@ -109,8 +109,24 @@ input BooleanOperators {
   isNull: Boolean
 }
 
-type CarousalItem implements Node {
+type Brand implements Node {
+  description: String!
   featuredAsset: Asset!
+  id: ID!
+  isActive: Boolean!
+  name: String!
+  productList(options: ProductListOptions): ProductList!
+  products: [Product!]
+  slug: String!
+}
+
+type BrandList implements PaginatedList {
+  items: [Brand!]!
+  totalItems: Int!
+}
+
+type CarousalItem implements Node {
+  featuredAsset: Asset
   id: ID!
   isActive: Boolean!
   position: Int!
@@ -2932,6 +2948,7 @@ type PriceRange {
 
 type Product implements Node {
   assets: [Asset!]!
+  brand: Brand
   collections: [Collection!]!
   createdAt: DateTime!
   customFields: JSON
@@ -3236,6 +3253,12 @@ type Query {
   facets(options: FacetListOptions): FacetList!
   generateBraintreeClientToken(includeCustomerId: Boolean, orderId: ID): String
 
+  """Get brand details"""
+  getBrand(id: ID, slug: String): Brand
+
+  """Get all brands"""
+  getBrands: [Brand!]!
+
   """Get hot products"""
   getHotProducts: [Product!]!
 
@@ -3381,6 +3404,8 @@ type RoleList implements PaginatedList {
 }
 
 input SearchInput {
+  brandId: ID
+  brandSlug: String
   collectionId: ID
   collectionSlug: String
   facetValueFilters: [FacetValueFilterInput!]
@@ -3403,6 +3428,8 @@ type SearchResponse {
 }
 
 type SearchResult {
+  brand: ID
+
   """An array of ids of the Collections in which this result appears"""
   collectionIds: [ID!]!
   currencyCode: CurrencyCode!
@@ -3715,18 +3742,18 @@ type WebLink implements Node {
   id: ID!
   link: String!
   linkText: String!
-  position: Int
+  position: Int!
 }
 
 type Website implements Node {
   announcementBarText: String!
-  carousalItems: [CarousalItem]!
+  carousalItems: [CarousalItem!]!
   content: String!
   contentUpdatedAt: DateTime!
   customFields: JSON
   footerContent: String!
   id: ID!
-  weblinks: [WebLink]!
+  weblinks: [WebLink!]!
 }
 
 type Zone implements Node {

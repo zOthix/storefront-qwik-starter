@@ -142,9 +142,32 @@ export type BooleanOperators = {
   isNull?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
+export type Brand = Node & {
+  __typename?: 'Brand';
+  description: Scalars['String']['output'];
+  featuredAsset: Asset;
+  id: Scalars['ID']['output'];
+  isActive: Scalars['Boolean']['output'];
+  name: Scalars['String']['output'];
+  productList: ProductList;
+  products?: Maybe<Array<Product>>;
+  slug: Scalars['String']['output'];
+};
+
+
+export type BrandProductListArgs = {
+  options?: InputMaybe<ProductListOptions>;
+};
+
+export type BrandList = PaginatedList & {
+  __typename?: 'BrandList';
+  items: Array<Brand>;
+  totalItems: Scalars['Int']['output'];
+};
+
 export type CarousalItem = Node & {
   __typename?: 'CarousalItem';
-  featuredAsset: Asset;
+  featuredAsset?: Maybe<Asset>;
   id: Scalars['ID']['output'];
   isActive: Scalars['Boolean']['output'];
   position: Scalars['Int']['output'];
@@ -2653,6 +2676,7 @@ export type PriceRange = {
 export type Product = Node & {
   __typename?: 'Product';
   assets: Array<Asset>;
+  brand?: Maybe<Brand>;
   collections: Array<Collection>;
   createdAt: Scalars['DateTime']['output'];
   customFields?: Maybe<Scalars['JSON']['output']>;
@@ -2948,6 +2972,10 @@ export type Query = {
   /** A list of Facets available to the shop */
   facets: FacetList;
   generateBraintreeClientToken?: Maybe<Scalars['String']['output']>;
+  /** Get brand details */
+  getBrand?: Maybe<Brand>;
+  /** Get all brands */
+  getBrands: Array<Brand>;
   /** Get hot products */
   getHotProducts: Array<Product>;
   /** Returns information about the current authenticated User */
@@ -2999,6 +3027,12 @@ export type QueryFacetsArgs = {
 export type QueryGenerateBraintreeClientTokenArgs = {
   includeCustomerId?: InputMaybe<Scalars['Boolean']['input']>;
   orderId?: InputMaybe<Scalars['ID']['input']>;
+};
+
+
+export type QueryGetBrandArgs = {
+  id?: InputMaybe<Scalars['ID']['input']>;
+  slug?: InputMaybe<Scalars['String']['input']>;
 };
 
 
@@ -3141,6 +3175,8 @@ export type RoleList = PaginatedList & {
 };
 
 export type SearchInput = {
+  brandId?: InputMaybe<Scalars['ID']['input']>;
+  brandSlug?: InputMaybe<Scalars['String']['input']>;
   collectionId?: InputMaybe<Scalars['ID']['input']>;
   collectionSlug?: InputMaybe<Scalars['String']['input']>;
   facetValueFilters?: InputMaybe<Array<FacetValueFilterInput>>;
@@ -3166,6 +3202,7 @@ export type SearchResponse = {
 
 export type SearchResult = {
   __typename?: 'SearchResult';
+  brand?: Maybe<Scalars['ID']['output']>;
   /** An array of ids of the Collections in which this result appears */
   collectionIds: Array<Scalars['ID']['output']>;
   currencyCode: CurrencyCode;
@@ -3489,19 +3526,19 @@ export type WebLink = Node & {
   id: Scalars['ID']['output'];
   link: Scalars['String']['output'];
   linkText: Scalars['String']['output'];
-  position?: Maybe<Scalars['Int']['output']>;
+  position: Scalars['Int']['output'];
 };
 
 export type Website = Node & {
   __typename?: 'Website';
   announcementBarText: Scalars['String']['output'];
-  carousalItems: Array<Maybe<CarousalItem>>;
+  carousalItems: Array<CarousalItem>;
   content: Scalars['String']['output'];
   contentUpdatedAt: Scalars['DateTime']['output'];
   customFields?: Maybe<Scalars['JSON']['output']>;
   footerContent: Scalars['String']['output'];
   id: Scalars['ID']['output'];
-  weblinks: Array<Maybe<WebLink>>;
+  weblinks: Array<WebLink>;
 };
 
 export type Zone = Node & {
@@ -3825,19 +3862,32 @@ export type ProductsQueryVariables = Exact<{
 
 export type ProductsQuery = { __typename?: 'Query', products: { __typename?: 'ProductList', items: Array<{ __typename?: 'Product', id: string, name: string, description: string, slug: string, collections: Array<{ __typename?: 'Collection', id: string, slug: string, name: string, breadcrumbs: Array<{ __typename?: 'CollectionBreadcrumb', id: string, name: string, slug: string }> }>, facetValues: Array<{ __typename?: 'FacetValue', id: string, code: string, name: string, facet: { __typename?: 'Facet', id: string, code: string, name: string } }>, featuredAsset?: { __typename?: 'Asset', id: string, preview: string } | null, assets: Array<{ __typename?: 'Asset', id: string, preview: string }>, variants: Array<{ __typename?: 'ProductVariant', id: string, name: string, priceWithTax: any, currencyCode: CurrencyCode, sku: string, stockLevel: string, featuredAsset?: { __typename?: 'Asset', id: string, preview: string } | null }> }> } };
 
-export type ListedProductFragment = { __typename?: 'SearchResult', productId: string, productName: string, slug: string, currencyCode: CurrencyCode, productAsset?: { __typename?: 'SearchResultAsset', id: string, preview: string } | null, priceWithTax: { __typename?: 'PriceRange', min: any, max: any } | { __typename?: 'SinglePrice', value: any } };
+export type ListedProductFragment = { __typename?: 'SearchResult', productId: string, productName: string, slug: string, brand?: string | null, currencyCode: CurrencyCode, productAsset?: { __typename?: 'SearchResultAsset', id: string, preview: string } | null, priceWithTax: { __typename?: 'PriceRange', min: any, max: any } | { __typename?: 'SinglePrice', value: any } };
 
 export type SearchQueryVariables = Exact<{
   input: SearchInput;
 }>;
 
 
-export type SearchQuery = { __typename?: 'Query', search: { __typename?: 'SearchResponse', totalItems: number, items: Array<{ __typename?: 'SearchResult', productId: string, productName: string, slug: string, currencyCode: CurrencyCode, productAsset?: { __typename?: 'SearchResultAsset', id: string, preview: string } | null, priceWithTax: { __typename?: 'PriceRange', min: any, max: any } | { __typename?: 'SinglePrice', value: any } }>, facetValues: Array<{ __typename?: 'FacetValueResult', count: number, facetValue: { __typename?: 'FacetValue', id: string, name: string, facet: { __typename?: 'Facet', id: string, name: string } } }> } };
+export type SearchQuery = { __typename?: 'Query', search: { __typename?: 'SearchResponse', totalItems: number, items: Array<{ __typename?: 'SearchResult', productId: string, productName: string, slug: string, brand?: string | null, currencyCode: CurrencyCode, productAsset?: { __typename?: 'SearchResultAsset', id: string, preview: string } | null, priceWithTax: { __typename?: 'PriceRange', min: any, max: any } | { __typename?: 'SinglePrice', value: any } }>, facetValues: Array<{ __typename?: 'FacetValueResult', count: number, facetValue: { __typename?: 'FacetValue', id: string, name: string, facet: { __typename?: 'Facet', id: string, name: string } } }> } };
 
 export type GetHotProductsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type GetHotProductsQuery = { __typename?: 'Query', getHotProducts: Array<{ __typename?: 'Product', id: string, name: string, description: string, slug: string, collections: Array<{ __typename?: 'Collection', id: string, slug: string, name: string, breadcrumbs: Array<{ __typename?: 'CollectionBreadcrumb', id: string, name: string, slug: string }> }>, facetValues: Array<{ __typename?: 'FacetValue', id: string, code: string, name: string, facet: { __typename?: 'Facet', id: string, code: string, name: string } }>, featuredAsset?: { __typename?: 'Asset', id: string, preview: string } | null, assets: Array<{ __typename?: 'Asset', id: string, preview: string }>, variants: Array<{ __typename?: 'ProductVariant', id: string, name: string, priceWithTax: any, currencyCode: CurrencyCode, sku: string, stockLevel: string, featuredAsset?: { __typename?: 'Asset', id: string, preview: string } | null }> }> };
+
+export type GetBrandsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetBrandsQuery = { __typename?: 'Query', getBrands: Array<{ __typename?: 'Brand', id: string, name: string, slug: string, description: string, isActive: boolean, featuredAsset: { __typename?: 'Asset', id: string, preview: string } }> };
+
+export type GetBrandQueryVariables = Exact<{
+  id?: InputMaybe<Scalars['ID']['input']>;
+  slug?: InputMaybe<Scalars['String']['input']>;
+}>;
+
+
+export type GetBrandQuery = { __typename?: 'Query', getBrand?: { __typename?: 'Brand', id: string, name: string, slug: string, description: string, isActive: boolean, featuredAsset: { __typename?: 'Asset', id: string, preview: string } } | null };
 
 export const AddressFragmentDoc = gql`
     fragment Address on Address {
@@ -3995,6 +4045,7 @@ export const ListedProductFragmentDoc = gql`
     id
     preview
   }
+  brand
   currencyCode
   priceWithTax {
     ... on PriceRange {
@@ -4468,6 +4519,36 @@ export const GetHotProductsDocument = gql`
   }
 }
     ${DetailedProductFragmentDoc}`;
+export const GetBrandsDocument = gql`
+    query getBrands {
+  getBrands {
+    id
+    name
+    slug
+    description
+    isActive
+    featuredAsset {
+      id
+      preview
+    }
+  }
+}
+    `;
+export const GetBrandDocument = gql`
+    query getBrand($id: ID, $slug: String) {
+  getBrand(id: $id, slug: $slug) {
+    id
+    name
+    slug
+    description
+    isActive
+    featuredAsset {
+      id
+      preview
+    }
+  }
+}
+    `;
 export type Requester<C = {}> = <R, V>(doc: DocumentNode, vars?: V, options?: C) => Promise<R> | AsyncIterable<R>
 export function getSdk<C>(requester: Requester<C>) {
   return {
@@ -4584,6 +4665,12 @@ export function getSdk<C>(requester: Requester<C>) {
     },
     getHotProducts(variables?: GetHotProductsQueryVariables, options?: C): Promise<GetHotProductsQuery> {
       return requester<GetHotProductsQuery, GetHotProductsQueryVariables>(GetHotProductsDocument, variables, options) as Promise<GetHotProductsQuery>;
+    },
+    getBrands(variables?: GetBrandsQueryVariables, options?: C): Promise<GetBrandsQuery> {
+      return requester<GetBrandsQuery, GetBrandsQueryVariables>(GetBrandsDocument, variables, options) as Promise<GetBrandsQuery>;
+    },
+    getBrand(variables?: GetBrandQueryVariables, options?: C): Promise<GetBrandQuery> {
+      return requester<GetBrandQuery, GetBrandQueryVariables>(GetBrandDocument, variables, options) as Promise<GetBrandQuery>;
     }
   };
 }

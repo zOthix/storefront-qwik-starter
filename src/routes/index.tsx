@@ -10,7 +10,8 @@ import Carousal from '~/components/carousal/Carousal';
 import LinkCard from '~/components/link-card/LinkCard';
 import { APP_STATE } from '~/constants';
 import { Product } from '~/generated/graphql';
-import { getHotProducts, getProducts } from '~/providers/shop/products/products';
+import { Brand } from '~/generated/graphql-admin';
+import { getBrands, getHotProducts, getProducts } from '~/providers/shop/products/products';
 
 const commonSwiperOptions = {
 	loop: true,
@@ -48,12 +49,17 @@ export const useHotProductsLoader = routeLoader$(async () => {
 	return products;
 });
 
+export const useBrandsLoader = routeLoader$(async () => {
+	const brands = await getBrands();
+	return brands;
+});
+
 export default component$(() => {
 	const appState = useContext(APP_STATE);
-	const brands = ['Brand1', 'Brand2', 'Brand3', 'Brand4', 'Brand5', 'Brand6', 'Brand7', 'Brand8'];
 
 	const newProductsSignal = useNewProductsLoader();
 	const hotProductsSignal = useHotProductsLoader();
+	const brandsSignal = useBrandsLoader();
 
 	return (
 		<div class="pb-12 md:pb-24">
@@ -74,7 +80,7 @@ export default component$(() => {
 					</div>
 				</section>
 				<section>
-					<BrandsSlider brands={brands} />
+					<BrandsSlider brands={brandsSignal.value} />
 				</section>
 				<section>
 					<NewProductsSlider products={newProductsSignal.value} />
@@ -95,16 +101,16 @@ export default component$(() => {
 	);
 });
 
-const BrandsSlider = component$<{ brands: string[] }>(({ brands }) => {
+const BrandsSlider = component$<{ brands: Brand[] }>(({ brands }) => {
 	return (
 		<div class="w-full flex justify-center">
 			<div class="flex flex-wrap mx-auto gap-x-14 gap-y-4">
 				{brands.map((brand) => {
 					return (
 						<BrandLink
-							name={brand}
-							href="/account/"
-							src="https://images.seeklogo.com/logo-png/31/2/honda-logo-png_seeklogo-310689.png"
+							name={brand.name}
+							href={`brands/${brand.slug}`}
+							src={brand.featuredAsset.preview}
 						/>
 					);
 				})}
@@ -139,7 +145,7 @@ const NewProductsSlider = component$<{ products: Product[] }>(({ products }) => 
 									<BrandLink
 										name={product.name}
 										src={product.featuredAsset?.preview ?? '/'}
-										href={product.slug ?? '/'}
+										href={product.slug ? `products/${product.slug}` : '/'}
 									/>
 								</div>
 							</div>
@@ -178,7 +184,7 @@ const HotProductsSlider = component$<{ products: Product[] }>(({ products }) => 
 								<div class="flex justify-center">
 									<BrandLink
 										name={product.name}
-										href={product.slug ?? '/'}
+										href={product.slug ? `products/${product.slug}` : '/'}
 										src={product.featuredAsset?.preview ?? '/'}
 									/>
 								</div>

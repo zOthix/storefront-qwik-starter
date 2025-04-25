@@ -343,6 +343,59 @@ export type BooleanOperators = {
   isNull?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
+export type Brand = Node & {
+  __typename?: 'Brand';
+  description: Scalars['String']['output'];
+  featuredAsset: Asset;
+  id: Scalars['ID']['output'];
+  isActive: Scalars['Boolean']['output'];
+  name: Scalars['String']['output'];
+  productList: ProductList;
+  products?: Maybe<Array<Product>>;
+  slug: Scalars['String']['output'];
+};
+
+
+export type BrandProductListArgs = {
+  options?: InputMaybe<ProductListOptions>;
+};
+
+export type BrandFilterParameter = {
+  _and?: InputMaybe<Array<BrandFilterParameter>>;
+  _or?: InputMaybe<Array<BrandFilterParameter>>;
+  description?: InputMaybe<StringOperators>;
+  id?: InputMaybe<IdOperators>;
+  isActive?: InputMaybe<BooleanOperators>;
+  name?: InputMaybe<StringOperators>;
+  slug?: InputMaybe<StringOperators>;
+};
+
+export type BrandList = PaginatedList & {
+  __typename?: 'BrandList';
+  items: Array<Brand>;
+  totalItems: Scalars['Int']['output'];
+};
+
+export type BrandListOptions = {
+  /** Allows the results to be filtered */
+  filter?: InputMaybe<BrandFilterParameter>;
+  /** Specifies whether multiple top-level "filter" fields should be combined with a logical AND or OR operation. Defaults to AND. */
+  filterOperator?: InputMaybe<LogicalOperator>;
+  /** Skips the first n results, for use in pagination */
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  /** Specifies which properties to sort the results by */
+  sort?: InputMaybe<BrandSortParameter>;
+  /** Takes n results, for use in pagination */
+  take?: InputMaybe<Scalars['Int']['input']>;
+};
+
+export type BrandSortParameter = {
+  description?: InputMaybe<SortOrder>;
+  id?: InputMaybe<SortOrder>;
+  name?: InputMaybe<SortOrder>;
+  slug?: InputMaybe<SortOrder>;
+};
+
 /** Returned if an attempting to cancel lines from an Order which is still active */
 export type CancelActiveOrderError = ErrorResult & {
   __typename?: 'CancelActiveOrderError';
@@ -386,7 +439,7 @@ export type Cancellation = Node & StockMovement & {
 
 export type CarousalItem = Node & {
   __typename?: 'CarousalItem';
-  featuredAsset: Asset;
+  featuredAsset?: Maybe<Asset>;
   id: Scalars['ID']['output'];
   isActive: Scalars['Boolean']['output'];
   position: Scalars['Int']['output'];
@@ -765,6 +818,14 @@ export type CreateAssetInput = {
 
 export type CreateAssetResult = Asset | MimeTypeError;
 
+export type CreateBrandInput = {
+  description?: InputMaybe<Scalars['String']['input']>;
+  featuredAsset: Scalars['ID']['input'];
+  isActive: Scalars['Boolean']['input'];
+  name: Scalars['String']['input'];
+  slug: Scalars['String']['input'];
+};
+
 export type CreateCarousalItemInput = {
   featuredAsset: Scalars['ID']['input'];
   isActive: Scalars['Boolean']['input'];
@@ -876,6 +937,7 @@ export type CreateGroupOptionInput = {
 
 export type CreateOrUpdateProductInput = {
   assetIds?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  brand?: InputMaybe<Scalars['ID']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
   enabled?: InputMaybe<Scalars['Boolean']['input']>;
   facetValueIds?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
@@ -900,6 +962,7 @@ export type CreatePaymentMethodInput = {
 
 export type CreateProductInput = {
   assetIds?: InputMaybe<Array<Scalars['ID']['input']>>;
+  brand?: InputMaybe<Scalars['ID']['input']>;
   customFields?: InputMaybe<Scalars['JSON']['input']>;
   enabled?: InputMaybe<Scalars['Boolean']['input']>;
   facetValueIds?: InputMaybe<Array<Scalars['ID']['input']>>;
@@ -1019,7 +1082,7 @@ export type CreateWebLinkInput = {
   featuredAsset?: InputMaybe<Scalars['ID']['input']>;
   link: Scalars['String']['input'];
   linkText: Scalars['String']['input'];
-  position?: InputMaybe<Scalars['Int']['input']>;
+  position: Scalars['Int']['input'];
 };
 
 export type CreateZoneInput = {
@@ -2822,6 +2885,8 @@ export type Mutation = {
   createAdministrator: Administrator;
   /** Create a new Asset */
   createAssets: Array<CreateAssetResult>;
+  /** Create a brand */
+  createBrand: Brand;
   /** Create carousalItem */
   createCarousalItem: CarousalItem;
   /** Create a new Channel */
@@ -2885,6 +2950,8 @@ export type Mutation = {
   deleteAsset: DeletionResponse;
   /** Delete multiple Assets */
   deleteAssets: DeletionResponse;
+  /** Delete a brand */
+  deleteBrand: DeletionResponse;
   /** Delete a Channel */
   deleteChannel: DeletionResponse;
   /** Delete multiple Channels */
@@ -3052,8 +3119,10 @@ export type Mutation = {
   updateAdministrator: Administrator;
   /** Update an existing Asset */
   updateAsset: Asset;
+  /** Update a brand */
+  updateBrand: Brand;
   /** Update carousal items */
-  updateCarousalItems: Array<Maybe<CarousalItem>>;
+  updateCarousalItems: Array<CarousalItem>;
   /** Update an existing Channel */
   updateChannel: UpdateChannelResult;
   /** Update an existing Collection */
@@ -3104,7 +3173,7 @@ export type Mutation = {
   /** Update an existing TaxRate */
   updateTaxRate: TaxRate;
   /** Update weblinks */
-  updateWebLinks: Array<Maybe<WebLink>>;
+  updateWebLinks: Array<WebLink>;
   /** Update website details */
   updateWebsite: Website;
   /** Update an existing Zone */
@@ -3257,6 +3326,11 @@ export type MutationCreateAdministratorArgs = {
 
 export type MutationCreateAssetsArgs = {
   input: Array<CreateAssetInput>;
+};
+
+
+export type MutationCreateBrandArgs = {
+  input: CreateBrandInput;
 };
 
 
@@ -3414,6 +3488,11 @@ export type MutationDeleteAssetArgs = {
 
 export type MutationDeleteAssetsArgs = {
   input: DeleteAssetsInput;
+};
+
+
+export type MutationDeleteBrandArgs = {
+  id: Scalars['ID']['input'];
 };
 
 
@@ -3848,6 +3927,11 @@ export type MutationUpdateAdministratorArgs = {
 
 export type MutationUpdateAssetArgs = {
   input: UpdateAssetInput;
+};
+
+
+export type MutationUpdateBrandArgs = {
+  input: UpdateBrandInput;
 };
 
 
@@ -4762,6 +4846,7 @@ export type PriceVariantInput = {
 export type Product = Node & {
   __typename?: 'Product';
   assets: Array<Asset>;
+  brand?: Maybe<Brand>;
   channels: Array<Channel>;
   collections: Array<Collection>;
   createdAt: Scalars['DateTime']['output'];
@@ -5273,6 +5358,10 @@ export type Query = {
   asset?: Maybe<Asset>;
   /** Get a list of Assets */
   assets: AssetList;
+  /** Get a brand by id */
+  brand?: Maybe<Brand>;
+  /** List Brands */
+  brands: BrandList;
   channel?: Maybe<Channel>;
   channels: ChannelList;
   /** Get a Collection either by id or slug. If neither id nor slug is specified, an error will result. */
@@ -5378,6 +5467,16 @@ export type QueryAssetArgs = {
 
 export type QueryAssetsArgs = {
   options?: InputMaybe<AssetListOptions>;
+};
+
+
+export type QueryBrandArgs = {
+  id: Scalars['ID']['input'];
+};
+
+
+export type QueryBrandsArgs = {
+  options?: InputMaybe<BrandListOptions>;
 };
 
 
@@ -5918,6 +6017,8 @@ export type Sale = Node & StockMovement & {
 };
 
 export type SearchInput = {
+  brandId?: InputMaybe<Scalars['ID']['input']>;
+  brandSlug?: InputMaybe<Scalars['String']['input']>;
   collectionId?: InputMaybe<Scalars['ID']['input']>;
   collectionSlug?: InputMaybe<Scalars['String']['input']>;
   facetValueFilters?: InputMaybe<Array<FacetValueFilterInput>>;
@@ -5943,6 +6044,7 @@ export type SearchResponse = {
 
 export type SearchResult = {
   __typename?: 'SearchResult';
+  brand?: Maybe<Scalars['ID']['output']>;
   /** An array of ids of the Channels in which this result appears */
   channelIds: Array<Scalars['ID']['output']>;
   /** An array of ids of the Collections in which this result appears */
@@ -6607,6 +6709,15 @@ export type UpdateAssetInput = {
   tags?: InputMaybe<Array<Scalars['String']['input']>>;
 };
 
+export type UpdateBrandInput = {
+  description?: InputMaybe<Scalars['String']['input']>;
+  featuredAsset?: InputMaybe<Scalars['ID']['input']>;
+  id: Scalars['ID']['input'];
+  isActive?: InputMaybe<Scalars['Boolean']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  slug?: InputMaybe<Scalars['String']['input']>;
+};
+
 export type UpdateCarousalItemInput = {
   featuredAsset?: InputMaybe<Scalars['ID']['input']>;
   id: Scalars['ID']['input'];
@@ -6615,7 +6726,7 @@ export type UpdateCarousalItemInput = {
 };
 
 export type UpdateCarousalItemsInput = {
-  items?: InputMaybe<Array<UpdateCarousalItemInput>>;
+  items: Array<UpdateCarousalItemInput>;
 };
 
 export type UpdateChannelInput = {
@@ -6767,6 +6878,7 @@ export type UpdatePriceVariantInput = {
 
 export type UpdateProductInput = {
   assetIds?: InputMaybe<Array<Scalars['ID']['input']>>;
+  brand?: InputMaybe<Scalars['ID']['input']>;
   customFields?: InputMaybe<Scalars['JSON']['input']>;
   enabled?: InputMaybe<Scalars['Boolean']['input']>;
   facetValueIds?: InputMaybe<Array<Scalars['ID']['input']>>;
@@ -6904,7 +7016,7 @@ export type UpdateWebLinkInput = {
 };
 
 export type UpdateWebLinksInput = {
-  links?: InputMaybe<Array<UpdateWebLinkInput>>;
+  links: Array<UpdateWebLinkInput>;
 };
 
 export type UpdateWebsiteInput = {
@@ -6912,7 +7024,6 @@ export type UpdateWebsiteInput = {
   content?: InputMaybe<Scalars['String']['input']>;
   customFields?: InputMaybe<Scalars['JSON']['input']>;
   footerContent?: InputMaybe<Scalars['String']['input']>;
-  weblinks?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
 };
 
 export type UpdateZoneInput = {
@@ -6940,19 +7051,19 @@ export type WebLink = Node & {
   id: Scalars['ID']['output'];
   link: Scalars['String']['output'];
   linkText: Scalars['String']['output'];
-  position?: Maybe<Scalars['Int']['output']>;
+  position: Scalars['Int']['output'];
 };
 
 export type Website = Node & {
   __typename?: 'Website';
   announcementBarText: Scalars['String']['output'];
-  carousalItems: Array<Maybe<CarousalItem>>;
+  carousalItems: Array<CarousalItem>;
   content: Scalars['String']['output'];
   contentUpdatedAt: Scalars['DateTime']['output'];
   customFields?: Maybe<Scalars['JSON']['output']>;
   footerContent: Scalars['String']['output'];
   id: Scalars['ID']['output'];
-  weblinks: Array<Maybe<WebLink>>;
+  weblinks: Array<WebLink>;
 };
 
 export type Zone = Node & {
@@ -7009,16 +7120,16 @@ export type OrdersQueryVariables = Exact<{
 
 export type OrdersQuery = { __typename?: 'Query', orders: { __typename?: 'OrderList', items: Array<{ __typename: 'Order', id: string, code: string, active: boolean, createdAt: any, state: string, currencyCode: CurrencyCode, totalQuantity: number, subTotal: any, subTotalWithTax: any, shippingWithTax: any, totalWithTax: any, taxSummary: Array<{ __typename?: 'OrderTaxSummary', description: string, taxRate: number, taxTotal: any }>, customer?: { __typename?: 'Customer', id: string, firstName: string, lastName: string, emailAddress: string } | null, shippingAddress?: { __typename?: 'OrderAddress', fullName?: string | null, streetLine1?: string | null, streetLine2?: string | null, company?: string | null, city?: string | null, province?: string | null, postalCode?: string | null, countryCode?: string | null, phoneNumber?: string | null } | null, shippingLines: Array<{ __typename?: 'ShippingLine', priceWithTax: any, shippingMethod: { __typename?: 'ShippingMethod', id: string, name: string, code: string } }>, lines: Array<{ __typename?: 'OrderLine', id: string, unitPriceWithTax: any, linePriceWithTax: any, quantity: number, featuredAsset?: { __typename?: 'Asset', id: string, preview: string } | null, productVariant: { __typename?: 'ProductVariant', id: string, name: string, price: any, product: { __typename?: 'Product', id: string, slug: string } } }> }> } };
 
-export type CarousalItemFragment = { __typename?: 'CarousalItem', id: string, position: number, isActive: boolean, featuredAsset: { __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, preview: string, focalPoint?: { __typename?: 'Coordinate', x: number, y: number } | null } };
+export type CarousalItemFragment = { __typename?: 'CarousalItem', id: string, position: number, isActive: boolean, featuredAsset?: { __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, preview: string, focalPoint?: { __typename?: 'Coordinate', x: number, y: number } | null } | null };
 
-export type WebLinkFragment = { __typename?: 'WebLink', id: string, link: string, linkText: string, position?: number | null, featuredAsset?: { __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, preview: string, focalPoint?: { __typename?: 'Coordinate', x: number, y: number } | null } | null };
+export type WebLinkFragment = { __typename?: 'WebLink', id: string, link: string, linkText: string, position: number, featuredAsset?: { __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, preview: string, focalPoint?: { __typename?: 'Coordinate', x: number, y: number } | null } | null };
 
-export type WebsiteFragment = { __typename?: 'Website', content: string, contentUpdatedAt: any, footerContent: string, announcementBarText: string, id: string, weblinks: Array<{ __typename?: 'WebLink', id: string, link: string, linkText: string, position?: number | null, featuredAsset?: { __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, preview: string, focalPoint?: { __typename?: 'Coordinate', x: number, y: number } | null } | null } | null>, carousalItems: Array<{ __typename?: 'CarousalItem', id: string, position: number, isActive: boolean, featuredAsset: { __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, preview: string, focalPoint?: { __typename?: 'Coordinate', x: number, y: number } | null } } | null> };
+export type WebsiteFragment = { __typename?: 'Website', content: string, contentUpdatedAt: any, footerContent: string, announcementBarText: string, id: string, weblinks: Array<{ __typename?: 'WebLink', id: string, link: string, linkText: string, position: number, featuredAsset?: { __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, preview: string, focalPoint?: { __typename?: 'Coordinate', x: number, y: number } | null } | null }>, carousalItems: Array<{ __typename?: 'CarousalItem', id: string, position: number, isActive: boolean, featuredAsset?: { __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, preview: string, focalPoint?: { __typename?: 'Coordinate', x: number, y: number } | null } | null }> };
 
 export type GetWebsiteQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetWebsiteQuery = { __typename?: 'Query', getWebsite?: { __typename?: 'Website', content: string, contentUpdatedAt: any, footerContent: string, announcementBarText: string, id: string, weblinks: Array<{ __typename?: 'WebLink', id: string, link: string, linkText: string, position?: number | null, featuredAsset?: { __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, preview: string, focalPoint?: { __typename?: 'Coordinate', x: number, y: number } | null } | null } | null>, carousalItems: Array<{ __typename?: 'CarousalItem', id: string, position: number, isActive: boolean, featuredAsset: { __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, preview: string, focalPoint?: { __typename?: 'Coordinate', x: number, y: number } | null } } | null> } | null };
+export type GetWebsiteQuery = { __typename?: 'Query', getWebsite?: { __typename?: 'Website', content: string, contentUpdatedAt: any, footerContent: string, announcementBarText: string, id: string, weblinks: Array<{ __typename?: 'WebLink', id: string, link: string, linkText: string, position: number, featuredAsset?: { __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, preview: string, focalPoint?: { __typename?: 'Coordinate', x: number, y: number } | null } | null }>, carousalItems: Array<{ __typename?: 'CarousalItem', id: string, position: number, isActive: boolean, featuredAsset?: { __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, preview: string, focalPoint?: { __typename?: 'Coordinate', x: number, y: number } | null } | null }> } | null };
 
 export const OrderDetailFragmentDoc = gql`
     fragment OrderDetail on Order {

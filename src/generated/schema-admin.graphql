@@ -319,6 +319,58 @@ input BooleanOperators {
   isNull: Boolean
 }
 
+type Brand implements Node {
+  description: String!
+  featuredAsset: Asset!
+  id: ID!
+  isActive: Boolean!
+  name: String!
+  productList(options: ProductListOptions): ProductList!
+  products: [Product!]
+  slug: String!
+}
+
+input BrandFilterParameter {
+  _and: [BrandFilterParameter!]
+  _or: [BrandFilterParameter!]
+  description: StringOperators
+  id: IDOperators
+  isActive: BooleanOperators
+  name: StringOperators
+  slug: StringOperators
+}
+
+type BrandList implements PaginatedList {
+  items: [Brand!]!
+  totalItems: Int!
+}
+
+input BrandListOptions {
+  """Allows the results to be filtered"""
+  filter: BrandFilterParameter
+
+  """
+  Specifies whether multiple top-level "filter" fields should be combined with a logical AND or OR operation. Defaults to AND.
+  """
+  filterOperator: LogicalOperator
+
+  """Skips the first n results, for use in pagination"""
+  skip: Int
+
+  """Specifies which properties to sort the results by"""
+  sort: BrandSortParameter
+
+  """Takes n results, for use in pagination"""
+  take: Int
+}
+
+input BrandSortParameter {
+  description: SortOrder
+  id: SortOrder
+  name: SortOrder
+  slug: SortOrder
+}
+
 """
 Returned if an attempting to cancel lines from an Order which is still active
 """
@@ -366,7 +418,7 @@ type Cancellation implements Node & StockMovement {
 }
 
 type CarousalItem implements Node {
-  featuredAsset: Asset!
+  featuredAsset: Asset
   id: ID!
   isActive: Boolean!
   position: Int!
@@ -742,6 +794,14 @@ input CreateAssetInput {
 
 union CreateAssetResult = Asset | MimeTypeError
 
+input CreateBrandInput {
+  description: String
+  featuredAsset: ID!
+  isActive: Boolean!
+  name: String!
+  slug: String!
+}
+
 input CreateCarousalItemInput {
   featuredAsset: ID!
   isActive: Boolean!
@@ -854,6 +914,7 @@ input CreateGroupOptionInput {
 
 input CreateOrUpdateProductInput {
   assetIds: [ID]
+  brand: ID
   description: String
   enabled: Boolean
   facetValueIds: [ID]
@@ -878,6 +939,7 @@ input CreatePaymentMethodInput {
 
 input CreateProductInput {
   assetIds: [ID!]
+  brand: ID
   customFields: JSON
   enabled: Boolean
   facetValueIds: [ID!]
@@ -997,7 +1059,7 @@ input CreateWebLinkInput {
   featuredAsset: ID
   link: String!
   linkText: String!
-  position: Int
+  position: Int!
 }
 
 input CreateZoneInput {
@@ -3119,6 +3181,9 @@ type Mutation {
   """Create a new Asset"""
   createAssets(input: [CreateAssetInput!]!): [CreateAssetResult!]!
 
+  """Create a brand"""
+  createBrand(input: CreateBrandInput!): Brand!
+
   """Create carousalItem"""
   createCarousalItem(input: CreateCarousalItemInput!): CarousalItem!
 
@@ -3217,6 +3282,9 @@ type Mutation {
 
   """Delete multiple Assets"""
   deleteAssets(input: DeleteAssetsInput!): DeletionResponse!
+
+  """Delete a brand"""
+  deleteBrand(id: ID!): DeletionResponse!
 
   """Delete a Channel"""
   deleteChannel(id: ID!): DeletionResponse!
@@ -3457,8 +3525,11 @@ type Mutation {
   """Update an existing Asset"""
   updateAsset(input: UpdateAssetInput!): Asset!
 
+  """Update a brand"""
+  updateBrand(input: UpdateBrandInput!): Brand!
+
   """Update carousal items"""
-  updateCarousalItems(input: UpdateCarousalItemsInput!): [CarousalItem]!
+  updateCarousalItems(input: UpdateCarousalItemsInput!): [CarousalItem!]!
 
   """Update an existing Channel"""
   updateChannel(input: UpdateChannelInput!): UpdateChannelResult!
@@ -3532,7 +3603,7 @@ type Mutation {
   updateTaxRate(input: UpdateTaxRateInput!): TaxRate!
 
   """Update weblinks"""
-  updateWebLinks(input: UpdateWebLinksInput!): [WebLink]!
+  updateWebLinks(input: UpdateWebLinksInput!): [WebLink!]!
 
   """Update website details"""
   updateWebsite(input: UpdateWebsiteInput!): Website!
@@ -4425,6 +4496,7 @@ input PriceVariantInput {
 
 type Product implements Node {
   assets: [Asset!]!
+  brand: Brand
   channels: [Channel!]!
   collections: [Collection!]!
   createdAt: DateTime!
@@ -4939,6 +5011,12 @@ type Query {
 
   """Get a list of Assets"""
   assets(options: AssetListOptions): AssetList!
+
+  """Get a brand by id"""
+  brand(id: ID!): Brand
+
+  """List Brands"""
+  brands(options: BrandListOptions = null): BrandList!
   channel(id: ID!): Channel
   channels(options: ChannelListOptions): ChannelList!
 
@@ -5290,6 +5368,8 @@ type Sale implements Node & StockMovement {
 }
 
 input SearchInput {
+  brandId: ID
+  brandSlug: String
   collectionId: ID
   collectionSlug: String
   facetValueFilters: [FacetValueFilterInput!]
@@ -5312,6 +5392,8 @@ type SearchResponse {
 }
 
 type SearchResult {
+  brand: ID
+
   """An array of ids of the Channels in which this result appears"""
   channelIds: [ID!]!
 
@@ -5991,6 +6073,15 @@ input UpdateAssetInput {
   tags: [String!]
 }
 
+input UpdateBrandInput {
+  description: String
+  featuredAsset: ID
+  id: ID!
+  isActive: Boolean
+  name: String
+  slug: String
+}
+
 input UpdateCarousalItemInput {
   featuredAsset: ID
   id: ID!
@@ -5999,7 +6090,7 @@ input UpdateCarousalItemInput {
 }
 
 input UpdateCarousalItemsInput {
-  items: [UpdateCarousalItemInput!]
+  items: [UpdateCarousalItemInput!]!
 }
 
 input UpdateChannelInput {
@@ -6151,6 +6242,7 @@ input UpdatePriceVariantInput {
 
 input UpdateProductInput {
   assetIds: [ID!]
+  brand: ID
   customFields: JSON
   enabled: Boolean
   facetValueIds: [ID!]
@@ -6294,7 +6386,7 @@ input UpdateWebLinkInput {
 }
 
 input UpdateWebLinksInput {
-  links: [UpdateWebLinkInput!]
+  links: [UpdateWebLinkInput!]!
 }
 
 input UpdateWebsiteInput {
@@ -6302,7 +6394,6 @@ input UpdateWebsiteInput {
   content: String
   customFields: JSON
   footerContent: String
-  weblinks: [ID]
 }
 
 input UpdateZoneInput {
@@ -6331,18 +6422,18 @@ type WebLink implements Node {
   id: ID!
   link: String!
   linkText: String!
-  position: Int
+  position: Int!
 }
 
 type Website implements Node {
   announcementBarText: String!
-  carousalItems: [CarousalItem]!
+  carousalItems: [CarousalItem!]!
   content: String!
   contentUpdatedAt: DateTime!
   customFields: JSON
   footerContent: String!
   id: ID!
-  weblinks: [WebLink]!
+  weblinks: [WebLink!]!
 }
 
 type Zone implements Node {

@@ -1,12 +1,13 @@
 import gql from 'graphql-tag';
+import { Product, ProductListOptions, ProductQuery, SearchResponse } from '~/generated/graphql';
+import { Brand } from '~/generated/graphql-admin';
 import {
-	Product,
-	ProductListOptions,
-	ProductQuery,
+	GetBrandQuery,
+	GetBrandsQuery,
+	GetHotProductsQuery,
+	ProductsQuery,
 	SearchInput,
-	SearchResponse,
-} from '~/generated/graphql';
-import { GetHotProductsQuery, ProductsQuery } from '~/generated/graphql-shop';
+} from '~/generated/graphql-shop';
 import { shopSdk } from '~/graphql-wrapper';
 
 export const search = async (searchInput: SearchInput) => {
@@ -17,6 +18,14 @@ export const search = async (searchInput: SearchInput) => {
 
 export const searchQueryWithCollectionSlug = async (collectionSlug: string) =>
 	search({ collectionSlug });
+
+export const searchQueryWithBrandSlug = async (brandSlug: string) => search({ brandSlug });
+
+export const searchQueryWithTermBrand = async (
+	brandSlug: string,
+	term: string,
+	facetValueIds: string[]
+) => search({ brandSlug, term, facetValueFilters: [{ or: facetValueIds }] });
 
 export const searchQueryWithTerm = async (
 	collectionSlug: string,
@@ -38,6 +47,14 @@ export const getHotProducts = async () => {
 	return shopSdk
 		.getHotProducts()
 		.then((res: GetHotProductsQuery) => res.getHotProducts as Product[]);
+};
+
+export const getBrands = async () => {
+	return shopSdk.getBrands().then((res: GetBrandsQuery) => res.getBrands as Brand[]);
+};
+
+export const getBrandBySlug = async (slug: string) => {
+	return shopSdk.getBrand({ slug: slug }).then((res: GetBrandQuery) => res.getBrand as Brand);
 };
 
 export const detailedProductFragment = gql`
@@ -116,6 +133,7 @@ export const listedProductFragment = gql`
 			id
 			preview
 		}
+		brand
 		currencyCode
 		priceWithTax {
 			... on PriceRange {
@@ -156,6 +174,38 @@ gql`
 	query getHotProducts {
 		getHotProducts {
 			...DetailedProduct
+		}
+	}
+`;
+
+gql`
+	query getBrands {
+		getBrands {
+			id
+			name
+			slug
+			description
+			isActive
+			featuredAsset {
+				id
+				preview
+			}
+		}
+	}
+`;
+
+gql`
+	query getBrand($id: ID, $slug: String) {
+		getBrand(id: $id, slug: $slug) {
+			id
+			name
+			slug
+			description
+			isActive
+			featuredAsset {
+				id
+				preview
+			}
 		}
 	}
 `;
