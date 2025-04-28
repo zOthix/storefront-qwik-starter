@@ -1,7 +1,10 @@
-import { $, component$, useContext, useStore, useTask$, useVisibleTask$ } from '@builder.io/qwik';
+import { $, component$, useContext, useStore, useTask$ } from '@builder.io/qwik';
 import { Link, routeLoader$, useLocation } from '@builder.io/qwik-city';
+import Filters from '~/components/facet-filter-controls/Filters';
+import FiltersButton from '~/components/filters-button/FiltersButton';
 import HomeIcon from '~/components/icons/HomeIcon';
 import SlashIcon from '~/components/icons/SlashIcon';
+import ProductCard from '~/components/products/ProductCard';
 import { APP_STATE } from '~/constants';
 import { SearchResponse } from '~/generated/graphql';
 import {
@@ -37,11 +40,6 @@ export default component$(() => {
 	const brandSignal = useBrandLoader();
 	const searchSignal = useSearchLoader();
 	const appState = useContext(APP_STATE);
-
-	useVisibleTask$(({ track }) => {
-		track(() => searchSignal.value);
-		console.log(searchSignal.value);
-	});
 
 	const state = useStore<{
 		showMenu: boolean;
@@ -92,12 +90,12 @@ export default component$(() => {
 	});
 
 	return (
-		<div class="max-w-6xl mx-auto px-4 py-10">
+		<div class="max-w-6xl mx-auto px-4 py-10 min-h-screen">
 			<div class="flex justify-between items-center">
 				<h2 class="text-3xl sm:text-5xl font-light tracking-tight text-gray-900 my-8">
 					{brandSignal.value.name}
 				</h2>
-				{/* <div>
+				<div>
 					{!!state.facedValues.length && (
 						<FiltersButton
 							onToggleMenu$={async () => {
@@ -105,13 +103,42 @@ export default component$(() => {
 							}}
 						/>
 					)}
-				</div> */}
+				</div>
 			</div>
 			<div>
 				<Breadcrumbs
 					items={[{ id: '1', slug: brandSignal.value.slug, name: brandSignal.value.name }]}
 				></Breadcrumbs>
 			</div>
+			{state.search.items.length > 0 && (
+				<div class="mt-6 grid sm:grid-cols-5 gap-x-4">
+					{!!state.facedValues.length && (
+						<Filters
+							showMenu={state.showMenu}
+							facetsWithValues={state.facedValues}
+							onToggleMenu$={async () => {
+								state.showMenu = !state.showMenu;
+							}}
+							onFilterChange$={onFilterChange}
+							onOpenCloseFilter$={onOpenCloseFilter}
+						/>
+					)}
+					<div class="sm:col-span-5 lg:col-span-4">
+						<div class="grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
+							{state.search.items.map((item) => (
+								<ProductCard
+									key={item.productId}
+									productAsset={item.productAsset}
+									productName={item.productName}
+									slug={item.slug}
+									priceWithTax={item.priceWithTax}
+									currencyCode={item.currencyCode}
+								></ProductCard>
+							))}
+						</div>
+					</div>
+				</div>
+			)}
 		</div>
 	);
 });

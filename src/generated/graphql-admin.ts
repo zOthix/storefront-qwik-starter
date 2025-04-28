@@ -6044,7 +6044,8 @@ export type SearchResponse = {
 
 export type SearchResult = {
   __typename?: 'SearchResult';
-  brand?: Maybe<Scalars['ID']['output']>;
+  brandId?: Maybe<Scalars['ID']['output']>;
+  brandSlug?: Maybe<Scalars['String']['output']>;
   /** An array of ids of the Channels in which this result appears */
   channelIds: Array<Scalars['ID']['output']>;
   /** An array of ids of the Collections in which this result appears */

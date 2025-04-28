@@ -133,7 +133,6 @@ export const listedProductFragment = gql`
 			id
 			preview
 		}
-		brand
 		currencyCode
 		priceWithTax {
 			... on PriceRange {

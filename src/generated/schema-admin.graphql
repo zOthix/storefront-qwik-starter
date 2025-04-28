@@ -5392,7 +5392,8 @@ type SearchResponse {
 }
 
 type SearchResult {
-  brand: ID
+  brandId: ID
+  brandSlug: String
 
   """An array of ids of the Channels in which this result appears"""
   channelIds: [ID!]!

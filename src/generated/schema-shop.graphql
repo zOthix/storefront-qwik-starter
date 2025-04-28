@@ -3428,7 +3428,8 @@ type SearchResponse {
 }
 
 type SearchResult {
-  brand: ID
+  brandId: ID
+  brandSlug: String
 
   """An array of ids of the Collections in which this result appears"""
   collectionIds: [ID!]!
