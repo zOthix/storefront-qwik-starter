@@ -49,7 +49,10 @@ export default component$<{
 														class="h-4 w-4 border-gray-300 rounded text-primary-600 focus:ring-primary-500 cursor-pointer"
 														type="checkbox"
 														checked={value.selected}
-														onClick$={() => onFilterChange$(value.id)}
+														onClick$={() => {
+															console.log('runs');
+															onFilterChange$(value.id);
+														}}
 													/>
 													<span class="ltr:ml-3 rtl:mr-3">{value.name}</span>
 												</label>

@@ -76,7 +76,7 @@ export default component$(() => {
 		changeUrlParamsWithoutRefresh('', facetValueIds);
 
 		state.search = facetValueIds.length
-			? await searchQueryWithTermBrand(params.slug, '', activeFacetValueIds)
+			? await searchQueryWithTermBrand(params.slug, '', facetValueIds)
 			: await searchQueryWithBrandSlug(params.slug);
 	});
 
