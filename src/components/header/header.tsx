@@ -39,50 +39,50 @@ export default component$(() => {
 		}
 	});
 
-	const links = [
-		{
-			text: 'Link1',
-			href: '#',
-			submenu: [
-				{
-					text: 'Submenu1',
-					href: '#',
-					submenu: [
-						{
-							text: 'Sebsubmenu1',
-							href: '#',
-						},
-					],
-				},
-			],
-		},
-		{
-			text: 'Link2',
-			href: '#',
-			submenu: [],
-		},
-		{
-			text: 'Link3',
-			href: '#',
-			submenu: [
-				{
-					text: 'Submenu1',
-					href: '#',
-					submenu: [],
-				},
-				{
-					text: 'Submenu2',
-					href: '#',
-					submenu: [],
-				},
-				{
-					text: 'Submenu3',
-					href: '#',
-					submenu: [],
-				},
-			],
-		},
-	];
+	// const links = [
+	// 	{
+	// 		text: 'Link1',
+	// 		href: '#',
+	// 		submenu: [
+	// 			{
+	// 				text: 'Submenu1',
+	// 				href: '#',
+	// 				submenu: [
+	// 					{
+	// 						text: 'Sebsubmenu1',
+	// 						href: '#',
+	// 					},
+	// 				],
+	// 			},
+	// 		],
+	// 	},
+	// 	{
+	// 		text: 'Link2',
+	// 		href: '#',
+	// 		submenu: [],
+	// 	},
+	// 	{
+	// 		text: 'Link3',
+	// 		href: '#',
+	// 		submenu: [
+	// 			{
+	// 				text: 'Submenu1',
+	// 				href: '#',
+	// 				submenu: [],
+	// 			},
+	// 			{
+	// 				text: 'Submenu2',
+	// 				href: '#',
+	// 				submenu: [],
+	// 			},
+	// 			{
+	// 				text: 'Submenu3',
+	// 				href: '#',
+	// 				submenu: [],
+	// 			},
+	// 		],
+	// 	},
+	// ];
 
 	const logout = $(async () => {
 		await logoutMutation();

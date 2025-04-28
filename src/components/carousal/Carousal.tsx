@@ -39,7 +39,7 @@ export default component$<{ items: Maybe<CarousalItem>[] }>(({ items }) => {
 					<div key={i} class="swiper-slide">
 						<div
 							style={{
-								backgroundImage: `url(${item?.featuredAsset.preview})`,
+								backgroundImage: `url(${item?.featuredAsset?.preview ?? imageUrl})`,
 							}}
 							class="relative h-screen w-full bg-center bg-cover"
 						>
