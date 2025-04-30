@@ -1,4 +1,5 @@
 import { component$, useContext, useSignal, useTask$ } from '@builder.io/qwik';
+import { Link } from '@builder.io/qwik-city';
 import { Image } from 'qwik-image';
 import { APP_STATE } from '~/constants';
 import { Order } from '~/generated/graphql';
@@ -25,7 +26,7 @@ export default component$(
 
 		return (
 			<div>
-				<a class="grid mx-auto" href={`/products/${slug}/`}>
+				<Link class="grid mx-auto place-items-center" href={`/products/${slug}/`}>
 					<Image
 						layout="fixed"
 						class="rounded-xl flex-grow object-cover aspect-[7/8]"
@@ -41,7 +42,7 @@ export default component$(
 						currencyCode={currencyCode}
 						forcedClass="text-sm font-medium text-gray-900"
 					/>
-				</a>
+				</Link>
 				{appState.priceVariant && (
 					<div class="flex sm:flex-col1 align-baseline mt-3">
 						<button
