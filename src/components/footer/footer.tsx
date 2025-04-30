@@ -69,5 +69,7 @@ export default component$(() => {
 	// 	</footer>
 	// `;
 
-	return <div dangerouslySetInnerHTML={appState.website.footerContent}></div>;
+	return (
+		<div dangerouslySetInnerHTML={appState.website ? appState.website.footerContent : ''}></div>
+	);
 });

@@ -6,9 +6,9 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import { Navigation, Pagination } from 'swiper/modules';
 import { HOMEPAGE_IMAGE } from '~/constants';
-import { CarousalItem, Maybe } from '~/generated/graphql-admin';
+import { CarousalItem } from '~/generated/graphql-admin';
 
-export default component$<{ items: Maybe<CarousalItem>[] }>(({ items }) => {
+export default component$<{ items: CarousalItem[] }>(({ items }) => {
 	const loc = useLocation();
 	const origin = loc.url.origin;
 	const imageUrl = `${origin}/${HOMEPAGE_IMAGE}`;
@@ -34,20 +34,25 @@ export default component$<{ items: Maybe<CarousalItem>[] }>(({ items }) => {
 
 	return (
 		<div class="carousal-swiper swiper">
-			<div class="swiper-wrapper">
-				{items.map((item, i) => (
-					<div key={i} class="swiper-slide">
-						<div
-							style={{
-								backgroundImage: `url(${item?.featuredAsset?.preview ?? imageUrl})`,
-							}}
-							class="relative h-screen w-full bg-center bg-cover"
-						>
-							<div class="inset-0 w-full h-full bg-gradient-to-br from-blue-500 to-indigo-700 mix-blend-overlay" />
+			{items.length > 0 ? (
+				<div class="swiper-wrapper">
+					{[...items]
+						.sort((a, b) => a.position - b.position)
+						.map((item, i) => (
+							<div key={i} class="swiper-slide">
+								<ImageContainer imageUrl={item?.featuredAsset?.preview ?? imageUrl} />
+							</div>
+						))}
+				</div>
+			) : (
+				<div class="swiper-wrapper">
+					{[1, 2, 3].map((i) => (
+						<div key={i} class="swiper-slide">
+							<ImageContainer imageUrl={imageUrl} overlay={true} />
 						</div>
-					</div>
-				))}
-			</div>
+					))}
+				</div>
+			)}
 			<div class="swiper-pagination"></div>
 			<div class="swiper-button-prev"></div>
 			<div class="swiper-button-next"></div>
@@ -55,3 +60,20 @@ export default component$<{ items: Maybe<CarousalItem>[] }>(({ items }) => {
 		</div>
 	);
 });
+
+const ImageContainer = component$<{ imageUrl: string; overlay?: boolean }>(
+	({ imageUrl, overlay }) => {
+		return (
+			<div
+				style={{
+					backgroundImage: `url(${imageUrl})`,
+				}}
+				class="relative h-screen w-full bg-center bg-cover"
+			>
+				{overlay && (
+					<div class="inset-0 w-full h-full bg-gradient-to-br from-blue-500 to-indigo-700 mix-blend-overlay" />
+				)}
+			</div>
+		);
+	}
+);

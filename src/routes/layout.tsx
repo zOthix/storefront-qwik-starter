@@ -117,7 +117,9 @@ export default component$(() => {
 
 	return (
 		<div>
-			<AnnouncementBar announcementText={websiteSignal.value.announcementBarText} />
+			{state.website && state.website.announcementBarText && (
+				<AnnouncementBar announcementText={state.website.announcementBarText} />
+			)}
 			<Header />
 			<Cart />
 			<Menu />

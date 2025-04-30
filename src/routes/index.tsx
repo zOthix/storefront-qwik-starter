@@ -10,7 +10,7 @@ import Carousal from '~/components/carousal/Carousal';
 import LinkCard from '~/components/link-card/LinkCard';
 import { APP_STATE } from '~/constants';
 import { Product } from '~/generated/graphql';
-import { Brand } from '~/generated/graphql-admin';
+import { Brand, WebLink } from '~/generated/graphql-admin';
 import { getBrands, getHotProducts, getProducts } from '~/providers/shop/products/products';
 
 const commonSwiperOptions = {
@@ -63,38 +63,31 @@ export default component$(() => {
 
 	return (
 		<div class="pb-12 md:pb-24">
-			<Carousal items={appState.website.carousalItems} />
+			{appState.website && <Carousal items={appState.website.carousalItems} />}
 			<div class="pt-12 md:pt-24 xl:max-w-7xl xl:mx-auto px-2 md:px-6 flex flex-col gap-y-12 md:gap-y-24">
 				<section>
-					<div class="grid gap-2 grid-cols-2 md:grid-cols-3 lg:grid-cols-4 place-items-center">
-						{appState.website.weblinks.map((link) => {
-							return (
-								<LinkCard
-									key={link?.id}
-									href={link?.link ?? ''}
-									src={link?.featuredAsset?.preview ?? ''}
-									name={link?.linkText ?? ''}
-								/>
-							);
-						})}
-					</div>
+					{appState.website && <LinksContainer weblinks={appState.website.weblinks} />}
 				</section>
 				<section>
-					<BrandsSlider brands={brandsSignal.value} />
+					{brandsSignal.value.length > 0 && <BrandsSlider brands={brandsSignal.value} />}
 				</section>
 				<section>
-					<NewProductsSlider products={newProductsSignal.value} />
+					{newProductsSignal.value.length > 0 && (
+						<NewProductsSlider products={newProductsSignal.value} />
+					)}
 				</section>
 				<section>
-					<HotProductsSlider products={hotProductsSignal.value} />
+					{hotProductsSignal.value.length > 0 && (
+						<HotProductsSlider products={hotProductsSignal.value} />
+					)}
 				</section>
 				<section>
-					<div class="relative w-full max-w-[700px] h-[200px] border border-gray-500 bg-gray-200 mx-auto text-center py-4 px-2 rounded-lg">
-						<div dangerouslySetInnerHTML={appState.website.content}></div>
-						<div class="absolute md:right-4 md:bottom-4 right-2 bottom-2 text-xs text-gray-700">
-							Last updated: {new Date(appState.website.contentUpdatedAt).toLocaleString()}
-						</div>
-					</div>
+					{appState.website && (
+						<ContentContainer
+							content={appState.website.content}
+							updatedAt={appState.website.contentUpdatedAt}
+						/>
+					)}
 				</section>
 			</div>
 		</div>
@@ -198,3 +191,36 @@ const HotProductsSlider = component$<{ products: Product[] }>(({ products }) => 
 		</div>
 	);
 });
+
+const LinksContainer = component$<{ weblinks: WebLink[] }>(({ weblinks }) => {
+	return (
+		<div class="grid gap-2 grid-cols-2 md:grid-cols-3 lg:grid-cols-4 place-items-center">
+			{[...weblinks]
+				.sort((a, b) => a.position - b.position)
+				.filter((i) => i.featuredAsset && i.link)
+				.map((link) => {
+					return (
+						<LinkCard
+							key={link?.id}
+							href={link?.link ?? ''}
+							src={link?.featuredAsset?.preview ?? ''}
+							name={link?.linkText ?? ''}
+						/>
+					);
+				})}
+		</div>
+	);
+});
+
+const ContentContainer = component$<{ content: string; updatedAt: Date }>(
+	({ content, updatedAt }) => {
+		return (
+			<div class="relative w-full max-w-[700px] h-[200px] border border-gray-500 bg-gray-200 mx-auto text-center py-4 px-2 rounded-lg">
+				<div dangerouslySetInnerHTML={content} />
+				<div class="absolute md:right-4 md:bottom-4 right-2 bottom-2 text-xs text-gray-700">
+					Last updated: {new Date(updatedAt).toLocaleString()}
+				</div>
+			</div>
+		);
+	}
+);
